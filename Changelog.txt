@@ -1,3 +1,8 @@
+2013-06-30  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	UserDataを追加、ほとんどコメントアウト、TITLEまで遷移するように
+
 2013-06-29  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

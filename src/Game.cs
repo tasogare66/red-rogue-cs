@@ -1,3 +1,5 @@
+using System;
+
 namespace redroguecs {
 #if false
 	import com.adobe.serialization.json.JSON;
@@ -217,8 +219,8 @@ namespace redroguecs {
 		public Game(GameFrameworkRedRogueCs gs, string name) : base(gs, name) {
 
 			game = this;
-#if false			
 			UserData.game = this;
+#if false			
 			Entity.game = this;
 			LightMap.game = this;
 			Effect.game = this;
@@ -255,17 +257,18 @@ namespace redroguecs {
 			
 			byteArray = new Item.statsData();
 			Item.stats = JSON.decode(byteArray.readUTFBytes(byteArray.length));
+#endif
 			
 			// init UserData
 			UserData.initSettings();
 			UserData.initGameState();
 			UserData.pull();
 			// check the game is alive
-			if(UserData.gameState.dead) UserData.initGameState();
+///			if(UserData.gameState.dead) UserData.initGameState();
 			
 			// misc static settings
-			Map.seed = UserData.settings.randomSeed;
-			Menu.moveDelay = UserData.settings.menuMoveSpeed;
+///			Map.seed = UserData.settings.randomSeed;
+///			Menu.moveDelay = UserData.settings.menuMoveSpeed;
 			dogmaticMode = UserData.settings.dogmaticMode;
 			multiplayer = UserData.settings.multiplayer;
 			endGameEvent = false;
@@ -273,6 +276,7 @@ namespace redroguecs {
 			firstInstructions = ONLINE;
 			state = (!ONLINE || UserData.settings.playerConsumed || TEST_BED_INIT) ? GAME : TITLE;
 			
+#if false
 			library = new Library;
 			
 			renderer = new Renderer(this);

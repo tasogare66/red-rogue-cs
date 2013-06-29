@@ -51,6 +51,7 @@
     <Compile Include="src\cs\AppMain.cs" />
     <Compile Include="src\cs\Sprite.cs" />
     <Compile Include="src\cs\AppUtil.cs" />
+    <Compile Include="src\UserData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
