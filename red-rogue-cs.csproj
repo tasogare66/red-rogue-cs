@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{049800A5-D41D-4C55-9357-916FF537808F}</ProjectGuid>
+    <ProjectTypeGuids>{69878862-DA7D-4DC6-B0A1-50D8FAB4242F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>redroguecs</RootNamespace>
+    <AssemblyName>red-rogue-cs</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Sce.PlayStation.Core" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\Game.cs" />
+    <Compile Include="lib\Actor.cs" />
+    <Compile Include="lib\DebugString.cs" />
+    <Compile Include="lib\GameFramework.cs" />
+    <Compile Include="lib\LineB.cs" />
+    <Compile Include="lib\PerformanceCounter.cs" />
+    <Compile Include="lib\SimpleSprite.cs" />
+    <Compile Include="lib\SpriteBuffer.cs" />
+    <Compile Include="lib\UnifiedTexture.cs" />
+    <Compile Include="lib\Utility.cs" />
+    <Compile Include="src\cs\GameFrameworkRedRogueCs.cs" />
+    <Compile Include="src\cs\AppMain.cs" />
+    <Compile Include="src\cs\Sprite.cs" />
+    <Compile Include="src\cs\AppUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ShaderProgram Include="shaders\Simple.fcg" />
+    <ShaderProgram Include="shaders\Simple.vcg" />
+  </ItemGroup>
+  <ItemGroup>
+    <PsmMetadata Include="app.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Psm.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="lib\" />
+    <Folder Include="src\cs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />
+    <EmbeddedShaderProgram Include="lib\SimpleSprite.vcg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="lib\DebugFont.png" />
+  </ItemGroup>
+</Project>
