@@ -255,7 +255,7 @@ namespace redroguecs {
 ///			randomSeed:0,
 			public bool dogmaticMode = false;
 			public bool multiplayer = false;
-///			livesAvailable:3,
+			public int livesAvailable = 3;
 ///			hotKeyMaps:[
 ///				<hotKey>
 ///				  <branch selection="0" name="actions" context="null"/>

@@ -52,6 +52,8 @@
     <Compile Include="src\cs\Sprite.cs" />
     <Compile Include="src\cs\AppUtil.cs" />
     <Compile Include="src\UserData.cs" />
+    <Compile Include="src\com\robotacid\util\HiddenInt.cs" />
+    <Compile Include="src\cs\AppRand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -65,6 +67,9 @@
     <Folder Include="src\" />
     <Folder Include="lib\" />
     <Folder Include="src\cs\" />
+    <Folder Include="src\com\" />
+    <Folder Include="src\com\robotacid\" />
+    <Folder Include="src\com\robotacid\util\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

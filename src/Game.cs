@@ -1,69 +1,68 @@
 using System;
 
+///import com.adobe.serialization.json.JSON;
+///import com.robotacid.ai.Brain;
+///import com.robotacid.ai.HorrorBrain;
+///import com.robotacid.ai.Node;
+///import com.robotacid.ai.PlayerBrain;
+///import com.robotacid.level.Content;
+///import com.robotacid.level.MapBitmap;
+///import com.robotacid.level.Map;
+///import com.robotacid.engine.*;
+///import com.robotacid.geom.Pixel;
+///import com.robotacid.geom.Trig;
+///import com.robotacid.gfx.*;
+///import com.robotacid.phys.Collider;
+///import com.robotacid.phys.CollisionWorld;
+///import com.robotacid.sound.SoundManager;
+///import com.robotacid.sound.SoundQueue;
+///import com.robotacid.ui.Console;
+///import com.robotacid.ui.Dialog;
+///import com.robotacid.ui.Editor;
+///import com.robotacid.ui.menu.DeathMenu;
+///import com.robotacid.ui.menu.EditorMenuList;
+///import com.robotacid.ui.menu.GameMenu;
+///import com.robotacid.ui.menu.Menu;
+///import com.robotacid.ui.menu.MenuCarousel;
+///import com.robotacid.ui.menu.PlayerConsumedMenu;
+///import com.robotacid.ui.menu.QuestMenuList;
+///import com.robotacid.ui.menu.QuestMenuOption;
+///import com.robotacid.ui.menu.TitleMenu;
+///import com.robotacid.ui.ProgressBar;
+///import com.robotacid.ui.TextBox;
+///import com.robotacid.ui.MiniMap;
+///import com.robotacid.ui.Key;
+///import com.robotacid.ui.Transition;
+///import com.robotacid.util.clips.stopClips;
+///import com.robotacid.util.FPS;
+using com.robotacid.util;
+///import com.robotacid.util.misc.onScreen;
+///import com.robotacid.util.LZW;
+///import com.robotacid.util.RLE;
+///import com.robotacid.util.XorRandom;
+///import flash.display.Bitmap;
+///import flash.display.BitmapData;
+///import flash.display.Graphics;
+///import flash.display.MovieClip;
+///import flash.display.Shape;
+///import flash.display.Sprite;
+///import flash.display.StageQuality;
+///import flash.events.Event;
+///import flash.events.KeyboardEvent;
+///import flash.events.MouseEvent;
+///import flash.external.ExternalInterface;
+///import flash.geom.ColorTransform;
+///import flash.geom.Point;
+///import flash.geom.Rectangle;
+///import flash.media.Sound;
+///import flash.net.SharedObject;
+///import flash.text.TextField;
+///import flash.ui.Keyboard;
+///import flash.ui.Mouse;
+///import flash.utils.ByteArray;
+///import flash.utils.getTimer;
+
 namespace redroguecs {
-#if false
-	import com.adobe.serialization.json.JSON;
-	import com.robotacid.ai.Brain;
-	import com.robotacid.ai.HorrorBrain;
-	import com.robotacid.ai.Node;
-	import com.robotacid.ai.PlayerBrain;
-	import com.robotacid.level.Content;
-	import com.robotacid.level.MapBitmap;
-	import com.robotacid.level.Map;
-	import com.robotacid.engine.*;
-	import com.robotacid.geom.Pixel;
-	import com.robotacid.geom.Trig;
-	import com.robotacid.gfx.*;
-	import com.robotacid.phys.Collider;
-	import com.robotacid.phys.CollisionWorld;
-	import com.robotacid.sound.SoundManager;
-	import com.robotacid.sound.SoundQueue;
-	import com.robotacid.ui.Console;
-	import com.robotacid.ui.Dialog;
-	import com.robotacid.ui.Editor;
-	import com.robotacid.ui.menu.DeathMenu;
-	import com.robotacid.ui.menu.EditorMenuList;
-	import com.robotacid.ui.menu.GameMenu;
-	import com.robotacid.ui.menu.Menu;
-	import com.robotacid.ui.menu.MenuCarousel;
-	import com.robotacid.ui.menu.PlayerConsumedMenu;
-	import com.robotacid.ui.menu.QuestMenuList;
-	import com.robotacid.ui.menu.QuestMenuOption;
-	import com.robotacid.ui.menu.TitleMenu;
-	import com.robotacid.ui.ProgressBar;
-	import com.robotacid.ui.TextBox;
-	import com.robotacid.ui.MiniMap;
-	import com.robotacid.ui.Key;
-	import com.robotacid.ui.Transition;
-	import com.robotacid.util.clips.stopClips;
-	import com.robotacid.util.FPS;
-	import com.robotacid.util.HiddenInt;
-	import com.robotacid.util.misc.onScreen;
-	import com.robotacid.util.LZW;
-	import com.robotacid.util.RLE;
-	import com.robotacid.util.XorRandom;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Graphics;
-	import flash.display.MovieClip;
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.display.StageQuality;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
-	import flash.geom.ColorTransform;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.media.Sound;
-	import flash.net.SharedObject;
-	import flash.text.TextField;
-	import flash.ui.Keyboard;
-	import flash.ui.Mouse;
-	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
-#endif
 	
 	/**
 	 * Red Rogue
@@ -163,8 +162,8 @@ namespace redroguecs {
 		public bool forceFocus = true;
 ///		public var portalHash:Object;
 		public bool dogmaticMode;
-///		public var lives:HiddenInt;
-///		public var livesAvailable:HiddenInt;
+		public HiddenInt lives;
+		public HiddenInt livesAvailable;
 		public bool multiplayer;
 		public bool firstInstructions;
 		public bool endGameEvent;
@@ -312,12 +311,12 @@ namespace redroguecs {
 			// SOUND INIT
 			SoundManager.init();
 			soundQueue = new SoundQueue();
+#endif
 			
 			lives = new HiddenInt();
 			livesAvailable = new HiddenInt(UserData.settings.livesAvailable);
 			
-			trackEvent("load complete");
-#endif
+///			trackEvent("load complete");
 			
 			//if (stage) addedToStage();
 			//else addEventListener(Event.ADDED_TO_STAGE, addedToStage);
