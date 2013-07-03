@@ -78,7 +78,7 @@ namespace Sce.PlayStation.Framework
 				actorChild.Render();	
 			}		}
 		
-		virtual public void AddChild(Actor actor)
+		virtual public void addChild(Actor actor)
 		{
 			children.Add(actor);
 			actor.level = this.level+1;

@@ -59,7 +59,7 @@ namespace redroguecs
 
 		public override void Initialize()
 		{
-			base.Initialize();
+			base.Initialize((int)Game.WIDTH, (int)Game.HEIGHT);
 			
 			rectScreen = graphics.GetViewport();
 
@@ -73,11 +73,11 @@ namespace redroguecs
 			//@e Initialization of actor tree
 			Root = new Actor("root");
 			
-			Root.AddChild(new Game(this, "game"));
+			Root.addChild(new Game(this, "game"));
 			
-//			Root.AddChild(new Map(this,"Map"));
+//			Root.addChild(new Map(this,"Map"));
 			
-//			Root.AddChild(new Actor("bulletManager"));
+//			Root.addChild(new Actor("bulletManager"));
 		}
 		
 		

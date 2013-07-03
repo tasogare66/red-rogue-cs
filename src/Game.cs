@@ -1,5 +1,8 @@
 using System;
 
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
+
 ///import com.adobe.serialization.json.JSON;
 ///import com.robotacid.ai.Brain;
 ///import com.robotacid.ai.HorrorBrain;
@@ -93,7 +96,7 @@ namespace redroguecs {
 ///		public var player:Player;
 ///		public var minion:Minion;
 ///		public var balrog:Balrog;
-///		public var library:Library;
+		public Library library;
 ///		public var map:Map;
 ///		public var content:Content;
 ///		public var entrance:Portal;
@@ -188,8 +191,8 @@ namespace redroguecs {
 		public static readonly int EPILOGUE = 5;
 		public static readonly int UNFOCUSED = 6;
 		
-		public static readonly double WIDTH = 320;
-		public static readonly double HEIGHT = 240;
+		public static readonly float WIDTH = 320;
+		public static readonly float HEIGHT = 240;
 		
 		// game key properties
 		public static readonly int UP_KEY = 0;
@@ -275,9 +278,9 @@ namespace redroguecs {
 			firstInstructions = ONLINE;
 			state = (!ONLINE || UserData.settings.playerConsumed || TEST_BED_INIT) ? GAME : TITLE;
 			
-#if false
-			library = new Library;
+			library = new Library();
 			
+#if false
 			renderer = new Renderer(this);
 			renderer.init();
 			
@@ -434,8 +437,8 @@ namespace redroguecs {
 #endif
 				
 			} else if(state == TITLE){
-#if false
 				addChild(getTitleGfx());
+#if false
 				titlePressMenuText = new TextBox(Menu.LIST_WIDTH * 2, 12, Dialog.ROLL_OUT_COL);
 				titlePressMenuText.align = "center";
 				titlePressMenuText.text = "press menu key (" + Key.keyString(Key.custom[MENU_KEY]) + ") to begin";
@@ -1327,25 +1330,29 @@ namespace redroguecs {
 				clickToPlayText.text = "click to play again";
 			}
 		}
+#endif
 		
-		public function getTitleGfx():Sprite{
-			var sprite:Sprite = new Sprite();
-			sprite.graphics.beginFill(0x0);
-			sprite.graphics.drawRect(0, 0, WIDTH, HEIGHT);
-			var titleB:Bitmap;
+		public SSprite getTitleGfx() {
+///			sprite.graphics.beginFill(0x0);
+///			sprite.graphics.drawRect(0, 0, WIDTH, HEIGHT);
+			Texture2D titleB;
 			if(UserData.settings.playerConsumed){
-				titleB = new library.BannerFailB();
+				titleB = new Texture2D(library.BannerFailB, false);
 			} else if(UserData.settings.ascended){
-				titleB = new library.BannerCompleteB();
+				titleB = new Texture2D(library.BannerCompleteB, false);
 			} else {
-				titleB = new library.BannerB();
+				titleB = new Texture2D(library.BannerB, false);
 			}
-			sprite.addChild(titleB);
-			titleB.y = HEIGHT * 0.5 - titleB.height * 0.5;
-			titleB.scaleX = titleB.scaleY = 0.5;
+///			sprite.addChild(titleB);
+///			titleB.y = HEIGHT * 0.5 - titleB.height * 0.5;
+///			titleB.scaleX = titleB.scaleY = 0.5;
+			SSprite sprite = new SSprite(titleB);
+			sprite.sprite.Position = new Vector3(0f, HEIGHT * 0.5f - titleB.Height * 0.5f, 0f);
+			sprite.sprite.Scale = new Vector2(0.5f, 0.5f);
 			return sprite;
 		}
 		
+#if false
 		public function epilogueInit():void{
 			state = EPILOGUE;
 			var type:int;

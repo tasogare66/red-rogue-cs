@@ -62,8 +62,13 @@ namespace Sce.PlayStation.Framework
 			Terminate();
 		}
 		
-		
 		virtual public void Initialize()
+		{
+			// 0ならばデフォルト
+			Initialize(0, 0);
+		}
+
+		virtual public void Initialize(int scree_width, int screen_height)
 		{
 			Console.WriteLine("Initialize()");
 			
@@ -71,7 +76,7 @@ namespace Sce.PlayStation.Framework
 			stopwatch.Start();
 			preSecondTicks=stopwatch.ElapsedTicks;
 			
-			graphics = new GraphicsContext();
+			graphics = new GraphicsContext(scree_width, screen_height, PixelFormat.None, PixelFormat.None, MultiSampleMode.None);
 			graphics.SetClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			graphics.Enable(EnableMode.Blend);
 			graphics.Enable(EnableMode.DepthTest);

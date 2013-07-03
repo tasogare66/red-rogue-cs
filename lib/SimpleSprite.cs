@@ -234,7 +234,7 @@ namespace Tutorial.Utility
 		//@j シェーダープログラムの初期化。
 		private static ShaderProgram CreateSimpleSpriteShader()
 		{
-			string resourceName = "TutoLib.shaders.SimpleSprite.cgx";
+			string resourceName = "redroguecs.lib.SimpleSprite.cgx";
 			
 			Byte[] dataBuffer = Utility.ReadEmbeddedFile(resourceName);
 				
@@ -243,5 +243,13 @@ namespace Tutorial.Utility
 	
 			return shaderProgram;
 		}
+		
+		~SimpleSprite()
+		{
+			if( texture != null ){
+				texture.Dispose();
+			}
+		}
+	
 	}
 }
