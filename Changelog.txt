@@ -1,7 +1,7 @@
 2013-07-04  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
-	dos改行のものを修正
+	dos改行のソースを修正
 
 	* red-rogue-cs:
 	解像度変更、タイトル表示対応
