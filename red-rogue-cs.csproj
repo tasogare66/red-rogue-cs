@@ -56,6 +56,7 @@
     <Compile Include="src\cs\AppRand.cs" />
     <Compile Include="src\cs\SSprite.cs" />
     <Compile Include="src\Library.cs" />
+    <Compile Include="src\com\robotacid\level\Node.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -73,6 +74,7 @@
     <Folder Include="src\com\robotacid\" />
     <Folder Include="src\com\robotacid\util\" />
     <Folder Include="src\assets\" />
+    <Folder Include="src\com\robotacid\level\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

@@ -1,6 +1,9 @@
 2013-07-04  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
+	Node.csを追加
+
+	* red-rogue-cs:
 	dos改行のソースを修正
 
 	* red-rogue-cs:
