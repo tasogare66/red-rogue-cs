@@ -14,7 +14,7 @@ namespace com.robotacid.util {
 	public class XorRandom {
 		
 		static readonly uint uint_MAX_VALUE = 4294967295;
-		public static readonly double MAX_RATIO = 1 / uint_MAX_VALUE;
+		public static readonly double MAX_RATIO = 1d / (double)uint_MAX_VALUE;
 		public uint r;
 		public uint seed;
 		
