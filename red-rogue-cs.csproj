@@ -57,6 +57,7 @@
     <Compile Include="src\cs\SSprite.cs" />
     <Compile Include="src\Library.cs" />
     <Compile Include="src\com\robotacid\level\Node.cs" />
+    <Compile Include="src\com\robotacid\util\XorRandom.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

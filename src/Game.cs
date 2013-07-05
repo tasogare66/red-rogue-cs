@@ -42,7 +42,6 @@ using com.robotacid.util;
 ///import com.robotacid.util.misc.onScreen;
 ///import com.robotacid.util.LZW;
 ///import com.robotacid.util.RLE;
-///import com.robotacid.util.XorRandom;
 ///import flash.display.Bitmap;
 ///import flash.display.BitmapData;
 ///import flash.display.Graphics;
@@ -101,7 +100,7 @@ namespace redroguecs {
 ///		public var content:Content;
 ///		public var entrance:Portal;
 ///		public var world:CollisionWorld;
-///		public var random:XorRandom;
+		public XorRandom random;
 ///		public var soundQueue:SoundQueue;
 ///		public var sleep:Sleep;
 ///		public var transition:Transition;
@@ -249,17 +248,17 @@ namespace redroguecs {
 					allowScriptAccess = false;
 				}
 			}
+#endif
 			
 			random = new XorRandom();
 			
-			var byteArray:ByteArray;
+///			var byteArray:ByteArray;
 			
-			byteArray = new Character.statsData();
-			Character.stats = JSON.decode(byteArray.readUTFBytes(byteArray.length));
+///			byteArray = new Character.statsData();
+///			Character.stats = JSON.decode(byteArray.readUTFBytes(byteArray.length));
 			
-			byteArray = new Item.statsData();
-			Item.stats = JSON.decode(byteArray.readUTFBytes(byteArray.length));
-#endif
+///			byteArray = new Item.statsData();
+///			Item.stats = JSON.decode(byteArray.readUTFBytes(byteArray.length));
 			
 			// init UserData
 			UserData.initSettings();
