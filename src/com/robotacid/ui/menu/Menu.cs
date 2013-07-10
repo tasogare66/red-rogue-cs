@@ -54,7 +54,7 @@ namespace com.robotacid.ui.menu {
 		public static Game game;
 		
 		// gfx
-///		public var carousel:MenuCarousel;
+		public MenuCarousel carousel;
 ///		public var textHolder:Sprite;
 ///		public var help:TextBox;
 ///		public var selectionWindow:Bitmap;
