@@ -1,6 +1,9 @@
 2013-07-11  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
+	level関連、Map.cs, MapBitmap.csをとりあえず追加
+
+	* red-rogue-cs:
 	level関連、Room.csなど追加
 
 2013-07-10  tasogare66 <tasogare66@gmail.com>

@@ -65,6 +65,8 @@
     <Compile Include="src\com\robotacid\ui\menu\MenuCarousel.cs" />
     <Compile Include="src\com\robotacid\geom\Pixel.cs" />
     <Compile Include="src\com\robotacid\level\Room.cs" />
+    <Compile Include="src\com\robotacid\level\Map.cs" />
+    <Compile Include="src\com\robotacid\level\MapBitmap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
