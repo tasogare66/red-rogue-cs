@@ -80,7 +80,7 @@ namespace redroguecs {
 	
 	public class Game : Sprite {
 	
-		public static readonly double VERSION_NUM = 1.03;
+		public static readonly double VERSION_NUM = 1.03d;
 		
 		public static readonly bool TEST_BED_INIT = false;
 		public static readonly bool ONLINE = true;
@@ -178,8 +178,8 @@ namespace redroguecs {
 		
 		// CONSTANTS
 		
-		public static readonly double SCALE = 16;
-		public static readonly double INV_SCALE = 1.0 / 16;
+		public static readonly double SCALE = 16d;
+		public static readonly double INV_SCALE = 1.0d / 16d;
 		
 		// states
 		public static readonly int GAME = 0;
@@ -203,7 +203,7 @@ namespace redroguecs {
 		public static readonly int MAX_LEVEL = 20;
 		
 ///		public static readonly double CONSOLE_Y = HEIGHT - Console.HEIGHT;
-		public static readonly double HEALTH_GLOW_RATIO = 0.3;
+		public static readonly double HEALTH_GLOW_RATIO = 0.3d;
 		public static readonly uint DEFAULT_BAR_COL = 0xFFCCCCCC;
 		public static readonly uint DISABLED_BAR_COL = 0xFFAA0000;
 		public static readonly uint GLOW_BAR_COL = 0xAA0000;
@@ -211,8 +211,8 @@ namespace redroguecs {
 		public static readonly int HIDE_MOUSE_FRAMES = 45;
 		
 		public static readonly int SOUND_DIST_MAX = 12;
-		public static readonly double INV_SOUND_DIST_MAX = 1.0 / SOUND_DIST_MAX;
-		public static readonly double SOUND_HORIZ_DIST_MULTIPLIER = 1.5;
+		public static readonly double INV_SOUND_DIST_MAX = 1.0d / (double)SOUND_DIST_MAX;
+		public static readonly double SOUND_HORIZ_DIST_MULTIPLIER = 1.5d;
 		
 		public static bool fullscreenOn;
 		public static bool allowScriptAccess;

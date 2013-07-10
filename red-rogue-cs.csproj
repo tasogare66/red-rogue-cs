@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,6 +58,10 @@
     <Compile Include="src\Library.cs" />
     <Compile Include="src\com\robotacid\level\Node.cs" />
     <Compile Include="src\com\robotacid\util\XorRandom.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\Menu.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\MenuOption.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\MenuList.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\TitleMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -76,6 +80,8 @@
     <Folder Include="src\com\robotacid\util\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\com\robotacid\level\" />
+    <Folder Include="src\com\robotacid\ui\" />
+    <Folder Include="src\com\robotacid\ui\menu\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />
