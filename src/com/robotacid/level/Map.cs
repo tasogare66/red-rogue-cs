@@ -72,46 +72,46 @@ namespace com.robotacid.level {
 ///		public var layers:Array;
 		
 		// types
-		public static readonly int MAIN_DUNGEON = 0;
-		public static readonly int ITEM_DUNGEON = 1;
-		public static readonly int AREA = 2;
+		public const int MAIN_DUNGEON = 0;
+		public const int ITEM_DUNGEON = 1;
+		public const int AREA = 2;
 		
 		// zones
-		public static readonly int DUNGEONS = 0;
-		public static readonly int SEWERS = 1;
-		public static readonly int CAVES = 2;
-		public static readonly int CHAOS = 3;
+		public const int DUNGEONS = 0;
+		public const int SEWERS = 1;
+		public const int CAVES = 2;
+		public const int CHAOS = 3;
 		
 		// layers
-		public static readonly int BACKGROUND = 0;
-		public static readonly int BLOCKS = 1;
-		public static readonly int ENTITIES = 2;
+		public const int BACKGROUND = 0;
+		public const int BLOCKS = 1;
+		public const int ENTITIES = 2;
 		
 		// outside area levels
-		public static readonly int OVERWORLD = 0;
-		public static readonly int UNDERWORLD = 1;
+		public const int OVERWORLD = 0;
+		public const int UNDERWORLD = 1;
 		
-		public static readonly int LAYER_NUM = 3;
+		public const int LAYER_NUM = 3;
 		
-		public static readonly int BACKGROUND_WIDTH = 8;
-		public static readonly int BACKGROUND_HEIGHT = 8;
+		public const int BACKGROUND_WIDTH = 8;
+		public const int BACKGROUND_HEIGHT = 8;
 		
-		public static readonly int UNDERWORLD_BOAT_MIN = 8;
-		public static readonly int UNDERWORLD_BOAT_MAX = 17;
-		public static readonly int UNDERWORLD_PORTAL_X = 13;
-		public static readonly int OVERWORLD_STAIRS_X = 12;
-		public static readonly int OVERWORLD_PORTAL_X = 17;
+		public const int UNDERWORLD_BOAT_MIN = 8;
+		public const int UNDERWORLD_BOAT_MAX = 17;
+		public const int UNDERWORLD_PORTAL_X = 13;
+		public const int OVERWORLD_STAIRS_X = 12;
+		public const int OVERWORLD_PORTAL_X = 17;
 		
-		public static readonly int LEVELS_PER_ZONE = 3;
-		public static readonly int ZONE_TOTAL = 4;
+		public const int LEVELS_PER_ZONE = 3;
+		public const int ZONE_TOTAL = 4;
 		
-///		public static readonly ZONE_NAMES:Vector.<String> = Vector.<String>(["dungeons", "sewers", "caves", "chaos"]);
+		public static readonly List<string> ZONE_NAMES = new List<string> { "dungeons", "sewers", "caves", "chaos"};
 		
-#if false
-		public function Map(level:int, type:int = MAIN_DUNGEON) {
+		public Map(int level, int type = MAIN_DUNGEON) {
 			this.level = level;
 			this.type = type;
 			completionCount = completionTotal = 0;
+#if false
 			layers = [];
 			portals = new Vector.<Pixel>();
 			if(type == MAIN_DUNGEON || type == ITEM_DUNGEON){
@@ -133,7 +133,7 @@ namespace com.robotacid.level {
 				
 			} else if(type == ITEM_DUNGEON){
 				random.r = game.content.getSeed(level, type);
-				var sideDungeonSize:int = 1 + (Number(level) / 10);
+				int sideDungeonSize = 1 + (Number(level) / 10);
 				bitmap = new MapBitmap(sideDungeonSize, type, zone);
 				width = bitmap.width;
 				height = bitmap.height;
@@ -154,12 +154,14 @@ namespace com.robotacid.level {
 			for(i = 0; i < portals.length; i++){
 				if(bitmap.bitmapData.getPixel32(portals[i].x, portals[i].y) == MapBitmap.GATE) bitmap.bitmapData.setPixel32(portals[i].x, portals[i].y, MapBitmap.EMPTY);
 			}
+#endif
 			
 			//bitmap.scaleX = bitmap.scaleY = 2;
 			//game.addChild(bitmap);
 			
 		}
 		
+#if false
 		/* Create the test bed
 		 *
 		 * This is a debugging playground for testing new content and trying to lure consistent
@@ -1513,16 +1515,17 @@ namespace com.robotacid.level {
 			}
 			return a;
 		}
+#endif
 		
 		/* is this pixel sitting on the edge of the map? it will likely cause me trouble if it is... */
-		public static function onEdge(pixel:Pixel, width:int, height:int):Boolean{
+		public static bool onEdge(Pixel pixel, int width, int height) {
 			return pixel.x<= 0 || pixel.x >= width-1 || pixel.y <= 0 || pixel.y >= height-1;
 		}
 		
 		/* All of the levels have names, either being a subset of a zone or a specific area */
-		public static function getName(level:int, type:int):String{
+		public static string getName(int level, int type) {
 			if(type == MAIN_DUNGEON){
-				var zone:int = game.content.getLevelZone(level);
+				int zone = game.content.getLevelZone(level);
 				return ZONE_NAMES[zone];
 			} else if(type == AREA){
 				if(level == OVERWORLD) return "overworld";
@@ -1532,7 +1535,6 @@ namespace com.robotacid.level {
 			}
 			return "";
 		}
-#endif
 	}
 	
 }

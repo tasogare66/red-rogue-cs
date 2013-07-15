@@ -8,7 +8,7 @@ using Sce.PlayStation.Core.Graphics;
 ///import com.robotacid.ai.HorrorBrain;
 ///import com.robotacid.ai.Node;
 ///import com.robotacid.ai.PlayerBrain;
-///import com.robotacid.level.Content;
+using com.robotacid.level;
 ///import com.robotacid.level.MapBitmap;
 ///import com.robotacid.level.Map;
 ///import com.robotacid.engine.*;
@@ -97,7 +97,7 @@ namespace redroguecs {
 ///		public var balrog:Balrog;
 		public Library library;
 ///		public var map:Map;
-///		public var content:Content;
+		public Content content;
 ///		public var entrance:Portal;
 ///		public var world:CollisionWorld;
 		public XorRandom random;

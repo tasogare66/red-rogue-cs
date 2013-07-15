@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace redroguecs {
 #if false
 	import com.robotacid.engine.Item;
@@ -19,6 +21,12 @@ namespace redroguecs {
 	import flash.net.SharedObject;
 	import flash.utils.ByteArray;
 #endif
+
+	public class GameState {
+		// Content.cs
+		public List<int> levelZones;
+	}
+
 	/**
 	 * Provides an interface for storing game data in a shared object and restoring the game from
 	 * the shared object
@@ -34,7 +42,7 @@ namespace redroguecs {
 ///		public static var renderer:Renderer;
 		
 		public static Settings settings;
-///		public static var gameState:Object;
+		public static GameState gameState;
 		
 ///		public static var settingsBytes:ByteArray;
 ///		public static var gameStateBytes:ByteArray;
@@ -127,7 +135,8 @@ namespace redroguecs {
 			
 			var runeNameBuffer:Array;
 			if(gameState) runeNameBuffer = gameState.runeNames.slice();
-			
+#endif
+		#if false
 			gameState = {
 				player:{
 					previousLevel:Map.OVERWORLD,
@@ -152,10 +161,12 @@ namespace redroguecs {
 				randomSeed:XorRandom.seedFromDate(),
 				husband:false
 			};
-			
+		#endif
+			gameState = new GameState();
 			initMinion();
 			initBalrog();
 			
+#if false
 			var total:int = Item.stats["rune names"].length;
 			for(i = 0; i < total; i++){
 				gameState.runeNames.push(Item.UNIDENTIFIED);

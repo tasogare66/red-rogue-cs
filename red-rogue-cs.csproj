@@ -67,6 +67,7 @@
     <Compile Include="src\com\robotacid\level\Room.cs" />
     <Compile Include="src\com\robotacid\level\Map.cs" />
     <Compile Include="src\com\robotacid\level\MapBitmap.cs" />
+    <Compile Include="src\com\robotacid\level\Content.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
