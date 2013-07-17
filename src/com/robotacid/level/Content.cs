@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using App;
 using redroguecs;
 
 ///import com.robotacid.ai.BalrogBrain;
@@ -20,7 +21,7 @@ using redroguecs;
 ///import com.robotacid.gfx.Renderer;
 ///import com.robotacid.phys.Collider;
 ///import com.robotacid.util.array.randomiseArray;
-///import com.robotacid.util.XorRandom;
+using com.robotacid.util;
 ///import flash.display.DisplayObject;
 ///import flash.geom.Rectangle;
 
@@ -435,18 +436,20 @@ namespace com.robotacid.level {
 			}
 			return obj;
 		}
+#endif
 		
 		/* Return the pre-generated seed value for creating a given level */
-		public function getSeed(level:int, type:int):uint{
+		public uint getSeed(int level, int type) {
 			if(type == Map.MAIN_DUNGEON){
-				while(level >= gameState.seedsByLevel.length) gameState.seedsByLevel.push(XorRandom.seedFromDate());
+				while(level >= gameState.seedsByLevel.Count) gameState.seedsByLevel.Add(XorRandom.seedFromDate());
 				return gameState.seedsByLevel[level];
 			} else if(type == Map.ITEM_DUNGEON){
-				return gameState.itemDungeonContent.seed;
+///				return gameState.itemDungeonContent.seed;
 			}
-			return Math.random() * uint.MAX_VALUE;
+			return (uint)(Rand.Math_random() * uint.MaxValue);
 		}
 		
+#if false
 		/* Creates content for the enchanted item side-level */
 		public function setItemDungeonContent(item:Item, level:int, type:int):void{
 			// existing portals in a previous pocket dungeon need to be removed or reset

@@ -1,3 +1,8 @@
+2013-07-18  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	MapTileConverter.csを追加
+
 2013-07-16  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

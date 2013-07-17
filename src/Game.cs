@@ -37,11 +37,8 @@ using com.robotacid.level;
 ///import com.robotacid.ui.Key;
 ///import com.robotacid.ui.Transition;
 ///import com.robotacid.util.clips.stopClips;
-///import com.robotacid.util.FPS;
 using com.robotacid.util;
 ///import com.robotacid.util.misc.onScreen;
-///import com.robotacid.util.LZW;
-///import com.robotacid.util.RLE;
 ///import flash.display.Bitmap;
 ///import flash.display.BitmapData;
 ///import flash.display.Graphics;
@@ -96,7 +93,7 @@ namespace redroguecs {
 ///		public var minion:Minion;
 ///		public var balrog:Balrog;
 		public Library library;
-///		public var map:Map;
+		public Map map;
 		public Content content;
 ///		public var entrance:Portal;
 ///		public var world:CollisionWorld;
@@ -226,10 +223,12 @@ namespace redroguecs {
 			LightMap.game = this;
 			Effect.game = this;
 			FX.game = this;
+#endif
 			Map.game = this;
 			Content.game = this;
-			Brain.game = this;
+///			Brain.game = this;
 			MapBitmap.game = this;
+#if false
 			Lightning.game = this;
 			ItemMovieClip.game = this;
 			SceneManager.game = this;
@@ -268,7 +267,7 @@ namespace redroguecs {
 ///			if(UserData.gameState.dead) UserData.initGameState();
 			
 			// misc static settings
-///			Map.seed = UserData.settings.randomSeed;
+			Map.seed = UserData.settings.randomSeed;
 ///			Menu.moveDelay = UserData.settings.menuMoveSpeed;
 			dogmaticMode = UserData.settings.dogmaticMode;
 			multiplayer = UserData.settings.multiplayer;
@@ -353,9 +352,9 @@ namespace redroguecs {
 		private void init() {
 			
 			// settings seed has priority over gameState
-///			var randomSeed:uint = Map.seed ? Map.seed : uint(UserData.gameState.randomSeed);
+			uint randomSeed = (Map.seed != 0) ? Map.seed : (uint)(UserData.gameState.randomSeed);
 			
-///			Map.random = new XorRandom(randomSeed);
+			Map.random = new XorRandom(randomSeed);
 			
 			// GAME GFX AND UI INIT
 			if(state == GAME || state == MENU){
@@ -501,6 +500,7 @@ namespace redroguecs {
 				fpsText.y = HEIGHT - (fpsText.height + 2);
 				fpsText.visible = gameMenu.debugOption.active;
 				addChild(fpsText);
+#endif
 				
 				// STATES
 				
@@ -511,6 +511,7 @@ namespace redroguecs {
 				
 				// LISTS
 				
+#if false
 				entities = new Vector.<Entity>();
 				items = [];
 				effects = new Vector.<Effect>();
@@ -554,18 +555,18 @@ namespace redroguecs {
 			// fire up listeners
 			addListeners();
 			
-#if false
 			if(TEST_BED_INIT) initTestBed();
 			else if(ONLINE && !UserData.settings.playerConsumed){
 				if(state == GAME || state == MENU){
 					if(firstInstructions){
-						transition.init(initInstructions, null, "", true);
+///						transition.init(initInstructions, null, "", true);
 					} else {
-						transition.init(Dialog.emptyCallback, null, levelName, true);
+///						transition.init(Dialog.emptyCallback, null, levelName, true);
 					}
 				}
 			}
 			
+#if false
 			// this is a hack to force clicking on the game when the browser first pulls in the swf
 			if(forceFocus){
 				onFocusLost();
@@ -611,19 +612,20 @@ namespace redroguecs {
 			if(editor) editor.deactivate();
 			init();
 		}
+#endif
 		
 		/* Enters the testing area */
-		public function launchTestBed():void{
+		public void launchTestBed() {
 			UserData.disabled = true;
 			setLevel( -1, Map.MAIN_DUNGEON);
-			gameMenu.editorList.setLight(gameMenu.editorList.lightList.selection);
+///			gameMenu.editorList.setLight(gameMenu.editorList.lightList.selection);
 		}
 		
 		/* Enters the the testing area from game init */
-		public function initTestBed():void{
-			gameMenu.editorList.renderAIPathsList.selection = EditorMenuList.ON;
-			gameMenu.editorList.renderAIGraphList.selection = EditorMenuList.ON;
-			gameMenu.editorList.renderCollisionList.selection = EditorMenuList.ON;
+		public void initTestBed() {
+///			gameMenu.editorList.renderAIPathsList.selection = EditorMenuList.ON;
+///			gameMenu.editorList.renderAIGraphList.selection = EditorMenuList.ON;
+///			gameMenu.editorList.renderCollisionList.selection = EditorMenuList.ON;
 			launchTestBed();
 		}
 		
@@ -631,7 +633,8 @@ namespace redroguecs {
 		 *
 		 * This method tries to wipe all layers whilst leaving the gaming architecture in place
 		 */
-		public function setLevel(level:int, type:int):void{
+		public void setLevel(int level, int type) {
+#if false
 			var enchantment:XML, effect:Effect;
 			
 			editor.deactivate();
@@ -657,7 +660,7 @@ namespace redroguecs {
 				UserData.push();
 			}
 			
-			var mapNameStr:String = Map.getName(level, type);
+			string mapNameStr = Map.getName(level, type);
 			if(type == Map.MAIN_DUNGEON) mapNameStr += ":" + level;
 			
 			// elements to update:
@@ -671,7 +674,7 @@ namespace redroguecs {
 			if(level > deepestLevelReached && deepestLevelReached < MAX_LEVEL) deepestLevelReached = level;
 			
 			// dismiss entity effects - leave player and minion alone
-			var i:int;
+			int i;
 			for(i = 0; i < entities.length; i++){
 				if(entities[i] is Character && entities[i] != minion && (entities[i] as Character).effects){
 					(entities[i] as Character).removeEffects();
@@ -747,8 +750,8 @@ namespace redroguecs {
 			
 			if(!player){
 				var playerMc:MovieClip = new RogueMC();
-				var startX:Number = (map.start.x + 0.5) * SCALE;
-				var startY:Number = (map.start.y + 1) * SCALE;
+				double startX = (map.start.x + 0.5d) * SCALE;
+				double startY = (map.start.y + 1d) * SCALE;
 				player = new Player(playerMc, startX, startY);
 				var minionMc:MovieClip = new SkeletonMC();
 				minion = new Minion(minionMc, startX, startY, Character.SKELETON);
@@ -946,8 +949,8 @@ namespace redroguecs {
 			changeMusic();
 			
 			trackEvent("set level", mapNameStr);
-		}
 #endif
+		}
 		
 		private void addListeners() {
 ///			stage.addEventListener(Event.DEACTIVATE, onFocusLost);

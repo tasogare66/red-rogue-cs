@@ -13,8 +13,7 @@ namespace com.robotacid.util {
 	 */
 	public class XorRandom {
 		
-		static readonly uint uint_MAX_VALUE = 4294967295;
-		public static readonly double MAX_RATIO = 1d / (double)uint_MAX_VALUE;
+		public static readonly double MAX_RATIO = 1d / (double)uint.MaxValue;
 		public uint r;
 		public uint seed;
 		
@@ -36,7 +35,7 @@ namespace com.robotacid.util {
 			uint r = (uint)unchecked( System.DateTime.Now.Ticks.GetHashCode() );
 			// once in a blue moon we can roll a zero from sourcing the seed from the Date
 			//if(r == 0) r = Math.random() * MAX_RATIO;
-			if(r == 0) r = (uint)(Rand.Math_random() * uint_MAX_VALUE);
+			if(r == 0) r = (uint)(Rand.Math_random() * uint.MaxValue);
 			return r;
 		}
 		

@@ -113,13 +113,13 @@ namespace com.robotacid.level {
 		/* Adobe don't provide this as a constant for some reason */
 		public static readonly int MAXIMUM_PIXELS = 16769025;
 		
-#if false
-		public function MapBitmap(level:int, type:int, zone:int = 0) {
+		public MapBitmap(int level, int type, int zone = 0) {
 			
 			this.level = level;
 			this.type = type;
 			this.zone = zone;
 			
+#if false
 			// directions has to be reinitialised to ensure seed consistency
 			directions = [new Pixel(0, -1), new Pixel(1, 0), new Pixel(0, 1), new Pixel( -1, 0)];
 			
@@ -165,8 +165,10 @@ namespace com.robotacid.level {
 				
 			}
 			createSurfaces();
+#endif
 		}
 		
+#if false
 		/* Creates the base map for the overworld area */
 		public function createOverworld():BitmapData{
 			var overworldMap:BitmapData = new BitmapData(OVERWORLD_WIDTH, OVERWORLD_HEIGHT, true, WALL);
@@ -1098,12 +1100,12 @@ namespace com.robotacid.level {
 				}
 			}
 		}
+#endif
 		
 		/* is this pixel sitting on the edge of the map? it will likely cause me trouble if it is... */
-		public static function onEdge(pixel:Pixel, width:int, height:int):Boolean{
+		public static bool onEdge(Pixel pixel, int width, int height) {
 			return pixel.x<= 0 || pixel.x >= width-1 || pixel.y <= 0 || pixel.y >= height-1;
 		}
-#endif
 	}
 
 }

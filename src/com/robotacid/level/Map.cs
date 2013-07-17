@@ -65,7 +65,7 @@ namespace com.robotacid.level {
 		public int completionTotal;
 		public bool cleared;
 		
-///		public var bitmap:MapBitmap;
+		public MapBitmap bitmap;
 		
 ///		private var i:int, j:int;
 		
@@ -111,9 +111,9 @@ namespace com.robotacid.level {
 			this.level = level;
 			this.type = type;
 			completionCount = completionTotal = 0;
-#if false
-			layers = [];
-			portals = new Vector.<Pixel>();
+
+///			layers = [];
+			portals = new List<Pixel>();
 			if(type == MAIN_DUNGEON || type == ITEM_DUNGEON){
 				zone = game.content.getLevelZone(level);
 			} else {
@@ -124,30 +124,31 @@ namespace com.robotacid.level {
 				if(level > 0){
 					random.r = game.content.getSeed(level, type);
 					bitmap = new MapBitmap(level, type, zone);
-					width = bitmap.width;
-					height = bitmap.height;
-					convertMapBitmap(bitmap.bitmapData);
+///					width = bitmap.width;
+///					height = bitmap.height;
+///					convertMapBitmap(bitmap.bitmapData);
 				} else {
 					createTestBed();
 				}
 				
 			} else if(type == ITEM_DUNGEON){
 				random.r = game.content.getSeed(level, type);
-				int sideDungeonSize = 1 + (Number(level) / 10);
+				int sideDungeonSize = (int)(1 + ((float)(level) / 10.0f));
 				bitmap = new MapBitmap(sideDungeonSize, type, zone);
-				width = bitmap.width;
-				height = bitmap.height;
-				convertMapBitmap(bitmap.bitmapData);
+///				width = bitmap.width;
+///				height = bitmap.height;
+///				convertMapBitmap(bitmap.bitmapData);
 				
 			} else if(type == AREA){
 				if(level == OVERWORLD){
-					createOverworld();
+///					createOverworld();
 				} else if(level == UNDERWORLD){
-					createUnderworld();
+///					createUnderworld();
 				}
 			}
-			createBackground();
+///			createBackground();
 			
+#if false
 			// remove gate pixels over exits for ai graph
 			if(stairsDown && bitmap.bitmapData.getPixel32(stairsDown.x, stairsDown.y) == MapBitmap.GATE) bitmap.bitmapData.setPixel32(stairsDown.x, stairsDown.y, MapBitmap.EMPTY);
 			if(stairsUp && bitmap.bitmapData.getPixel32(stairsUp.x, stairsUp.y) == MapBitmap.GATE) bitmap.bitmapData.setPixel32(stairsUp.x, stairsUp.y, MapBitmap.EMPTY);
@@ -161,16 +162,16 @@ namespace com.robotacid.level {
 			
 		}
 		
-#if false
 		/* Create the test bed
 		 *
 		 * This is a debugging playground for testing new content and trying to lure consistent
 		 * bugs out into the open (which is nigh on fucking impossible in a procedural world)
 		 */
-		public function createTestBed():void{
+		public void createTestBed() {
 			
 			bitmap = new MapBitmap(0, AREA);
 			
+#if false
 			width = bitmap.width;
 			height = bitmap.height;
 			// background
@@ -189,8 +190,10 @@ namespace com.robotacid.level {
 			// set zone for background debugging
 			zone = (game.gameMenu.editorList.dungeonLevelList.selection) / LEVELS_PER_ZONE;
 			if(zone >= 4) zone = CHAOS;
+#endif
 		}
 		
+#if false
 		/* This is where we convert our map template into a level proper made of tileIds and other
 		 * information
 		 */
@@ -1322,8 +1325,8 @@ namespace com.robotacid.level {
 		}
 		
 		/* Used to clear out a section of a grid or flood it with a particular tile type */
-		public function fill(index:int, x:int, y:int, width:int, height:int, grid:Array):void{
-			var r:int, c:int;
+		public void fill(int index, int x, int y, int width, int height, grid:Array) {
+			int r, int c;
 			for(r = y; r < y + height; r++){
 				for(c = x; c < x + width; c++){
 					grid[r][c] = index;
@@ -1505,8 +1508,8 @@ namespace com.robotacid.level {
 			//game.addChild(bitmap);
 		}
 		
-		public static function createGrid(base:*, width:int, height:int):Array {
-			var r:int, c:int, a:Array = [];
+		public static function createGrid(base:*, int width, int height):Array {
+			int r, int c, a:Array = [];
 			for(r = 0; r < height; r++) {
 				a.push([]);
 				for(c = 0; c < width; c++) {

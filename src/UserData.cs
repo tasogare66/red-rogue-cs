@@ -1,29 +1,33 @@
 using System.Collections.Generic;
 
+///import com.robotacid.engine.Item;
+///import com.robotacid.engine.Player;
+///import com.robotacid.engine.Portal;
+///import com.robotacid.gfx.Renderer;
+///import com.robotacid.level.Content;
+///import com.robotacid.level.Map;
+///import com.robotacid.sound.SoundManager;
+///import com.robotacid.ui.Key;
+///import com.robotacid.ui.menu.Menu;
+///import com.robotacid.ui.menu.MenuOption;
+///import com.robotacid.ui.menu.QuestMenuOption;
+using com.robotacid.util;
+///import com.robotacid.ui.FileManager;
+///import flash.net.navigateToURL;
+///import flash.net.URLRequest;
+///import flash.ui.Keyboard;
+///import flash.net.SharedObject;
+///import flash.utils.ByteArray;
+
 namespace redroguecs {
-#if false
-	import com.robotacid.engine.Item;
-	import com.robotacid.engine.Player;
-	import com.robotacid.engine.Portal;
-	import com.robotacid.gfx.Renderer;
-	import com.robotacid.level.Content;
-	import com.robotacid.level.Map;
-	import com.robotacid.sound.SoundManager;
-	import com.robotacid.ui.Key;
-	import com.robotacid.ui.menu.Menu;
-	import com.robotacid.ui.menu.MenuOption;
-	import com.robotacid.ui.menu.QuestMenuOption;
-	import com.robotacid.util.XorRandom;
-	import com.robotacid.ui.FileManager;
-	import flash.net.navigateToURL;
-	import flash.net.URLRequest;
-	import flash.ui.Keyboard;
-	import flash.net.SharedObject;
-	import flash.utils.ByteArray;
-#endif
 
 	public class GameState {
+		public uint randomSeed = XorRandom.seedFromDate();
+		public bool husband = false;
+
 		// Content.cs
+		public List<uint> seedsByLevel;
+
 		public List<int> levelZones;
 	}
 
@@ -263,7 +267,7 @@ namespace redroguecs {
 			public bool autoSortInventory = true;
 ///			menuMoveSpeed:4,
 ///			consoleScrollDir: -1,
-///			randomSeed:0,
+			public uint randomSeed = 0;
 			public bool dogmaticMode = false;
 			public bool multiplayer = false;
 			public int livesAvailable = 3;

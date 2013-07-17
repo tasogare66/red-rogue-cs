@@ -68,6 +68,7 @@
     <Compile Include="src\com\robotacid\level\Map.cs" />
     <Compile Include="src\com\robotacid\level\MapBitmap.cs" />
     <Compile Include="src\com\robotacid\level\Content.cs" />
+    <Compile Include="src\com\robotacid\engine\MapTileConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -89,6 +90,7 @@
     <Folder Include="src\com\robotacid\ui\" />
     <Folder Include="src\com\robotacid\ui\menu\" />
     <Folder Include="src\com\robotacid\geom\" />
+    <Folder Include="src\com\robotacid\engine\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />
