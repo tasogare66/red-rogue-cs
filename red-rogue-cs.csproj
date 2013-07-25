@@ -69,6 +69,11 @@
     <Compile Include="src\com\robotacid\level\MapBitmap.cs" />
     <Compile Include="src\com\robotacid\level\Content.cs" />
     <Compile Include="src\com\robotacid\engine\MapTileConverter.cs" />
+    <Compile Include="src\com\robotacid\engine\Entity.cs" />
+    <Compile Include="src\com\robotacid\phys\Collider.cs" />
+    <Compile Include="src\cs\Rectangle.cs" />
+    <Compile Include="src\com\robotacid\phys\CollisionWorld.cs" />
+    <Compile Include="src\com\robotacid\engine\ColliderEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -91,6 +96,7 @@
     <Folder Include="src\com\robotacid\ui\menu\" />
     <Folder Include="src\com\robotacid\geom\" />
     <Folder Include="src\com\robotacid\engine\" />
+    <Folder Include="src\com\robotacid\phys\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

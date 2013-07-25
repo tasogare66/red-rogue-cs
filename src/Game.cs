@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sce.PlayStation.Core;
 using Sce.PlayStation.Core.Graphics;
@@ -11,7 +12,7 @@ using Sce.PlayStation.Core.Graphics;
 using com.robotacid.level;
 ///import com.robotacid.level.MapBitmap;
 ///import com.robotacid.level.Map;
-///import com.robotacid.engine.*;
+using com.robotacid.engine;
 ///import com.robotacid.geom.Pixel;
 ///import com.robotacid.geom.Trig;
 ///import com.robotacid.gfx.*;
@@ -139,7 +140,7 @@ namespace redroguecs {
 ///		public var info:TextField;
 		
 		// lists
-///		public var entities:Vector.<Entity>;
+		public List<Entity> entities;
 ///		public var items:Array;
 ///		public var torches:Vector.<Torch>;
 ///		public var effects:Vector.<Effect>;
@@ -175,8 +176,8 @@ namespace redroguecs {
 		
 		// CONSTANTS
 		
-		public static readonly double SCALE = 16d;
-		public static readonly double INV_SCALE = 1.0d / 16d;
+		public const double SCALE = 16d;
+		public const double INV_SCALE = 1.0d / 16d;
 		
 		// states
 		public static readonly int GAME = 0;
@@ -218,8 +219,8 @@ namespace redroguecs {
 
 			game = this;
 			UserData.game = this;
-#if false			
 			Entity.game = this;
+#if false			
 			LightMap.game = this;
 			Effect.game = this;
 			FX.game = this;
@@ -511,8 +512,8 @@ namespace redroguecs {
 				
 				// LISTS
 				
+				entities = new List<Entity>();
 #if false
-				entities = new Vector.<Entity>();
 				items = [];
 				effects = new Vector.<Effect>();
 				torches = new Vector.<Torch>();
