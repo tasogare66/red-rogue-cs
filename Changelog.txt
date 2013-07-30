@@ -1,3 +1,8 @@
+2013-07-31  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	TextBoxなど追加、licence.txt追加
+
 2013-07-26  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

@@ -11,7 +11,7 @@ using redroguecs;
 ///import com.robotacid.engine.FadeLight;
 ///import com.robotacid.engine.Gate;
 ///import com.robotacid.engine.Item;
-///import com.robotacid.engine.MapTileConverter;
+using com.robotacid.engine;
 ///import com.robotacid.engine.MapTileManager;
 ///import com.robotacid.engine.Player;
 ///import com.robotacid.engine.Portal;
@@ -69,7 +69,7 @@ namespace com.robotacid.level {
 		
 ///		private var i:int, j:int;
 		
-///		public var layers:Array;
+		public List<List<List<int?>>> layers;
 		
 		// types
 		public const int MAIN_DUNGEON = 0;
@@ -112,7 +112,7 @@ namespace com.robotacid.level {
 			this.type = type;
 			completionCount = completionTotal = 0;
 
-///			layers = [];
+			layers = new List<List<List<int?>>>();
 			portals = new List<Pixel>();
 			if(type == MAIN_DUNGEON || type == ITEM_DUNGEON){
 				zone = game.content.getLevelZone(level);
@@ -146,7 +146,7 @@ namespace com.robotacid.level {
 ///					createUnderworld();
 				}
 			}
-///			createBackground();
+			createBackground();
 			
 #if false
 			// remove gate pixels over exits for ai graph
@@ -171,26 +171,24 @@ namespace com.robotacid.level {
 			
 			bitmap = new MapBitmap(0, AREA);
 			
-#if false
-			width = bitmap.width;
-			height = bitmap.height;
+///			width = bitmap.width;
+///			height = bitmap.height;
 			// background
-			layers.push(createGrid(null, width, height));
+			layers.Add(createGrid(null, width, height));
 			// blocks - start with a full grid
-			layers.push(createGrid(MapTileConverter.WALL, width, height));
+			layers.Add(createGrid(MapTileConverter.WALL, width, height));
 			// game objects
-			layers.push(createGrid(null, width, height));
+			layers.Add(createGrid(null, width, height));
 			
 			fill(0, 1, 1, width-2, height-2, layers[BLOCKS]);
 			
 			// access point
-			setPortal((width * 0.5) >> 0, height - 2, <portal type={Portal.PORTAL} targetLevel={-1} targetType={Map.MAIN_DUNGEON} />);
+///			setPortal((width * 0.5) >> 0, height - 2, <portal type={Portal.PORTAL} targetLevel={-1} targetType={Map.MAIN_DUNGEON} />);
 			start = portals[0];
 			
 			// set zone for background debugging
-			zone = (game.gameMenu.editorList.dungeonLevelList.selection) / LEVELS_PER_ZONE;
+///			zone = (game.gameMenu.editorList.dungeonLevelList.selection) / LEVELS_PER_ZONE;
 			if(zone >= 4) zone = CHAOS;
-#endif
 		}
 		
 #if false
@@ -1323,10 +1321,11 @@ namespace com.robotacid.level {
 			layers[ENTITIES][y][x] = trap;
 			completionCount++;
 		}
+#endif
 		
 		/* Used to clear out a section of a grid or flood it with a particular tile type */
-		public void fill(int index, int x, int y, int width, int height, grid:Array) {
-			int r, int c;
+		public void fill(int index, int x, int y, int width, int height, List<List<int?>> grid) {
+			int r, c;
 			for(r = y; r < y + height; r++){
 				for(c = x; c < x + width; c++){
 					grid[r][c] = index;
@@ -1335,7 +1334,8 @@ namespace com.robotacid.level {
 		}
 		
 		/* Creates a random parallax background */
-		public function createBackground():void{
+		public void createBackground(){
+#if false
 			var bitmapData:BitmapData;
 			if(type == AREA){
 				var bitmap:Bitmap;
@@ -1368,8 +1368,10 @@ namespace com.robotacid.level {
 				if(zone == SEWERS) createPipes(bitmapData);
 			}
 			renderer.backgroundBitmapData = bitmapData;
+#endif
 		}
 		
+#if false
 		/* Create a maze of pipes on the background tiled image */
 		public function createPipes(bitmapData:BitmapData):void{
 			var pipeMap:Vector.<Vector.<int>> = new Vector.<Vector.<int>>();
@@ -1507,18 +1509,19 @@ namespace com.robotacid.level {
 			//var bitmap:Bitmap = new Bitmap(bitmapData);
 			//game.addChild(bitmap);
 		}
+#endif
 		
-		public static function createGrid(base:*, int width, int height):Array {
-			int r, int c, a:Array = [];
+		public static List<List<int?>> createGrid(int? inbase, int width, int height) {
+			int r, c;
+			List<List<int?>> a = new List<List<int?>>();
 			for(r = 0; r < height; r++) {
-				a.push([]);
+				a.Add( new List<int?>() );
 				for(c = 0; c < width; c++) {
-					a[r].push(base);
+					a[r].Add(inbase);
 				}
 			}
 			return a;
 		}
-#endif
 		
 		/* is this pixel sitting on the edge of the map? it will likely cause me trouble if it is... */
 		public static bool onEdge(Pixel pixel, int width, int height) {

@@ -285,14 +285,16 @@ namespace com.robotacid.engine {
 			this.renderer = renderer;
 			
 		}
+#endif
 		
-		public static var preProcessed:Boolean = false;
+		public static bool preProcessed = false;
 		
 		/* Do any preprocessing needed on the BlitSprites */
-		public static function init():void{
+		public static void init(){
 			if(preProcessed) return;
-			var i:int;
-			var point:Point = new Point();
+#if false
+			int i;
+			Point point = new Point();
 			for(i = 15; i <= 41; i++){
 				ID_TO_GRAPHIC[i].resize(0, 0, 16, 16);
 				(ID_TO_GRAPHIC[i].data as BitmapData).applyFilter(ID_TO_GRAPHIC[i].data, ID_TO_GRAPHIC[i].rect, point, new DropShadowFilter(1, 90, 0, 0.3, 0, 3, 1));
@@ -335,9 +337,11 @@ namespace com.robotacid.engine {
 				mc.gotoAndStop(i + 1);
 				ID_TO_GRAPHIC[GROWTH1 + i] = new BlitSprite(mc);
 			}
+#endif
 			preProcessed = true;
 		}
 		
+#if false
 		/* Converts a number in one of the map layers into a MapObject or a MovieClip or Sprite
 		 *
 		 * When createTile finds an array of information to convert it will return a stacked array

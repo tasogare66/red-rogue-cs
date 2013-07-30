@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using App;
+
 ///import com.robotacid.engine.Item;
 ///import com.robotacid.engine.Player;
 ///import com.robotacid.engine.Portal;
@@ -7,7 +9,7 @@ using System.Collections.Generic;
 ///import com.robotacid.level.Content;
 ///import com.robotacid.level.Map;
 ///import com.robotacid.sound.SoundManager;
-///import com.robotacid.ui.Key;
+using com.robotacid.ui;
 ///import com.robotacid.ui.menu.Menu;
 ///import com.robotacid.ui.menu.MenuOption;
 ///import com.robotacid.ui.menu.QuestMenuOption;
@@ -261,7 +263,7 @@ namespace redroguecs {
 		}
 		
 		public class Settings {
-///			customKeys:[Key.W, Key.S, Key.A, Key.D, Keyboard.SPACE, Key.F, Key.Z, Key.X, Key.C, Key.V, Key.M, Key.NUMBER_1, Key.NUMBER_2, Key.NUMBER_3, Key.NUMBER_4],
+			public int[] customKeys = {Key.W, Key.S, Key.A, Key.D, (int)Keyboard.SPACE, Key.F, Key.Z, Key.X, Key.C, Key.V, Key.M, Key.NUMBER_1, Key.NUMBER_2, Key.NUMBER_3, Key.NUMBER_4};
 			public bool sfx = true;
 			public bool music = true;
 			public bool autoSortInventory = true;

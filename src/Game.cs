@@ -26,14 +26,14 @@ using com.robotacid.engine;
 ///import com.robotacid.ui.menu.DeathMenu;
 ///import com.robotacid.ui.menu.EditorMenuList;
 ///import com.robotacid.ui.menu.GameMenu;
-///import com.robotacid.ui.menu.Menu;
+using com.robotacid.ui.menu;
 ///import com.robotacid.ui.menu.MenuCarousel;
 ///import com.robotacid.ui.menu.PlayerConsumedMenu;
 ///import com.robotacid.ui.menu.QuestMenuList;
 ///import com.robotacid.ui.menu.QuestMenuOption;
 ///import com.robotacid.ui.menu.TitleMenu;
 ///import com.robotacid.ui.ProgressBar;
-///import com.robotacid.ui.TextBox;
+using com.robotacid.ui;
 ///import com.robotacid.ui.MiniMap;
 ///import com.robotacid.ui.Key;
 ///import com.robotacid.ui.Transition;
@@ -132,7 +132,7 @@ namespace redroguecs {
 ///		public var livesPanel:LivesPanel;
 ///		public var keyItemStatus:Sprite;
 ///		public var fpsText:TextBox;
-///		public var titlePressMenuText:TextBox
+		public TextBox titlePressMenuText;
 ///		public var instructions:MovieClip;
 ///		public var instructionsHolder:Sprite;
 		
@@ -295,11 +295,13 @@ namespace redroguecs {
 			Effect.BANNED_RANDOM_ENCHANTMENTS[Effect.CHAOS] = true;
 			Effect.BANNED_RANDOM_ENCHANTMENTS[Effect.IDENTIFY] = true;
 			Effect.BANNED_RANDOM_ENCHANTMENTS[Effect.HOLY] = true;
+#endif
 			
 			TextBox.init();
 			MapTileConverter.init();
-			ProgressBar.initGlowTable();
+///			ProgressBar.initGlowTable();
 			
+#if false
 			sleep = new Sleep(this, renderer);
 			
 			transition = new Transition();
@@ -330,16 +332,17 @@ namespace redroguecs {
 			//removeEventListener(Event.ADDED_TO_STAGE, init);
 			// MEMO:多分 addedToStage を取り除くべき
 			
-#if false
 			// KEYS INIT
 			if(!Key.initialized){
-				Key.init(stage);
-				Key.custom = UserData.settings.customKeys.slice();
+///				Key.init(stage);
+				//Key.custom = UserData.settings.customKeys.slice();
+				Key.custom = UserData.settings.customKeys;
 				Key.hotKeyTotal = 10;
 			}
 			
 			// GRAPHICS INIT
 			
+#if false
 			scaleX = scaleY = 2;
 			stage.quality = StageQuality.LOW;
 #endif
@@ -437,15 +440,13 @@ namespace redroguecs {
 				
 			} else if(state == TITLE){
 				addChild(getTitleGfx());
-#if false
 				titlePressMenuText = new TextBox(Menu.LIST_WIDTH * 2, 12, Dialog.ROLL_OUT_COL);
 				titlePressMenuText.align = "center";
-				titlePressMenuText.text = "press menu key (" + Key.keyString(Key.custom[MENU_KEY]) + ") to begin";
-				if(!UserData.settings.ascended) titlePressMenuText.bitmapData.colorTransform(titlePressMenuText.bitmapData.rect, RED_COL);
-				titlePressMenuText.x = (WIDTH * 0.5 - titlePressMenuText.width * 0.5) >> 0;
-				titlePressMenuText.y = (HEIGHT * 0.5) + 10;
-				addChild(titlePressMenuText);
-#endif
+				titlePressMenuText.text = "press menu key (" + Key.keyString((uint)Key.custom[MENU_KEY]) + ") to begin";
+///				if(!UserData.settings.ascended) titlePressMenuText.bitmapData.colorTransform(titlePressMenuText.bitmapData.rect, RED_COL);
+///				titlePressMenuText.x = (WIDTH * 0.5 - titlePressMenuText.width * 0.5) >> 0;
+///				titlePressMenuText.y = (HEIGHT * 0.5) + 10;
+///				addChild(titlePressMenuText);
 			}
 			
 #if false

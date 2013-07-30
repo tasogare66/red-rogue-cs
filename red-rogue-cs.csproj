@@ -74,6 +74,12 @@
     <Compile Include="src\cs\Rectangle.cs" />
     <Compile Include="src\com\robotacid\phys\CollisionWorld.cs" />
     <Compile Include="src\com\robotacid\engine\ColliderEntity.cs" />
+    <Compile Include="src\com\robotacid\engine\Portal.cs" />
+    <Compile Include="src\com\robotacid\ui\TextBox.cs" />
+    <Compile Include="src\com\robotacid\ui\TextBoxMarquee.cs" />
+    <Compile Include="src\com\robotacid\ui\Dialog.cs" />
+    <Compile Include="src\com\robotacid\ui\Key.cs" />
+    <Compile Include="src\cs\Keyboard.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
