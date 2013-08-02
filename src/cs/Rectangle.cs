@@ -1,7 +1,8 @@
 using Sce.PlayStation.Core;
 
-namespace App
+namespace flash.geom
 {
+	//FIXM:置き換える	
 	public class Rectangle {
 		public Sce.PlayStation.Core.Rectangle rectangle;
 

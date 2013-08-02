@@ -76,7 +76,8 @@ namespace Sce.PlayStation.Framework
 			foreach( Actor actorChild in children)
 			{
 				actorChild.Render();	
-			}		}
+			}
+		}
 		
 		virtual public void addChild(Actor actor)
 		{

@@ -80,6 +80,7 @@
     <Compile Include="src\com\robotacid\ui\Dialog.cs" />
     <Compile Include="src\com\robotacid\ui\Key.cs" />
     <Compile Include="src\cs\Keyboard.cs" />
+    <Compile Include="src\flash\Bitmap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -103,6 +104,7 @@
     <Folder Include="src\com\robotacid\geom\" />
     <Folder Include="src\com\robotacid\engine\" />
     <Folder Include="src\com\robotacid\phys\" />
+    <Folder Include="src\flash\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />
@@ -115,5 +117,7 @@
     <Content Include="src\assets\banner.png" />
     <Content Include="src\assets\banner-complete.png" />
     <Content Include="src\assets\banner-fail.png" />
+    <Content Include="src\assets\unified_texture.png" />
+    <Content Include="src\assets\unified_texture.xml" />
   </ItemGroup>
 </Project>

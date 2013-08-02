@@ -165,7 +165,7 @@ namespace Tutorial.Utility
 		
 		
 		
-		public SpriteBuffer (GraphicsContext graphics,int maxNumOfSprite)
+		public SpriteBuffer (GraphicsContext graphics, FrameBuffer frameBuffer, int maxNumOfSprite)
 		{
 			this.m_graphics = graphics;
 			
@@ -175,8 +175,10 @@ namespace Tutorial.Utility
 			}
 			
 			screenMatrix = new Matrix4(
-				 2.0f/m_graphics.Screen.Rectangle.Width,	0.0f,	0.0f, 0.0f,
-				 0.0f, -2.0f/m_graphics.Screen.Rectangle.Height,	0.0f, 0.0f,
+//				 2.0f/m_graphics.Screen.Rectangle.Width,	0.0f,	0.0f, 0.0f,
+//				 0.0f, -2.0f/m_graphics.Screen.Rectangle.Height,	0.0f, 0.0f,
+				 2.0f/frameBuffer.Rectangle.Width,	0.0f,	0.0f, 0.0f,
+				 0.0f, -2.0f/frameBuffer.Rectangle.Height,	0.0f, 0.0f,
 				 0.0f,	0.0f, 1.0f, 0.0f,
 				-1.0f, 1.0f, 0.0f, 1.0f
 			);			

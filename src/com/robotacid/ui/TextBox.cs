@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 
-using App;
-
-///	import flash.display.Bitmap;
+using flash.display;
 ///	import flash.display.BitmapData;
 ///	import flash.geom.ColorTransform;
 ///	import flash.geom.Point;
-///	import flash.geom.Rectangle;
+using flash.geom;
 ///	import flash.utils.getQualifiedClassName;
 
 namespace com.robotacid.ui {
@@ -16,8 +14,7 @@ namespace com.robotacid.ui {
 	 *
 	 * @author Aaron Steed, robotacid.com
 	 */
-///	public class TextBox extends Bitmap{
-	public class TextBox {
+	public class TextBox : Bitmap {
 		
 #if false
 		[Embed(source = "../../../assets/font/a.png")] public static var A:Class;
@@ -110,7 +107,7 @@ namespace com.robotacid.ui {
 		
 		public const int BORDER_ALLOWANCE = 2;
 		
-		public TextBox(double _width, double _height, uint backgroundCol = 0xFF111111, uint borderCol = 0xFF999999) {
+		public TextBox(double _width, double _height, uint backgroundCol = 0xFF111111, uint borderCol = 0xFF999999) : base((int)_width, (int)_height) {
 			this._width = (int)_width;
 			this._height = (int)_height;
 			this.backgroundCol = backgroundCol;

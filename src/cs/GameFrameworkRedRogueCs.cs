@@ -63,11 +63,11 @@ namespace redroguecs
 			
 			rectScreen = graphics.GetViewport();
 
-			spriteBuffer=new SpriteBuffer(graphics, sizeofSprite);
+			spriteBuffer=new SpriteBuffer(graphics, graphics.Screen, sizeofSprite);
 			
 			//@j 一体化テクスチャの処理。
-//			dicTextureInfo = UnifiedTexture.GetDictionaryTextureInfo("/Application/image/unified_texture.xml");
-//			textureUnified=new Texture2D("/Application/image/unified_texture.png", false);
+			dicTextureInfo = UnifiedTexture.GetDictionaryTextureInfo("/Application/src/assets/unified_texture.xml");
+			textureUnified=new Texture2D("/Application/src/assets/unified_texture.png", false);
 			
 			//@j アクターツリーの初期化。
 			//@e Initialization of actor tree
@@ -120,6 +120,10 @@ namespace redroguecs
 		
 		public override void Render()
 		{
+			graphics.SetFrameBuffer(null);
+			FrameBuffer currentBuffer = graphics.GetFrameBuffer() ;
+
+			graphics.SetViewport(0, 0, currentBuffer.Width, currentBuffer.Height);
 			graphics.SetClearColor(0.5f, 0.5f, 1.0f, 0.0f);
 			graphics.Clear();
 			
@@ -138,7 +142,7 @@ namespace redroguecs
 			//graphics.Disable(EnableMode.DepthTest);
 			//graphics.SetBlendFunc( BlendFuncMode.Add, BlendFuncFactor.SrcAlpha, BlendFuncFactor.One ) ;
 			
-			graphics.SetTexture(0, this.textureUnified);
+			graphics.SetTexture(0, this.textureUnified);	//FIXME:確認	
 			
 			spriteBuffer.Clear();
 			Root.Render();

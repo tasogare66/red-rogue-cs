@@ -444,9 +444,9 @@ namespace redroguecs {
 				titlePressMenuText.align = "center";
 				titlePressMenuText.text = "press menu key (" + Key.keyString((uint)Key.custom[MENU_KEY]) + ") to begin";
 ///				if(!UserData.settings.ascended) titlePressMenuText.bitmapData.colorTransform(titlePressMenuText.bitmapData.rect, RED_COL);
-///				titlePressMenuText.x = (WIDTH * 0.5 - titlePressMenuText.width * 0.5) >> 0;
-///				titlePressMenuText.y = (HEIGHT * 0.5) + 10;
-///				addChild(titlePressMenuText);
+				titlePressMenuText.x = (int)(WIDTH * 0.5 - titlePressMenuText.width * 0.5);
+				titlePressMenuText.y = (HEIGHT * 0.5) + 10;
+				addChild(titlePressMenuText);
 			}
 			
 #if false

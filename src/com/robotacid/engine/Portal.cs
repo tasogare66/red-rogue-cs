@@ -1,6 +1,4 @@
-﻿using App;
-
-///	import com.robotacid.ai.Brain;
+﻿///	import com.robotacid.ai.Brain;
 ///	import com.robotacid.level.Content;
 using com.robotacid.level;
 ///	import com.robotacid.engine.Entity;
@@ -14,7 +12,7 @@ using com.robotacid.level;
 ///	import flash.display.Shape;
 ///	import flash.geom.Matrix;
 ///	import flash.geom.Point;
-///	import flash.geom.Rectangle;
+using flash.geom;
 
 namespace com.robotacid.engine {
 	

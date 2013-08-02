@@ -1,3 +1,8 @@
+2013-08-02  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	TextBox対応の準備
+
 2013-07-31  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <info w="64" h="64" />
+  <textures>
+    <texture filename="font/PERCENT.png" x="0" y="0" w="9" h="7" />
+    <texture filename="font/AT.png" x="10" y="0" w="7" h="8" />
+    <texture filename="font/w.png" x="18" y="0" w="7" h="7" />
+    <texture filename="font/q.png" x="26" y="0" w="5" h="8" />
+    <texture filename="font/BACKSLASH.png" x="0" y="8" w="4" h="9" />
+    <texture filename="font/FOWARDSLASH.png" x="5" y="8" w="4" h="9" />
+    <texture filename="font/m.png" x="10" y="8" w="5" h="7" />
+    <texture filename="font/g.png" x="16" y="8" w="5" h="7" />
+    <texture filename="font/h.png" x="22" y="8" w="5" h="7" />
+    <texture filename="font/d.png" x="10" y="16" w="5" h="7" />
+    <texture filename="font/c.png" x="16" y="16" w="5" h="7" />
+    <texture filename="font/a.png" x="22" y="16" w="5" h="7" />
+    <texture filename="font/UNDERSCORE.png" x="0" y="18" w="5" h="7" />
+    <texture filename="font/PLUS.png" x="5" y="18" w="5" h="7" />
+    <texture filename="font/QUESTION.png" x="10" y="24" w="5" h="7" />
+    <texture filename="font/v.png" x="16" y="24" w="5" h="7" />
+    <texture filename="font/u.png" x="22" y="24" w="5" h="7" />
+    <texture filename="font/z.png" x="28" y="8" w="5" h="7" />
+    <texture filename="font/y.png" x="28" y="16" w="5" h="7" />
+    <texture filename="font/x.png" x="28" y="24" w="5" h="7" />
+    <texture filename="font/4.png" x="32" y="0" w="5" h="7" />
+    <texture filename="font/n.png" x="34" y="8" w="5" h="7" />
+    <texture filename="font/o.png" x="34" y="16" w="5" h="7" />
+    <texture filename="font/ASTERISK.png" x="34" y="24" w="5" h="7" />
+    <texture filename="font/b.png" x="38" y="0" w="4" h="7" />
+    <texture filename="font/r.png" x="40" y="8" w="4" h="7" />
+    <texture filename="font/p.png" x="40" y="16" w="4" h="7" />
+    <texture filename="font/j.png" x="40" y="24" w="4" h="7" />
+    <texture filename="font/k.png" x="43" y="0" w="4" h="7" />
+    <texture filename="font/6.png" x="45" y="8" w="4" h="7" />
+    <texture filename="font/5.png" x="45" y="16" w="4" h="7" />
+    <texture filename="font/3.png" x="45" y="24" w="4" h="7" />
+    <texture filename="font/7.png" x="48" y="0" w="4" h="7" />
+    <texture filename="font/8.png" x="50" y="8" w="4" h="7" />
+    <texture filename="font/9.png" x="50" y="16" w="4" h="7" />
+    <texture filename="font/2.png" x="50" y="24" w="4" h="7" />
+    <texture filename="font/0.png" x="53" y="0" w="4" h="7" />
+    <texture filename="font/LEFT_BRACKET.png" x="55" y="8" w="3" h="9" />
+    <texture filename="font/RIGHT_BRACKET.png" x="55" y="18" w="3" h="9" />
+    <texture filename="font/HYPHEN.png" x="0" y="26" w="5" h="5" />
+    <texture filename="font/EQUALS.png" x="5" y="26" w="4" h="6" />
+    <texture filename="font/1.png" x="58" y="0" w="3" h="7" />
+    <texture filename="font/s.png" x="58" y="8" w="3" h="7" />
+    <texture filename="font/t.png" x="58" y="16" w="3" h="7" />
+    <texture filename="font/f.png" x="58" y="24" w="3" h="7" />
+    <texture filename="font/i.png" x="55" y="28" w="3" h="7" />
+    <texture filename="font/e.png" x="0" y="32" w="3" h="7" />
+    <texture filename="font/l.png" x="4" y="32" w="3" h="7" />
+    <texture filename="font/COMMA.png" x="62" y="0" w="2" h="9" />
+    <texture filename="font/SEMICOLON.png" x="62" y="10" w="2" h="9" />
+    <texture filename="font/QUOTES.png" x="8" y="32" w="3" h="4" />
+    <texture filename="font/STOP.png" x="12" y="32" w="1" h="7" />
+    <texture filename="font/EXCLAMATION.png" x="14" y="32" w="1" h="7" />
+    <texture filename="font/COLON.png" x="16" y="32" w="1" h="7" />
+    <texture filename="font/APOSTROPHE.png" x="18" y="32" w="1" h="4" />
+  </textures>
+</root>
