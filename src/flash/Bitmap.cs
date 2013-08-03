@@ -1,4 +1,4 @@
-//using System;
+using System;
 //using System.Collections.Generic;
 
 //using Sce.PlayStation.Core;
@@ -8,11 +8,15 @@ using Tutorial.Utility;
 
 using redroguecs;
 
+using flash.display;
+
 
 namespace flash.display
 {
-	public class Bitmap : Actor
+	public class Bitmap : DisplayObject
 	{
+		public BitmapData bitmapData { get; set; }
+
 		protected GameFrameworkRedRogueCs gs;
 
 		public SimpleSprite sprite;
@@ -39,6 +43,36 @@ namespace flash.display
 
 		public SpriteBuffer spriteBuffer;
 		public SpriteB spriteB0, spriteB1, spriteB2;
+
+		public Bitmap(BitmapData bitmapData = null, String pixelSnapping = "auto", Boolean smoothing = false)
+		{
+			this.bitmapData = bitmapData;
+
+			//FIXME:		
+			int _width = 200;
+			int _height = 12;
+			// framebuffer
+			frameBuffer = new FrameBuffer();
+			renderTexture = new Texture2D(_width, _height, false, PixelFormat.Rgba, PixelBufferOption.Renderable);
+			depthBuffer = new DepthBuffer(_width, _height, PixelFormat.Depth16);
+			frameBuffer.SetColorTarget(renderTexture, 0);
+			frameBuffer.SetDepthTarget(depthBuffer);
+
+			this.gs = GameFrameworkRedRogueCs.Instance;
+			sprite = new SimpleSprite(this.gs.Graphics, renderTexture);
+			sprite.Scale.Y = -1.0f;	//FIXME:vflip
+
+			//test2
+			spriteBuffer= new SpriteBuffer(this.gs.Graphics, frameBuffer, 1024);
+			this.spriteB0 = new SpriteB(gs.dicTextureInfo["font/4.png"]);
+			this.spriteB1 = new SpriteB(gs.dicTextureInfo["font/5.png"]);
+			this.spriteB1.Position.X = 10;
+			this.spriteB2 = new SpriteB(gs.dicTextureInfo["font/a.png"]);
+			this.spriteB2.Position.X = 20;
+			spriteBuffer.Add( spriteB1 );
+			spriteBuffer.Add( spriteB0 );
+			spriteBuffer.Add( spriteB2 );
+		}
 
 		public Bitmap(int _width, int _height)
 		{

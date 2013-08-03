@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using flash.display;
@@ -6,6 +7,7 @@ using flash.display;
 ///	import flash.geom.Point;
 using flash.geom;
 ///	import flash.utils.getQualifiedClassName;
+using flash;
 
 namespace com.robotacid.ui {
 	
@@ -72,15 +74,15 @@ namespace com.robotacid.ui {
 		[Embed(source = "../../../assets/font/PERCENT.png")] public static var PERCENT:Class;
 		[Embed(source = "../../../assets/font/ASTERISK.png")] public static var ASTERISK:Class;
 		[Embed(source = "../../../assets/font/QUOTES.png")] public static var QUOTES:Class;
-		
-		public static const CHARACTER_CLASSES:Array = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9, APOSTROPHE, BACKSLASH, COLON, COMMA, EQUALS, EXCLAMATION, FORWARDSLASH, HYPHEN, LEFT_BRACKET, PLUS, QUESTION, RIGHT_BRACKET, SEMICOLON, STOP, AT, UNDERSCORE, PERCENT, ASTERISK, QUOTES];
-		
-		public static var characters:Array;
-		
-		public var lines:Array;						// a 2D array of all the bitmapDatas used, in lines
-		public var lineWidths:Array;				// the width of each line of text (used for alignment)
-		public var textLines:Array;					// a 2D array of the characters used (used for fetching offset and kerning data)
 #endif
+		
+///		public static const CHARACTER_CLASSES:Array = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9, APOSTROPHE, BACKSLASH, COLON, COMMA, EQUALS, EXCLAMATION, FORWARDSLASH, HYPHEN, LEFT_BRACKET, PLUS, QUESTION, RIGHT_BRACKET, SEMICOLON, STOP, AT, UNDERSCORE, PERCENT, ASTERISK, QUOTES];
+		
+		public static Dictionary<String, BitmapData> characters;
+		
+		public Array < Array<BitmapData> > lines;	// a 2D array of all the bitmapDatas used, in lines
+		public Array<int> lineWidths;				// the width of each line of text (used for alignment)
+		public Array< Array<String> > textLines;	// a 2D array of the characters used (used for fetching offset and kerning data)
 		public int tracking;						// tracking: the spacing between letters
 		public string align;						// align: whether the text is centered, left or right aligned
 		public string alignVert;					// align_vert: vertical alignment of the text
@@ -93,21 +95,22 @@ namespace com.robotacid.ui {
 		public int leading;
 		
 		protected uint _colorInt;					// the actual uint of the color being applied
-///		protected var _color:ColorTransform;		// a color transform object that is applied to the whole TextBox
+		protected ColorTransform _color;			// a color transform object that is applied to the whole TextBox
 		
 		protected int whitespaceLength;				// the distance a whitespace takes up
 		
 		protected int _width;
 		protected int _height;
-		protected string _text;
+		protected String _text;
 		protected Rectangle borderRect;
 		protected Rectangle boundsRect;
 		protected Rectangle maskRect;
-		protected List<TextBoxMarquee> marqueeLines;
+		protected Vector<TextBoxMarquee> marqueeLines;
 		
 		public const int BORDER_ALLOWANCE = 2;
 		
-		public TextBox(double _width, double _height, uint backgroundCol = 0xFF111111, uint borderCol = 0xFF999999) : base((int)_width, (int)_height) {
+		public TextBox(double _width, double _height, uint backgroundCol = 0xFF111111, uint borderCol = 0xFF999999)
+		: base(new BitmapData((int)_width, (int)_height, true, 0x0), "auto", false) {
 			this._width = (int)_width;
 			this._height = (int)_height;
 			this.backgroundCol = backgroundCol;
@@ -123,20 +126,20 @@ namespace com.robotacid.ui {
 			lineSpacing = 11;
 			_text = "";
 			
-///			lines = [];
+			lines = new Array < Array<BitmapData> >();
 			
 			borderRect = new Rectangle(1, 1, _width - 2, _height - 2);
 			boundsRect = new Rectangle(2, 2, _width - 4, _height - 4);
 			maskRect = new Rectangle(0, 0, 1, 1);
-///			super(new BitmapData(_width, _height, true, 0x0), "auto", false);
+			//super(new BitmapData(_width, _height, true, 0x0), "auto", false);
 			drawBorder();
 		}
 		
 		/* This must be called before any TextBox is created so the bitmaps can be extracted from the
 		 * imported assets */
 		public static void init(){
+			characters = new Dictionary<String, BitmapData>();
 #if false
-///			characters = [];
 			var textBitmap:Bitmap;
 			var className:String;
 			var characterName:String;
@@ -170,10 +173,8 @@ namespace com.robotacid.ui {
 			get {
 				return _colorInt;
 			}
-
 			set {
 				_colorInt = value;
-#if false
 				if(value == 0xFFFFFF) {
 					_color = null;
 				} else {
@@ -183,8 +184,7 @@ namespace com.robotacid.ui {
 						(value % 256) / 255
 					);
 				}
-				if(_color) transform.colorTransform = _color;
-#endif
+				if(_color != null) transform.colorTransform = _color;
 			}
 		}
 		
@@ -193,7 +193,7 @@ namespace com.robotacid.ui {
 			_height = height;
 			borderRect = new Rectangle(1, 1, _width - 2, _height - 2);
 			boundsRect = new Rectangle(2, 2, _width - 4, _height - 4);
-///			bitmapData = new BitmapData(width, height, true, 0x0);
+			bitmapData = new BitmapData(width, height, true, 0x0);
 			updateText();
 			draw();
 		}
@@ -204,29 +204,29 @@ namespace com.robotacid.ui {
 			// we create an array called lines that holds references to all of the
 			// bitmapDatas needed and structure it like the text
 			
-#if false
 			// the lines property is public so it can be used to ticker text
-			lines = [];
-			lineWidths = [];
-			textLines = [];
+			lines = new Array< Array<BitmapData> >();
+			lineWidths = new Array<int>();
+			textLines = new Array< Array<String> >();
 			
-			var currentLine:Array = [];
-			var currentTextLine:Array = [];
+			var currentLine = new Array<BitmapData>();
+			var currentTextLine = new Array<String>();	//FIXME:char?	
 			int wordBeginning = 0;
 			int currentLineWidth = 0;
 			int completeWordsWidth = 0;
 			int wordWidth = 0;
-			var newLine:Array = [];
-			var newTextLine:Array = [];
-			string c;
+			var newLine = new Array<BitmapData>();
+			var newTextLine = new Array<String>();
+			String c;
 			
-			if(!_text) _text = "";
+			if(_text == null) _text = "";
 			
-			string upperCaseText = _text.toUpperCase();
+			String upperCaseText = _text.ToUpper();
 			
-			for(int i = 0; i < upperCaseText.length; i++){
+			for(int i = 0; i < upperCaseText.Length; i++){
 				
-				c = upperCaseText.charAt(i);
+				//c = upperCaseText.charAt(i);
+				c = upperCaseText[i].ToString();
 				
 				// next we swap the special characters for descriptive strings
 				if(c == " ") c = "SPACE";
@@ -270,26 +270,27 @@ namespace com.robotacid.ui {
 					completeWordsWidth = 0;
 					wordBeginning = 0;
 					wordWidth = 0;
-					currentLine = [];
-					currentTextLine = [];
+					currentLine = new Array<BitmapData>();
+					currentTextLine = new Array<String>();
 					continue;
 				}
 				
 				// push a character into the array
-				if(characters[c]){
+				//if(characters[c] != null){
+				if( characters.ContainsKey(c) ){
 					// check we're in the middle of a word - spaces are null
-					if(currentLine.length > 0 && currentLine[currentLine.length -1]){
+					if(currentLine.length > 0 && currentLine[currentLine.length -1] != null){
 						currentLineWidth += tracking;
 						wordWidth += tracking;
 					}
-					wordWidth += characters[c].width
+					wordWidth += characters[c].width;
 					currentLineWidth += characters[c].width;
 					currentLine.push(characters[c]);
 					currentTextLine.push(c);
 				
 				// the character is a SPACE or unrecognised and will be treated as a SPACE
 				} else {
-					if(currentLine.length > 0 && currentLine[currentLine.length - 1]){
+					if(currentLine.length > 0 && currentLine[currentLine.length - 1] != null){
 						completeWordsWidth = currentLineWidth;
 					}
 					currentLineWidth += whitespaceLength;
@@ -305,11 +306,11 @@ namespace com.robotacid.ui {
 				if(currentLineWidth > _width - (BORDER_ALLOWANCE * 2) && wordWrap){
 					// in the case where the word is larger than the text field we take back the last character
 					// and jump to a new line with it
-					if(wordBeginning == 0 && currentLine[currentLine.length - 1]){
+					if(wordBeginning == 0 && currentLine[currentLine.length - 1] != null){
 						currentLineWidth -= tracking + currentLine[currentLine.length - 1].width;
 						// now we take back the offending last character
-						var lastBitmapData:BitmapData = currentLine.pop();
-						var lastChar:String = currentTextLine.pop();
+						BitmapData lastBitmapData = currentLine.pop();
+						String lastChar = currentTextLine.pop();
 						
 						lines.push(currentLine);
 						textLines.push(currentTextLine);
@@ -319,13 +320,17 @@ namespace com.robotacid.ui {
 						completeWordsWidth = 0;
 						wordBeginning = 0;
 						wordWidth = lastBitmapData.width;
-						currentLine = [lastBitmapData];
-						currentTextLine = [lastChar];
+						//currentLine = [lastBitmapData];
+						currentLine = new Array<BitmapData>();
+						currentLine.push(lastBitmapData);
+						//currentTextLine = [lastChar];
+						currentTextLine = new Array<String>();
+						currentTextLine.push(lastChar);
 						continue;
 					}
 					
-					newLine = currentLine.splice(wordBeginning, currentLine.length - wordBeginning);
-					newTextLine = currentTextLine.splice(wordBeginning, currentTextLine.length - wordBeginning);
+					newLine = currentLine.splice(wordBeginning, (uint)(currentLine.length - wordBeginning));
+					newTextLine = currentTextLine.splice(wordBeginning, (uint)(currentTextLine.length - wordBeginning));
 					lines.push(currentLine);
 					textLines.push(currentTextLine);
 					lineWidths.push(completeWordsWidth);
@@ -343,14 +348,13 @@ namespace com.robotacid.ui {
 			
 			// set up marquees (if active)
 			if(!wordWrap && marquee){
-				marqueeLines = new Vector.<TextBoxMarquee>();
-				var offset:int;
-				for(i = 0; i < lineWidths.length; i++){
+				marqueeLines = new Vector<TextBoxMarquee>();
+				int offset;
+				for(int i = 0; i < lineWidths.length; i++){
 					offset = (_width - BORDER_ALLOWANCE * 2) - lineWidths[i];
 					marqueeLines[i] = offset < 0 ? new TextBoxMarquee(offset) : null;
 				}
 			}
-#endif
 		}
 		
 		/* Render */
@@ -358,47 +362,46 @@ namespace com.robotacid.ui {
 			
 			drawBorder();
 			
-#if false
-			var i:int, j:int;
-			var point:Point = new Point();
-			var x:int;
-			var y:int = BORDER_ALLOWANCE;
-			var alignX:int;
-			var alignY:int;
-			var char:BitmapData;
-			var offset:Point;
-			var wordBeginning:int = 0;
-			var linesHeight:int = lineSpacing * lines.length;
+			int i, j;
+			Point point = new Point();
+			int x;
+			int y = BORDER_ALLOWANCE;
+			int alignX = 0;
+			int alignY = 0;
+			BitmapData _char;
+			//Point offset;
+			int wordBeginning = 0;
+			int linesHeight = lineSpacing * lines.length;
 			
 			for(i = 0; i < lines.length; i++, point.y += lineSpacing){
 				x = BORDER_ALLOWANCE;
 				
 				if(marquee){
-					if(marqueeLines[i]) x += marqueeLines[i].offset;
+					if(marqueeLines[i] != null) x += marqueeLines[i].offset;
 				}
 				
 				wordBeginning = 0;
 				for(j = 0; j < lines[i].length; j++){
-					char = lines[i][j];
+					_char = lines[i][j];
 					
 					// alignment to bitmap
 					if(align == "left"){
 						alignX = 0;
 					} else if(align == "center"){
-						alignX = _width * 0.5 - (lineWidths[i] * 0.5 + BORDER_ALLOWANCE);
+						alignX = (int)(_width * 0.5 - (lineWidths[i] * 0.5 + BORDER_ALLOWANCE));
 					} else if(align == "right"){
-						alignX = _width - lineWidths[i];
+						alignX = (int)(_width - lineWidths[i]);
 					}
 					if(alignVert == "top"){
 						alignY = 0;
 					} else if(alignVert == "center"){
-						alignY = _height * 0.5 - linesHeight * 0.5;
+						alignY = (int)(_height * 0.5 - linesHeight * 0.5);
 					} else if(alignVert == "bottom"){
 						alignY = _height - linesHeight;
 					}
 					
 					// print to bitmapdata
-					if(char){
+					if(_char != null){
 						if(j > wordBeginning){
 							x += tracking;
 						}
@@ -408,21 +411,21 @@ namespace com.robotacid.ui {
 						if(
 							point.x < boundsRect.x ||
 							point.y < boundsRect.y ||
-							point.x + char.rect.width >= boundsRect.x + boundsRect.width ||
-							point.y + char.rect.height >= boundsRect.y + boundsRect.height
+							point.x + _char.rect.width >= boundsRect.x + boundsRect.width ||
+							point.y + _char.rect.height >= boundsRect.y + boundsRect.height
 						){
 							// are they even in the bounds rect?
 							if(
-								point.x + char.rect.width > boundsRect.x &&
+								point.x + _char.rect.width > boundsRect.x &&
 								boundsRect.x + boundsRect.width > point.x &&
-								point.y + char.rect.height > boundsRect.y &&
+								point.y + _char.rect.height > boundsRect.y &&
 								boundsRect.y + boundsRect.height > point.y
 							){
 								// going to make a glib assumption that the TextBox won't be smaller than a single character
 								maskRect.x = point.x >= boundsRect.x ? 0 : point.x - boundsRect.x;
 								maskRect.y = point.y >= boundsRect.y ? 0 : point.y - boundsRect.y;
-								maskRect.width = point.x + char.rect.width <= boundsRect.x + boundsRect.width ? char.rect.width : (boundsRect.x + boundsRect.width) - point.x;
-								maskRect.height = point.y + char.rect.height <= boundsRect.y + boundsRect.height ? char.rect.height : (boundsRect.y + boundsRect.height) - point.y;
+								maskRect.width = point.x + _char.rect.width <= boundsRect.x + boundsRect.width ? _char.rect.width : (boundsRect.x + boundsRect.width) - point.x;
+								maskRect.height = point.y + _char.rect.height <= boundsRect.y + boundsRect.height ? _char.rect.height : (boundsRect.y + boundsRect.height) - point.y;
 								if(point.x < boundsRect.x){
 									maskRect.x = boundsRect.x - point.x;
 									point.x = boundsRect.x;
@@ -431,12 +434,12 @@ namespace com.robotacid.ui {
 									maskRect.y = boundsRect.y - point.y;
 									point.y = boundsRect.y;
 								}
-								bitmapData.copyPixels(char, maskRect, point, null, null, true);
+								bitmapData.copyPixels(_char, maskRect, point, null, null, true);
 							}
 						} else {
-							bitmapData.copyPixels(char, char.rect, point, null, null, true);
+							bitmapData.copyPixels(_char, _char.rect, point, null, null, true);
 						}
-						x += char.width;
+						x += _char.width;
 					} else {
 						x += whitespaceLength;
 						wordBeginning = j + 1;
@@ -445,55 +448,53 @@ namespace com.robotacid.ui {
 				y += lineSpacing;
 			}
 			
-			if(_color) transform.colorTransform = _color;
-#endif
+			if(_color != null) transform.colorTransform = _color;
 		}
 		
-#if false
 		/* Get a list of rectangles describing character positions for performing transforms */
-		public function getCharRects():Vector.<Rectangle>{
+		public Vector<Rectangle> getCharRects(){
 			
-			var rects:Vector.<Rectangle> = new Vector.<Rectangle>();
-			var rect:Rectangle = new Rectangle();
-			var i:int, j:int;
-			var x:int;
-			var y:int = BORDER_ALLOWANCE;
-			var alignX:int;
-			var alignY:int;
-			var char:BitmapData;
-			var offset:Point;
-			var wordBeginning:int = 0;
-			var linesHeight:int = lineSpacing * lines.length;
+			Vector<Rectangle> rects = new Vector<Rectangle>();
+			Rectangle rect = new Rectangle();
+			int i, j;
+			int x;
+			int y = BORDER_ALLOWANCE;
+			int alignX = 0;
+			int alignY = 0;
+			BitmapData _char;
+			//Point offset;
+			int wordBeginning = 0;
+			int linesHeight = lineSpacing * lines.length;
 			
 			for(i = 0; i < lines.length; i++, rect.y += lineSpacing){
 				x = BORDER_ALLOWANCE;
 				
 				if(marquee){
-					if(marqueeLines[i]) x += marqueeLines[i].offset;
+					if(marqueeLines[i] != null) x += marqueeLines[i].offset;
 				}
 				
 				wordBeginning = 0;
 				for(j = 0; j < lines[i].length; j++){
-					char = lines[i][j];
+					_char = lines[i][j];
 					
 					// alignment to bitmap
 					if(align == "left"){
 						alignX = 0;
 					} else if(align == "center"){
-						alignX = _width * 0.5 - (lineWidths[i] * 0.5 + BORDER_ALLOWANCE);
+						alignX = (int)(_width * 0.5 - (lineWidths[i] * 0.5 + BORDER_ALLOWANCE));
 					} else if(align == "right"){
-						alignX = _width - lineWidths[i];
+						alignX = (int)(_width - lineWidths[i]);
 					}
 					if(alignVert == "top"){
 						alignY = 0;
 					} else if(alignVert == "center"){
-						alignY = _height * 0.5 - linesHeight * 0.5;
+						alignY = (int)(_height * 0.5 - linesHeight * 0.5);
 					} else if(alignVert == "bottom"){
 						alignY = _height - linesHeight;
 					}
 					
 					// print to bitmapdata
-					if(char){
+					if(_char != null){
 						if(j > wordBeginning){
 							x += tracking;
 						}
@@ -503,21 +504,21 @@ namespace com.robotacid.ui {
 						if(
 							rect.x < boundsRect.x ||
 							rect.y < boundsRect.y ||
-							rect.x + char.rect.width >= boundsRect.x + boundsRect.width ||
-							rect.y + char.rect.height >= boundsRect.y + boundsRect.height
+							rect.x + _char.rect.width >= boundsRect.x + boundsRect.width ||
+							rect.y + _char.rect.height >= boundsRect.y + boundsRect.height
 						){
 							// are they even in the bounds rect?
 							if(
-								rect.x + char.rect.width > boundsRect.x &&
+								rect.x + _char.rect.width > boundsRect.x &&
 								boundsRect.x + boundsRect.width > rect.x &&
-								rect.y + char.rect.height > boundsRect.y &&
+								rect.y + _char.rect.height > boundsRect.y &&
 								boundsRect.y + boundsRect.height > rect.y
 							){
 								// going to make a glib assumption that the TextBox won't be smaller than a single character
 								maskRect.x = rect.x >= boundsRect.x ? 0 : rect.x - boundsRect.x;
 								maskRect.y = rect.y >= boundsRect.y ? 0 : rect.y - boundsRect.y;
-								maskRect.width = rect.x + char.rect.width <= boundsRect.x + boundsRect.width ? char.rect.width : (boundsRect.x + boundsRect.width) - rect.x;
-								maskRect.height = rect.y + char.rect.height <= boundsRect.y + boundsRect.height ? char.rect.height : (boundsRect.y + boundsRect.height) - rect.y;
+								maskRect.width = rect.x + _char.rect.width <= boundsRect.x + boundsRect.width ? _char.rect.width : (boundsRect.x + boundsRect.width) - rect.x;
+								maskRect.height = rect.y + _char.rect.height <= boundsRect.y + boundsRect.height ? _char.rect.height : (boundsRect.y + boundsRect.height) - rect.y;
 								if(rect.x < boundsRect.x){
 									maskRect.x = boundsRect.x - rect.x;
 									rect.x = boundsRect.x;
@@ -529,11 +530,11 @@ namespace com.robotacid.ui {
 								rects.push(maskRect.clone());
 							}
 						} else {
-							rect.width = char.width;
-							rect.height = char.height;
+							rect.width = _char.width;
+							rect.height = _char.height;
 							rects.push(rect.clone());
 						}
-						x += char.width;
+						x += _char.width;
 					} else {
 						x += whitespaceLength;
 						wordBeginning = j + 1;
@@ -546,26 +547,27 @@ namespace com.robotacid.ui {
 		}
 		
 		/* Move rectangles of pixels and applies colorTransforms, the transforms are applied sequentially */
-		public function applyTranformRects(sources:Vector.<Rectangle>, destinations:Vector.<Point>, colorTransforms:Vector.<ColorTransform> = null):void{
-			var source:Rectangle, destination:Point, colorTransform:ColorTransform;
-			var buffer:BitmapData = bitmapData.clone();
+		public void applyTranformRects(Vector<Rectangle> sources, Vector<Point> destinations, Vector<ColorTransform> colorTransforms = null){
+			Rectangle source;
+			Point destination;
+			ColorTransform colorTransform;
+			BitmapData buffer = bitmapData.clone();
 			drawBorder();
-			for(var i:int = 0; i < sources.length; i++){
+			for(int i = 0; i < sources.length; i++){
 				source = sources[i];
 				destination = destinations[i];
-				if(colorTransforms){
+				if(colorTransforms != null){
 					colorTransform = colorTransforms[i];
 					buffer.colorTransform(source, colorTransform);
 				}
 				bitmapData.copyPixels(buffer, source, destination, null, null, true);
 			}
 		}
-#endif
 		
 		/* Update lines that have been assigned TextBoxMarquees */
 		public void updateMarquee(){
 			TextBoxMarquee marquee;
-			for(int i = 0; i < marqueeLines.Count; i++){
+			for(int i = 0; i < marqueeLines.length; i++){
 				marquee = marqueeLines[i];
 				if(marquee != null) marquee.main();
 			}
@@ -575,26 +577,28 @@ namespace com.robotacid.ui {
 		/* Reset the offsets on the TextBoxMarquees */
 		public void resetMarquee(){
 			TextBoxMarquee marquee;
-			for(int i = 0; i < marqueeLines.Count; i++){
+			for(int i = 0; i < marqueeLines.length; i++){
 				marquee = marqueeLines[i];
 				if(marquee != null) marquee.offset = 0;
 			}
 			draw();
 		}
 		
-#if false
 		/* Applies a ColorTransform to a line of text */
-		public function setLineCol(n:int, col:ColorTransform):void{
-			var disableRect:Rectangle = new Rectangle(BORDER_ALLOWANCE, BORDER_ALLOWANCE + n * lineSpacing, _width - BORDER_ALLOWANCE * 2, lineSpacing - 1);
+		public void setLineCol(int n, ColorTransform col){
+			Rectangle disableRect = new Rectangle(BORDER_ALLOWANCE, BORDER_ALLOWANCE + n * lineSpacing, _width - BORDER_ALLOWANCE * 2, lineSpacing - 1);
 			bitmapData.colorTransform(disableRect, col);
 		}
-#endif
 		
 		public void drawBorder(){
-///			bitmapData.fillRect(bitmapData.rect, borderCol);
-///			bitmapData.fillRect(borderRect, backgroundCol);
+			bitmapData.fillRect(bitmapData.rect, borderCol);
+			bitmapData.fillRect(borderRect, backgroundCol);
 		}
 		
 	}
 
 }
+
+// Local Variables:
+// coding: utf-8
+// End:
