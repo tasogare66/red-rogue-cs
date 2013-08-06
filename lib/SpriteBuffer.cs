@@ -62,17 +62,38 @@ namespace Tutorial.Utility
 		
 		protected Vector4 color=Vector4.One;
 
-		float width,height;
+		float _width, _height;
 		
 		/// <summary>スプライトの幅。</summary>
 		public float Width 
 		{
-			get { return width * Scale.X;}
+			get { return _width * Scale.X;}
 		}
 		/// <summary>スプライトの高さ。</summary>
 		public float Height 
 		{
-			get { return height * Scale.Y;}
+			get { return _height * Scale.Y;}
+		}
+
+		// compatibility with BitmapData
+		public int width {
+			get { return (int)Width; }
+		}
+		public int height {
+			get { return (int)Height; }
+		}
+		flash.geom.Rectangle _rect = new flash.geom.Rectangle();
+		public flash.geom.Rectangle rect {
+			get {
+				this._rect.width = Width;
+				this._rect.height = Height;
+				return _rect;
+			}
+		}
+
+		public SpriteB clone()
+		{
+			return (SpriteB)this.MemberwiseClone();
 		}
 		
 		
@@ -121,8 +142,8 @@ namespace Tutorial.Utility
 			texcoords[6] = textureInfo.u1;	// right bottom u
 			texcoords[7] = textureInfo.v1;	// right bottom v
 			
-			this.width = textureInfo.w;
-			this.height = textureInfo.h;
+			this._width = textureInfo.w;
+			this._height = textureInfo.h;
 		}
 	
 		static public int CompareZDepthBackToFront(SpriteB sprite01, SpriteB sprite02)

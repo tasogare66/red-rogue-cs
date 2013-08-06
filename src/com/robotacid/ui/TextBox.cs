@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 
+using Tutorial.Utility;
+using redroguecs;
+
 using flash.display;
 ///	import flash.display.BitmapData;
 ///	import flash.geom.ColorTransform;
@@ -18,7 +21,7 @@ namespace com.robotacid.ui {
 	 */
 	public class TextBox : Bitmap {
 		
-#if false
+	#if false
 		[Embed(source = "../../../assets/font/a.png")] public static var A:Class;
 		[Embed(source = "../../../assets/font/b.png")] public static var B:Class;
 		[Embed(source = "../../../assets/font/c.png")] public static var C:Class;
@@ -74,13 +77,71 @@ namespace com.robotacid.ui {
 		[Embed(source = "../../../assets/font/PERCENT.png")] public static var PERCENT:Class;
 		[Embed(source = "../../../assets/font/ASTERISK.png")] public static var ASTERISK:Class;
 		[Embed(source = "../../../assets/font/QUOTES.png")] public static var QUOTES:Class;
-#endif
 		
-///		public static const CHARACTER_CLASSES:Array = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9, APOSTROPHE, BACKSLASH, COLON, COMMA, EQUALS, EXCLAMATION, FORWARDSLASH, HYPHEN, LEFT_BRACKET, PLUS, QUESTION, RIGHT_BRACKET, SEMICOLON, STOP, AT, UNDERSCORE, PERCENT, ASTERISK, QUOTES];
+		public static const CHARACTER_CLASSES:Array = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9, APOSTROPHE, BACKSLASH, COLON, COMMA, EQUALS, EXCLAMATION, FORWARDSLASH, HYPHEN, LEFT_BRACKET, PLUS, QUESTION, RIGHT_BRACKET, SEMICOLON, STOP, AT, UNDERSCORE, PERCENT, ASTERISK, QUOTES];
+	#else
+		static Dictionary<string, string> CHARACTER_CLASSES = new Dictionary<string, string>() {
+			{"A", "font/a.png"},
+			{"B", "font/b.png"},
+			{"C", "font/c.png"},
+			{"D", "font/d.png"},
+			{"E", "font/e.png"},
+			{"F", "font/f.png"},
+			{"G", "font/g.png"},
+			{"H", "font/h.png"},
+			{"I", "font/i.png"},
+			{"J", "font/j.png"},
+			{"K", "font/k.png"},
+			{"L", "font/l.png"},
+			{"M", "font/m.png"},
+			{"N", "font/n.png"},
+			{"O", "font/o.png"},
+			{"P", "font/p.png"},
+			{"Q", "font/q.png"},
+			{"R", "font/r.png"},
+			{"S", "font/s.png"},
+			{"T", "font/t.png"},
+			{"U", "font/u.png"},
+			{"V", "font/v.png"},
+			{"W", "font/w.png"},
+			{"X", "font/x.png"},
+			{"Y", "font/y.png"},
+			{"Z", "font/z.png"},
+			{"0", "font/0.png"},
+			{"1", "font/1.png"},
+			{"2", "font/2.png"},
+			{"3", "font/3.png"},
+			{"4", "font/4.png"},
+			{"5", "font/5.png"},
+			{"6", "font/6.png"},
+			{"7", "font/7.png"},
+			{"8", "font/8.png"},
+			{"9", "font/9.png"},
+			{"APOSTROPHE", "font/APOSTROPHE.png"},
+			{"BACKSLASH", "font/BACKSLASH.png"},
+			{"COLON", "font/COLON.png"},
+			{"COMMA", "font/COMMA.png"},
+			{"EQUALS", "font/EQUALS.png"},
+			{"EXCLAMATION", "font/EXCLAMATION.png"},
+			{"FORWARDSLASH", "font/FOWARDSLASH.png"},
+			{"HYPHEN", "font/HYPHEN.png"},
+			{"LEFT_BRACKET", "font/LEFT_BRACKET.png"},
+			{"PLUS", "font/PLUS.png"},
+			{"QUESTION", "font/QUESTION.png"},
+			{"RIGHT_BRACKET", "font/RIGHT_BRACKET.png"},
+			{"SEMICOLON", "font/SEMICOLON.png"},
+			{"STOP", "font/STOP.png"},
+			{"AT", "font/AT.png"},
+			{"UNDERSCORE", "font/UNDERSCORE.png"},
+			{"PERCENT", "font/PERCENT.png"},
+			{"ASTERISK", "font/ASTERISK.png"},
+			{"QUOTES", "font/QUOTES.png"},
+		};
+	#endif
 		
-		public static Dictionary<String, BitmapData> characters;
+		public static Dictionary<String, SpriteB> characters;
 		
-		public Array < Array<BitmapData> > lines;	// a 2D array of all the bitmapDatas used, in lines
+		public Array < Array<SpriteB> > lines;		// a 2D array of all the bitmapDatas used, in lines
 		public Array<int> lineWidths;				// the width of each line of text (used for alignment)
 		public Array< Array<String> > textLines;	// a 2D array of the characters used (used for fetching offset and kerning data)
 		public int tracking;						// tracking: the spacing between letters
@@ -126,7 +187,7 @@ namespace com.robotacid.ui {
 			lineSpacing = 11;
 			_text = "";
 			
-			lines = new Array < Array<BitmapData> >();
+			lines = new Array < Array<SpriteB> >();
 			
 			borderRect = new Rectangle(1, 1, _width - 2, _height - 2);
 			boundsRect = new Rectangle(2, 2, _width - 4, _height - 4);
@@ -138,7 +199,7 @@ namespace com.robotacid.ui {
 		/* This must be called before any TextBox is created so the bitmaps can be extracted from the
 		 * imported assets */
 		public static void init(){
-			characters = new Dictionary<String, BitmapData>();
+			characters = new Dictionary<String, SpriteB>();
 #if false
 			var textBitmap:Bitmap;
 			var className:String;
@@ -152,6 +213,13 @@ namespace com.robotacid.ui {
 				// taking a little of the edge off the whiteness of the text
 				textBitmap.bitmapData.colorTransform(textBitmap.bitmapData.rect, col);
 				characters[characterName] = textBitmap.bitmapData;
+			}
+#else
+			GameFrameworkRedRogueCs gs = GameFrameworkRedRogueCs.Instance;
+			foreach( KeyValuePair<string, string> pair in CHARACTER_CLASSES ){
+				string characterName = pair.Key;
+				//FIXME:colorTransform未対応	
+				characters[characterName] = new SpriteB( gs.dicTextureInfo[pair.Value] );
 			}
 #endif
 		}
@@ -205,17 +273,17 @@ namespace com.robotacid.ui {
 			// bitmapDatas needed and structure it like the text
 			
 			// the lines property is public so it can be used to ticker text
-			lines = new Array< Array<BitmapData> >();
+			lines = new Array< Array<SpriteB> >();
 			lineWidths = new Array<int>();
 			textLines = new Array< Array<String> >();
 			
-			var currentLine = new Array<BitmapData>();
-			var currentTextLine = new Array<String>();	//FIXME:char?	
+			var currentLine = new Array<SpriteB>();
+			var currentTextLine = new Array<String>();
 			int wordBeginning = 0;
 			int currentLineWidth = 0;
 			int completeWordsWidth = 0;
 			int wordWidth = 0;
-			var newLine = new Array<BitmapData>();
+			var newLine = new Array<SpriteB>();
 			var newTextLine = new Array<String>();
 			String c;
 			
@@ -270,7 +338,7 @@ namespace com.robotacid.ui {
 					completeWordsWidth = 0;
 					wordBeginning = 0;
 					wordWidth = 0;
-					currentLine = new Array<BitmapData>();
+					currentLine = new Array<SpriteB>();
 					currentTextLine = new Array<String>();
 					continue;
 				}
@@ -309,7 +377,7 @@ namespace com.robotacid.ui {
 					if(wordBeginning == 0 && currentLine[currentLine.length - 1] != null){
 						currentLineWidth -= tracking + currentLine[currentLine.length - 1].width;
 						// now we take back the offending last character
-						BitmapData lastBitmapData = currentLine.pop();
+						SpriteB lastBitmapData = currentLine.pop();
 						String lastChar = currentTextLine.pop();
 						
 						lines.push(currentLine);
@@ -321,7 +389,7 @@ namespace com.robotacid.ui {
 						wordBeginning = 0;
 						wordWidth = lastBitmapData.width;
 						//currentLine = [lastBitmapData];
-						currentLine = new Array<BitmapData>();
+						currentLine = new Array<SpriteB>();
 						currentLine.push(lastBitmapData);
 						//currentTextLine = [lastChar];
 						currentTextLine = new Array<String>();
@@ -368,7 +436,7 @@ namespace com.robotacid.ui {
 			int y = BORDER_ALLOWANCE;
 			int alignX = 0;
 			int alignY = 0;
-			BitmapData _char;
+			SpriteB _char;
 			//Point offset;
 			int wordBeginning = 0;
 			int linesHeight = lineSpacing * lines.length;
@@ -461,7 +529,7 @@ namespace com.robotacid.ui {
 			int y = BORDER_ALLOWANCE;
 			int alignX = 0;
 			int alignY = 0;
-			BitmapData _char;
+			SpriteB _char;
 			//Point offset;
 			int wordBeginning = 0;
 			int linesHeight = lineSpacing * lines.length;

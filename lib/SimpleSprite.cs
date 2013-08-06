@@ -176,6 +176,18 @@ namespace Tutorial.Utility
 			texcoords[6] = u1;	// right bottom u
 			texcoords[7] = v1;	// right bottom v
 		}
+
+		public void SetTextureVFlip()
+		{
+			// swap
+			float tmp = texcoords[1];
+			texcoords[1] = texcoords[3];
+			texcoords[3] = tmp;
+
+			tmp = texcoords[5];
+			texcoords[5] = texcoords[7];
+			texcoords[7] = tmp;
+		}
 		
 		
 		
@@ -248,6 +260,7 @@ namespace Tutorial.Utility
 		{
 			if( texture != null ){
 				texture.Dispose();
+				texture = null;
 			}
 		}
 	

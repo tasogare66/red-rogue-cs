@@ -1,6 +1,11 @@
 2013-08-04  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
+	TextBox対応
+
+2013-08-04  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
 	TextBox コンパイル通るように対応
 
 2013-08-02  tasogare66 <tasogare66@gmail.com>

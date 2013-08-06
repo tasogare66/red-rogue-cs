@@ -120,6 +120,11 @@ namespace redroguecs
 		
 		public override void Render()
 		{
+			// off screen描画
+			Root.RenderToOffScreen();
+
+			// --------------------
+
 			graphics.SetFrameBuffer(null);
 			FrameBuffer currentBuffer = graphics.GetFrameBuffer() ;
 

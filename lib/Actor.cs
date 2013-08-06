@@ -70,6 +70,15 @@ namespace Sce.PlayStation.Framework
 			}
 		}
 
+		/// <summary>off screen描画。</summary>
+		virtual public void RenderToOffScreen()
+		{
+			foreach( Actor actorChild in children)
+			{
+				actorChild.RenderToOffScreen();
+			}
+		}
+
 		/// <summary>描画。</summary>
 		virtual public void Render() 
 		{ 
