@@ -909,6 +909,7 @@ namespace com.robotacid.phys {
 				else if (n == WALL) s += "WALL|";
 				else if (n == CHARACTER) s += "CHARACTER|";
 			}
+			//return s.substr(0, s.length - 1);
 			return s.Substring(0, s.Length - 1);
 		}
 	}

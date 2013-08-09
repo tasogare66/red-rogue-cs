@@ -52,7 +52,7 @@ using com.robotacid.util;
 ///import flash.events.MouseEvent;
 ///import flash.external.ExternalInterface;
 ///import flash.geom.ColorTransform;
-///import flash.geom.Point;
+using flash.geom;
 ///import flash.geom.Rectangle;
 ///import flash.media.Sound;
 ///import flash.net.SharedObject;
@@ -61,6 +61,7 @@ using com.robotacid.util;
 ///import flash.ui.Mouse;
 ///import flash.utils.ByteArray;
 ///import flash.utils.getTimer;
+using flash;
 
 namespace redroguecs {
 	
@@ -140,7 +141,7 @@ namespace redroguecs {
 ///		public var info:TextField;
 		
 		// lists
-		public List<Entity> entities;
+		public Vector<Entity> entities;
 ///		public var items:Array;
 ///		public var torches:Vector.<Torch>;
 ///		public var effects:Vector.<Effect>;
@@ -172,7 +173,7 @@ namespace redroguecs {
 		
 		// temp variables
 		private int i;
-///		public static var point:Point = new Point();
+		public static Point point = new Point();
 		
 		// CONSTANTS
 		
@@ -513,7 +514,7 @@ namespace redroguecs {
 				
 				// LISTS
 				
-				entities = new List<Entity>();
+				entities = new Vector<Entity>();
 #if false
 				items = [];
 				effects = new Vector.<Effect>();
@@ -1138,18 +1139,18 @@ namespace redroguecs {
 #endif
 		}
 		
-#if false
 		/* Pause the game and make the inventory screen visible */
-		public function pauseGame():void{
+		public void pauseGame(){
 			if(state == GAME){
 				state = MENU;
-				menuCarousel.activate();
+///				menuCarousel.activate();
 			} else if(state == MENU){
 				state = GAME;
-				menuCarousel.deactivate();
+///				menuCarousel.deactivate();
 			}
 		}
 		
+#if false
 		/*
 		 * Creates a map of ints that represents properties of static blocks
 		 * Any block to interact with is generated on the fly using this 2D array to determine its

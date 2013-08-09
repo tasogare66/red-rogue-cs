@@ -27,12 +27,13 @@ namespace flash
 
         public int length {
             get { return Count; }
-//            set {
-//                if (value == 0)
-//                    Clear(); //?
-//                else
-//                    throw new NotImplementedException();
-//            }
+            set {
+                if( value == 0 ){
+					Clear();
+				} else {
+					App.Util.Assert(false);		//unsupported
+				}
+            }
         }
 
         public T pop() {

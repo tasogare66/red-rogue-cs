@@ -88,6 +88,11 @@
     <Compile Include="src\flash\Transform.cs" />
     <Compile Include="src\flash\Rectangle.cs" />
     <Compile Include="src\flash\Array.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\HotKeyMap.cs" />
+    <Compile Include="src\flash\XML.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\MenuInputList.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\MenuOptionStack.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\ToggleMenuOption.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

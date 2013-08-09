@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using flash;
+
 namespace com.robotacid.ui.menu {
 	
 	/**
@@ -13,36 +15,36 @@ namespace com.robotacid.ui.menu {
 		
 		/* This variable can be used to store all the references that lead to this MenuList
 		 * this is not a default owing to how cumbersome this could be to manage */
-		public List<MenuOption> pointers;
+		public Vector<MenuOption> pointers;
 		
-		public List<MenuOption> options;
+		public Vector<MenuOption> options;
 		public int selection;
 		public bool accessible;
 		
-		public MenuList(List<MenuOption> options = null) {
+		public MenuList(Vector<MenuOption> options = null) {
 			if( options != null ) this.options = options;
-			else this.options = new List<MenuOption>();
+			else this.options = new Vector<MenuOption>();
 			accessible = true;
 			selection = 0;
 		}
 		
-		public string optionsToString(string separator = "\n", List<string> hotKeyMapStrings = null) {
+		public string optionsToString(string separator = "\n", Vector<string> hotKeyMapStrings = null) {
 			string str = "";
 			MenuOption option;
-			for(int i = 0; i < options.Count; i++){
+			for(int i = 0; i < options.length; i++){
 				option = options[i];
 				str += option.hidden ? "" : option.name;
-				if( hotKeyMapStrings != null && i < hotKeyMapStrings.Count && hotKeyMapStrings[i] != "" ){
+				if( hotKeyMapStrings != null && i < hotKeyMapStrings.length && hotKeyMapStrings[i] != "" ){
 					str += " " + hotKeyMapStrings[i];
 				}
-				if(i < options.Count - 1) str += separator;
+				if(i < options.length - 1) str += separator;
 			}
 			return str;
 		}
 		
 		/* Change all options within to point to a given target */
 		public void changeTargets(MenuList target) {
-			for(int i = 0; i < options.Count; i++){
+			for(int i = 0; i < options.length; i++){
 				options[i].target = target;
 			}
 		}

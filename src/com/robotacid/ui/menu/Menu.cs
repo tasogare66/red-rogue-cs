@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using redroguecs;
 
@@ -21,6 +22,7 @@ using redroguecs;
 ///import flash.geom.Rectangle;
 ///import flash.text.TextLineMetrics;
 ///import flash.ui.Keyboard;
+using flash;
 
 namespace com.robotacid.ui.menu {
 	
@@ -71,22 +73,22 @@ namespace com.robotacid.ui.menu {
 		public int selection;
 		public bool hideChangeSelection;
 		
-		public List<MenuList> branch;
+		public Vector<MenuList> branch;
 		public string branchStringCurrentOption;
 		public string branchStringHistory;
 		public string branchStringSeparator = "/";
 		
-///		public var hotKeyMaps:Vector.<HotKeyMap>;
-///		public var hotKeyMapRecord:HotKeyMap;
+		public Vector<HotKeyMap> hotKeyMaps;
+		public HotKeyMap hotKeyMapRecord;
 ///		public var changeKeysOption:MenuOption;
 ///		public var hotKeyOption:MenuOption;
 ///		public var inputOption:MenuOption;
 		
-///		public var previousMenuList:MenuList;
-///		public var currentMenuList:MenuList;
-///		public var nextMenuList:MenuList;
+		public MenuList previousMenuList;
+		public MenuList currentMenuList;
+		public MenuList nextMenuList;
 		
-///		public static var keyChanger:MenuList;
+		public static MenuList keyChanger;
 		
 		// display area that the menu takes up
 		public double _width;
@@ -98,7 +100,7 @@ namespace com.robotacid.ui.menu {
 		public bool keyLock;
 		public static int moveDelay = 4;
 		
-///		private var dirStack:Vector.<int>;
+		private Vector<int> dirStack;
 		private int dir;
 		private int moveCount;
 		private int moveReset;
@@ -286,29 +288,32 @@ namespace com.robotacid.ui.menu {
 			
 			if(trunk) setTrunk(trunk);
 		}
+#endif
 		
 		/* Overridden to perform actions the menu selects */
-		public function executeSelection():void{
+		public void executeSelection(){
 			
 		}
 		
 		/* Overridden to change states of options as selections change */
-		public function changeSelection():void{
+		public void changeSelection(){
 			if(currentMenuList.options.length == 0) return;
-			var option:MenuOption = currentMenuList.options[selection];
+			MenuOption option = currentMenuList.options[selection];
+#if false
 			if(parent && option.help){
 				help.text = option.help;
 			}
+#endif
 		}
 		
 		/* The trunk is MenuList 0. All options and lists branch outwards like a tree
 		 * from this list. Calling this method also moves the menu to the trunk and
 		 * renders the current state
 		 */
-		public function setTrunk(menuList:MenuList):void{
+		public void setTrunk(MenuList menuList){
 			currentMenuList = menuList;
 			previousMenuList = null;
-			branch = new Vector.<MenuList>();
+			branch = new Vector<MenuList>();
 			branch.push(menuList);
 			branchStringHistory = "";
 			moveReset = moveDelay;
@@ -320,19 +325,20 @@ namespace com.robotacid.ui.menu {
 		/* Returns a string representation of the current menu history.
 		 * Use this to debug the menu and to quickly identify traversed menu paths
 		 */
-		public function branchString():String{
-			return branchStringHistory + (branchStringHistory.length > 0 ? branchStringSeparator : "") + branchStringCurrentOption;
+		public String branchString(){
+			return branchStringHistory + (branchStringHistory.Length > 0 ? branchStringSeparator : "") + branchStringCurrentOption;
 		}
 		
 		/* Sets the current MenuList selection, re-renders the menu and calls
 		 * changeSelection()
 		 */
-		public function select(n:int):void{
+		public void select(int n){
+#if false
 			selection = n;
 			currentMenuList.selection = n;
-			if(currentMenuList.options.length){
+			if(currentMenuList.options.length > 0){
 				branchStringCurrentOption = currentMenuList.options[n].name;
-				if(currentMenuList.options[n].target){
+				if(currentMenuList.options[n].target != null){
 					nextMenuList = currentMenuList.options[n].target;
 				} else {
 					nextMenuList = null;
@@ -342,23 +348,24 @@ namespace com.robotacid.ui.menu {
 			}
 			if(parent) renderMenu();
 			if(!hideChangeSelection) changeSelection();
+#endif
 		}
 		
 		/* Either walks forward to the MenuList pointed to by the current option
 		 * or when there is no MenuList pointed to, fires the executeSelection method and
 		 * jumps the menu back to the trunk.
 		 */
-		public function stepRight():void{
+		public void stepRight(){
 			if(
-				!(nextMenuList && !nextMenuList.accessible) && (
-					(hotKeyMapRecord && currentMenuList.options[selection].recordable) ||
-					(!hotKeyMapRecord && currentMenuList.options[selection].active)
+				!((nextMenuList != null) && !nextMenuList.accessible) && (
+					((hotKeyMapRecord != null) && currentMenuList.options[selection].recordable) ||
+					((hotKeyMapRecord == null) && currentMenuList.options[selection].active)
 				)
 			){
 				// walk forward
-				if(nextMenuList){
+				if(nextMenuList != null){
 					// recording?
-					if(hotKeyMapRecord){
+					if(hotKeyMapRecord != null){
 						hotKeyMapRecord.push(currentMenuList.options[currentMenuList.selection], currentMenuList.selection);
 					}
 					
@@ -368,7 +375,7 @@ namespace com.robotacid.ui.menu {
 						hotKeyMapRecord.init();
 					}
 					
-					branchStringHistory += (branchStringHistory.length > 0 ? branchStringSeparator : "") + currentMenuList.options[selection].name;
+					branchStringHistory += (branchStringHistory.Length > 0 ? branchStringSeparator : "") + currentMenuList.options[selection].name;
 					
 					branch.push(nextMenuList);
 					
@@ -383,7 +390,7 @@ namespace com.robotacid.ui.menu {
 					dirStack.length = 0;
 					// if the Menu is recording a path for a hot key, then we store that
 					// hot key here:
-					if(hotKeyMapRecord){
+					if(hotKeyMapRecord != null){
 						hotKeyMapRecord.push(currentMenuList.options[currentMenuList.selection], currentMenuList.selection);
 						hotKeyMaps[hotKeyMapRecord.key] = hotKeyMapRecord;
 						hotKeyMapRecord = null;
@@ -395,7 +402,7 @@ namespace com.robotacid.ui.menu {
 					} else {
 						executeSelection();
 						
-						var selectionStep:int = currentMenuList.options[currentMenuList.selection].selectionStep;
+						int selectionStep = currentMenuList.options[currentMenuList.selection].selectionStep;
 						if(selectionStep == MenuOption.TRUNK) setTrunk(branch[0]);
 						else {
 							if(selectionStep == MenuOption.EXIT_MENU){
@@ -406,14 +413,14 @@ namespace com.robotacid.ui.menu {
 							} else {
 								// inspect the branch list for empty menu lists that will crash the walk back
 								// upon finding one we drop out to the root menu
-								for(var i:int = branch.length - 1; i > -1; i--){
+								for(int i = branch.length - 1; i > -1; i--){
 									if(branch[i].options.length == 0){
 										setTrunk(branch[0]);
 										return;
 									}
 								}
 								// the step back and forth shakes out select events and updates the labels
-								while(selectionStep--){
+								while(selectionStep-- > 0){
 									stepLeft();
 								}
 								stepRight();
@@ -427,10 +434,10 @@ namespace com.robotacid.ui.menu {
 		/* Walk back to the previous MenuList. MenuLists and MenuOptions have no memory
 		 * of their forebears, so the branch history and previousMenuList is used
 		 */
-		public function stepLeft():void{
-			if(previousMenuList){
+		public void stepLeft(){
+			if(previousMenuList != null){
 				// are we recording?
-				if(hotKeyMapRecord){
+				if(hotKeyMapRecord != null){
 					hotKeyMapRecord.pop();
 					if(hotKeyMapRecord.length < 0){
 						hotKeyMapRecord = null;
@@ -438,7 +445,8 @@ namespace com.robotacid.ui.menu {
 				}
 				branch.pop();
 				if(branch.length > 1){
-					branchStringHistory = branchStringHistory.substr(0, branchStringHistory.lastIndexOf(branchStringSeparator));
+					//branchStringHistory = branchStringHistory.substr(0, branchStringHistory.lastIndexOf(branchStringSeparator));
+					branchStringHistory = branchStringHistory.Substring(0, branchStringHistory.LastIndexOf(branchStringSeparator));
 				} else {
 					branchStringHistory = "";
 				}
@@ -450,6 +458,7 @@ namespace com.robotacid.ui.menu {
 			}
 		}
 		
+#if false
 		/* This renders the current menu state, though it is better to use select()
 		 * as it will also update the branchString property and update
 		 * what MenuList leads from the currently selected MenuOption.
@@ -1003,12 +1012,14 @@ namespace com.robotacid.ui.menu {
 				selectionWindowTaperPrevious.bitmapData.setPixel32(SELECTION_WINDOW_TAPER_WIDTH - n, selectionWindow.height - 1, c);
 			}
 		}
+#endif
 		
 		/* Short hand for calling select(currentMenuList.selection) - and more obvious */
-		public function update():void{
+		public void update(){
 			select(currentMenuList.selection);
 		}
 		
+#if false
 		/* Called when opening the menu */
 		public function activate():void{
 			update();
