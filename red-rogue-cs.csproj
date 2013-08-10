@@ -93,6 +93,11 @@
     <Compile Include="src\com\robotacid\ui\menu\MenuInputList.cs" />
     <Compile Include="src\com\robotacid\ui\menu\MenuOptionStack.cs" />
     <Compile Include="src\com\robotacid\ui\menu\ToggleMenuOption.cs" />
+    <Compile Include="src\flash\Event.cs" />
+    <Compile Include="src\flash\EventDispatcher.cs" />
+    <Compile Include="src\flash\KeyboardEvent.cs" />
+    <Compile Include="src\flash\MouseEvent.cs" />
+    <Compile Include="src\flash\Action.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

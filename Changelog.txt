@@ -1,7 +1,12 @@
+2013-08-10  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	event関連対応準備
+
 2013-08-09  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
-	Men関連をいくつか追加
+	Menu関連をいくつか追加
 
 2013-08-04  tasogare66 <tasogare66@gmail.com>
 
