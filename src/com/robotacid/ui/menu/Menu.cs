@@ -14,7 +14,7 @@ using redroguecs;
 ///import flash.display.DisplayObjectContainer;
 ///import flash.display.MovieClip;
 ///import flash.display.Shape;
-///import flash.display.Sprite;
+using flash.display;
 ///import flash.events.Event;
 ///import flash.geom.ColorTransform;
 ///import flash.geom.Matrix;

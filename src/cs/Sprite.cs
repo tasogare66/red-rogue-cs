@@ -11,7 +11,7 @@ using Tutorial.Utility;
 
 using App;
 
-
+#if false
 namespace redroguecs
 {
 	public enum Event : int
@@ -96,3 +96,4 @@ namespace redroguecs
 		}
 	}
 }
+#endif

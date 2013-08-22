@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using System.IO;
 
 using App;
+using flash.display;
 
 namespace redroguecs
 {
@@ -28,7 +29,8 @@ namespace redroguecs
 		
 		public Int32 appCounter=0;
 		
-		public Actor Root{ get; set;}
+		private Game _game;
+		public static Stage Stage { get; private set; }
 		
 		bool m_pause=false;
 		int forwardFrame = 0;
@@ -71,13 +73,10 @@ namespace redroguecs
 			
 			//@j アクターツリーの初期化。
 			//@e Initialization of actor tree
-			Root = new Actor("root");
-			
-			Root.addChild(new Game(this, "game"));
-			
-//			Root.addChild(new Map(this,"Map"));
-			
-//			Root.addChild(new Actor("bulletManager"));
+			Stage = new Stage();
+			_game = new Game();
+
+			Stage.addChild( _game );
 		}
 		
 		
@@ -103,7 +102,7 @@ namespace redroguecs
 			
 			if( forwardFrame > 0 || m_pause == false)
 			{
-				Root.Update();
+				DispatchEvents();
 
 				++appCounter;
 				
@@ -117,11 +116,21 @@ namespace redroguecs
 			}
 		}
 		
+		/// <summary>
+		/// Listen for events and dispatch to 'flash' game
+		/// </summary>
+		private void DispatchEvents()
+		{
+			//FIXME:	
+			if( _game.enterFrameActions != null ){
+				_game.enterFrameActions(null);
+			}
+		}
 		
 		public override void Render()
 		{
 			// off screen描画
-			Root.RenderToOffScreen();
+			Stage.RenderToOffScreen();
 
 			// --------------------
 
@@ -150,15 +159,13 @@ namespace redroguecs
 			graphics.SetTexture(0, this.textureUnified);	//FIXME:確認	
 			
 			spriteBuffer.Clear();
-			Root.Render();
+			Stage.Render();
 			
 			spriteBuffer.Render();
 			
 			debugString.WriteLine("Sprite Cnt="+spriteBuffer.GetNumOfSprite());
 			
 			base.Render();
-			
-			Root.CheckStatus();
 		}
 		
 		public override void Terminate ()

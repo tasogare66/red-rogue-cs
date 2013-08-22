@@ -49,7 +49,6 @@
     <Compile Include="lib\Utility.cs" />
     <Compile Include="src\cs\GameFrameworkRedRogueCs.cs" />
     <Compile Include="src\cs\AppMain.cs" />
-    <Compile Include="src\cs\Sprite.cs" />
     <Compile Include="src\cs\AppUtil.cs" />
     <Compile Include="src\UserData.cs" />
     <Compile Include="src\com\robotacid\util\HiddenInt.cs" />
@@ -98,6 +97,10 @@
     <Compile Include="src\flash\KeyboardEvent.cs" />
     <Compile Include="src\flash\MouseEvent.cs" />
     <Compile Include="src\flash\Action.cs" />
+    <Compile Include="src\flash\DisplayObjectContainer.cs" />
+    <Compile Include="src\flash\InteractiveObject.cs" />
+    <Compile Include="src\flash\Stage.cs" />
+    <Compile Include="src\flash\Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

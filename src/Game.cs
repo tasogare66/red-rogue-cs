@@ -45,9 +45,9 @@ using com.robotacid.util;
 ///import flash.display.Graphics;
 ///import flash.display.MovieClip;
 ///import flash.display.Shape;
-///import flash.display.Sprite;
+using flash.display;
 ///import flash.display.StageQuality;
-///import flash.events.Event;
+using flash.events;
 ///import flash.events.KeyboardEvent;
 ///import flash.events.MouseEvent;
 ///import flash.external.ExternalInterface;
@@ -216,7 +216,7 @@ namespace redroguecs {
 		public static bool fullscreenOn;
 		public static bool allowScriptAccess;
 		
-		public Game(GameFrameworkRedRogueCs gs, string name) : base(gs, name) {
+		public Game() {
 
 			game = this;
 			UserData.game = this;
@@ -962,15 +962,14 @@ namespace redroguecs {
 ///			addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 ///			addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 ///			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
-			addEventListener(Event.ENTER_FRAME, main);
+			addEventListener(Event.ENTER_FRAME, (Action1<Event>)main);
 		}
 		
 		// =================================================================================================
 		// MAIN LOOP
 		// =================================================================================================
 		
-///		private void main(e:Event) {
-		private void main() {
+		private void main(Event e) {
 #if false
 			
 			if(fpsText && fpsText.visible) fpsText.text = "fps:" + FPS.value;
@@ -1337,23 +1336,21 @@ namespace redroguecs {
 		}
 #endif
 		
-		public SSprite getTitleGfx() {
+		public Sprite getTitleGfx() {
+			Sprite sprite = new Sprite();
 ///			sprite.graphics.beginFill(0x0);
 ///			sprite.graphics.drawRect(0, 0, WIDTH, HEIGHT);
-			Texture2D titleB;
+			Bitmap titleB;
 			if(UserData.settings.playerConsumed){
-				titleB = new Texture2D(library.BannerFailB, false);
+				titleB = new Bitmap( library.BannerFailB );
 			} else if(UserData.settings.ascended){
-				titleB = new Texture2D(library.BannerCompleteB, false);
+				titleB = new Bitmap( library.BannerCompleteB );
 			} else {
-				titleB = new Texture2D(library.BannerB, false);
+				titleB = new Bitmap( library.BannerB );
 			}
-///			sprite.addChild(titleB);
-///			titleB.y = HEIGHT * 0.5 - titleB.height * 0.5;
-///			titleB.scaleX = titleB.scaleY = 0.5;
-			SSprite sprite = new SSprite(titleB);
-			sprite.sprite.Position = new Vector3(0f, HEIGHT * 0.5f - titleB.Height * 0.5f, 0f);
-			sprite.sprite.Scale = new Vector2(0.5f, 0.5f);
+			sprite.addChild(titleB);
+			titleB.y = HEIGHT * 0.5 - titleB.height * 0.5;
+			titleB.scaleX = titleB.scaleY = 0.5;
 			return sprite;
 		}
 		

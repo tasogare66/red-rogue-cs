@@ -22,11 +22,25 @@ namespace flash.display
 		public BitmapData(int width, int height, Boolean transparent = true, uint fillColor = 0xFFFFFFFF){
 			this.width = width;
 			this.height = height;
-			this.transparent= transparent;
+			this.transparent = transparent;
 			this.fillColor = fillColor;
 			this.rect = new Rectangle(0, 0, width, height);
 
 			this.initRenderToOffScreen( width, height );
+		}
+
+		// 追加、ファイル名指定
+		// RenderToOffScreenは未対応
+		public BitmapData(String fileName, Boolean transparent = true, uint fillColor = 0xFFFFFFFF){
+			Texture2D texture = new Texture2D(fileName, false);
+			this.gs = GameFrameworkRedRogueCs.Instance;
+			sSprite = new SimpleSprite(this.gs.Graphics, texture);
+
+			this.width = (int)sSprite.Width;
+			this.height = (int)sSprite.Height;
+			this.transparent = transparent;
+			this.fillColor = fillColor;
+			this.rect = new Rectangle(0, 0, width, height);
 		}
 
 		public BitmapData clone() {
@@ -79,6 +93,14 @@ namespace flash.display
 			set { this.sSprite.Position.Y = (float)value; }
 			get { return this.sSprite.Position.Y; }
 		}
+		public double scaleX {
+			set { this.sSprite.Scale.X = (float)value; }
+			get { return this.sSprite.Scale.X; }
+		}
+		public double scaleY {
+			set { this.sSprite.Scale.Y = (float)value; }
+			get { return this.sSprite.Scale.Y; }
+		}
 
 		public void initRenderToOffScreen(int in_w, int in_h)
 		{
@@ -124,6 +146,7 @@ namespace flash.display
 
 		~BitmapData()
 		{
+			this.dispose();
 		}
     }
 }
