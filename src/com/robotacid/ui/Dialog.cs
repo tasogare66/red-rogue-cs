@@ -3,7 +3,7 @@ using redroguecs;
 ///	import com.robotacid.ui.menu.Menu;
 ///	import flash.display.Bitmap;
 ///	import flash.display.BitmapData;
-///	import flash.display.Sprite;
+using flash.display;
 ///	import flash.display.Stage;
 ///	import flash.events.Event;
 ///	import flash.events.KeyboardEvent;
@@ -17,8 +17,7 @@ namespace com.robotacid.ui {
 	 * 
 	 * @author Aaron Steed, robotacid.com
 	 */
-///	public class Dialog extends Sprite{
-	public class Dialog {
+	public class Dialog : Sprite{
 		
 #if false
 		private var active:Boolean;

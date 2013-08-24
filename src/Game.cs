@@ -88,7 +88,7 @@ namespace redroguecs {
 ///		public static var renderer:Renderer;
 ///		public static var debug:Graphics;
 ///		public static var debugStay:Graphics;
-///		public static var dialog:Dialog;
+		public static Dialog dialog;
 		
 		// core engine objects
 ///		public var player:Player;
@@ -112,17 +112,17 @@ namespace redroguecs {
 ///		public var lightning:Lightning;
 		
 		// ui
-///		public var gameMenu:GameMenu;
+		public GameMenu gameMenu;
 ///		public var deathMenu:DeathMenu;
 ///		public var playerConsumedMenu:PlayerConsumedMenu;
 ///		public var titleMenu:TitleMenu;
 		
-///		public var focusPrompt:Sprite;
+		public Sprite focusPrompt;
 ///		public var titleGfx:Sprite;
 ///		public var miniMapHolder:Sprite;
 ///		public var console:Console;
 ///		public var confusionOverlayHolder:Sprite;
-///		public var menuCarousel:MenuCarousel;
+		public MenuCarousel menuCarousel;
 ///		public var miniMap:MiniMap;
 ///		public var playerActionBar:ProgressBar;
 ///		public var playerHealthBar:ProgressBar;
@@ -132,7 +132,7 @@ namespace redroguecs {
 ///		public var enemyHealthBar:ProgressBar;
 ///		public var livesPanel:LivesPanel;
 ///		public var keyItemStatus:Sprite;
-///		public var fpsText:TextBox;
+		public TextBox fpsText;
 		public TextBox titlePressMenuText;
 ///		public var instructions:MovieClip;
 ///		public var instructionsHolder:Sprite;
@@ -336,8 +336,7 @@ namespace redroguecs {
 			// KEYS INIT
 			if(!Key.initialized){
 ///				Key.init(stage);
-				//Key.custom = UserData.settings.customKeys.slice();
-				Key.custom = UserData.settings.customKeys;
+				Key.custom = UserData.settings.customKeys.slice();
 				Key.hotKeyTotal = 10;
 			}
 			
@@ -1386,13 +1385,15 @@ namespace redroguecs {
 			playerConsumedMenu.select(0);
 			menuCarousel.setCurrentMenu(playerConsumedMenu);
 		}
+#endif
 		
-		private function clearInstructions():void{
-			var levelName:String = "";
+		private void clearInstructions(){
+			String levelName = "";
 			if(firstInstructions){
 				levelName = Map.getName(map.level, map.type);
 				firstInstructions = false;
 			}
+#if false
 			transition.init(function():void{
 				if(instructions.parent) instructions.parent.removeChild(instructions);
 				instructions = null;
@@ -1402,25 +1403,26 @@ namespace redroguecs {
 				}
 				changeMusic();
 			}, null, levelName, false, instructionsPreviousState == MENU);
+#endif
 		}
 		
-		private function mouseDown(e:MouseEvent):void{
+		private void mouseDown(MouseEvent e){
 			mousePressed = true;
 			mousePressedCount = frameCount;
 		}
 		
-		private function mouseUp(e:MouseEvent):void{
+		private void mouseUp(MouseEvent e){
 			mousePressed = false;
 		}
 		
-		private function mouseMove(e:MouseEvent):void{
+		private void mouseMove(MouseEvent e){
 			if(hideMouseFrames >= HIDE_MOUSE_FRAMES) Mouse.show();
 			hideMouseFrames = 0;
 		}
 		
-		private function keyPressed(e:KeyboardEvent):void{
+		private void keyPressed(KeyboardEvent e){
 			if(Key.lockOut) return;
-			if(Key.customDown(MENU_KEY) && !Game.dialog){
+			if(Key.customDown(MENU_KEY) && Game.dialog == null){
 				if(state == INSTRUCTIONS){
 					clearInstructions();
 				} else if(state == TITLE){
@@ -1435,7 +1437,7 @@ namespace redroguecs {
 			}
 			if(Key.isDown(Keyboard.CONTROL) && Key.isDown(Keyboard.SHIFT) && Key.isDown(Keyboard.ENTER)){
 				gameMenu.addDebugOption();
-				if(fpsText) fpsText.visible = true;
+				if(fpsText != null) fpsText.visible = true;
 			}
 			/*
 			if(Key.isDown(Key.T)){
@@ -1464,6 +1466,7 @@ namespace redroguecs {
 			}*/
 		}
 		
+#if false
 		/* When the flash object loses focus we put up a splash screen to encourage players to click to play */
 		private function onFocusLost(e:Event = null):void{
 			if(state == UNFOCUSED) return;
@@ -1496,12 +1499,13 @@ namespace redroguecs {
 			}
 			trace(params);
 		}
-		
-		public static function versionToString():String{
-			var str:String = "" + VERSION_NUM;
-			return str.substr(0, str.length - 1) + "." + str.charAt(str.length - 1);
-		}
 #endif
+		
+		public static String versionToString(){
+			String str = "" + VERSION_NUM;
+			//return str.Substring(0, str.Length - 1) + "." + str.charAt(str.Length - 1);
+			return str.Substring(0, str.Length - 1) + "." + str[str.Length - 1];
+		}
 	}
 	
 }

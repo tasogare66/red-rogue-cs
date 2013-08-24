@@ -1,3 +1,8 @@
+2013-08-25  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	MenuCarousel.cs コンパイル通るように、その他menu関連追加
+
 2013-08-23  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

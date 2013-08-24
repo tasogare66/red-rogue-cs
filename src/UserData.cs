@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using App;
-
 ///import com.robotacid.engine.Item;
 ///import com.robotacid.engine.Player;
 ///import com.robotacid.engine.Portal;
@@ -20,6 +18,7 @@ using com.robotacid.util;
 ///import flash.ui.Keyboard;
 ///import flash.net.SharedObject;
 ///import flash.utils.ByteArray;
+using flash;
 
 namespace redroguecs {
 
@@ -263,7 +262,7 @@ namespace redroguecs {
 		}
 		
 		public class Settings {
-			public int[] customKeys = {Key.W, Key.S, Key.A, Key.D, (int)Keyboard.SPACE, Key.F, Key.Z, Key.X, Key.C, Key.V, Key.M, Key.NUMBER_1, Key.NUMBER_2, Key.NUMBER_3, Key.NUMBER_4};
+			public Array<int> customKeys = new Array<int> {Key.W, Key.S, Key.A, Key.D, (int)Keyboard.SPACE, Key.F, Key.Z, Key.X, Key.C, Key.V, Key.M, Key.NUMBER_1, Key.NUMBER_2, Key.NUMBER_3, Key.NUMBER_4};
 			public bool sfx = true;
 			public bool music = true;
 			public bool autoSortInventory = true;

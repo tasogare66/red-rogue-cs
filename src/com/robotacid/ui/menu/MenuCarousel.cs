@@ -27,21 +27,21 @@ namespace com.robotacid.ui.menu {
 		
 		public void setCurrentMenu(Menu menu) {
 			if(currentMenu == menu) return;
-///			if(currentMenu && currentMenu.parent){
-///				currentMenu.deactivate();
-///				menu.activate();
-///			}
+			if((currentMenu != null) && (currentMenu.parent != null)){
+				currentMenu.deactivate();
+				menu.activate();
+			}
 			currentMenu = menu;
 		}
 		
 		public void activate() {
 			active = true;
-///			currentMenu.activate();
+			currentMenu.activate();
 		}
 		
 		public void deactivate() {
 			active = false;
-///			currentMenu.deactivate();
+			currentMenu.deactivate();
 		}
 	}
 

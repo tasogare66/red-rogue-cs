@@ -23,20 +23,23 @@
 * }
 */
 
-///import flash.display.Stage;
+using System;
+
+using flash.display;
 ///import flash.events.Event;
 ///import flash.events.KeyboardEvent;
 ///import flash.ui.Keyboard;
+using flash;
 
 namespace com.robotacid.ui {
 	
 	public class Key {
-		public static bool initialized = false;	// marks whether or not the class has been initialized
-///		private static var keysDown:Array = [];	// stores key codes of all keys pressed
-		public static int[] custom;				// list of customised keys
+		public static Boolean initialized = false;	// marks whether or not the class has been initialized
+		private static Array<Boolean> keysDown = new Array<Boolean>();	// stores key codes of all keys pressed
+		public static Array<int> custom;				// list of customised keys
 ///		public static var reserved:Array = [];	// list of reserved keys
-		public static bool lockOut = false;		// used to brick the Key class
-///		public static var stage:Stage;
+		public static Boolean lockOut = false;		// used to brick the Key class
+		public static Stage stage;
 		public static int keysPressed = 0;
 		public const int NUMBER_0 = 48;
 		public const int NUMBER_1 = 49;
@@ -111,23 +114,25 @@ namespace com.robotacid.ui {
                 initialized = true;
             }
         }
+#endif
 		
         /**
         * Returns true or false if the key represented by the
         * custom key index is being pressed
         */
-        public static function customDown(index:int):Boolean {
-            return !lockOut && custom != null && Boolean(keysDown[custom[index]]);
+        public static Boolean customDown(int index) {
+            return !lockOut && custom != null && (keysDown[custom[index]]);
         }
 		
         /**
         * Returns true or false if the key represented by the
         * keyCode passed is being pressed
         */
-        public static function isDown(keyCode:int):Boolean {
-            return !lockOut && Boolean(keysDown[keyCode]);
+        public static Boolean isDown(int keyCode) {
+            return !lockOut && (keysDown[keyCode]);
         }
 		
+#if false
 		/* Tests whether a pattern of key codes matches the recent key log
 		 * patterns are given as strings to skip laborious trawling through arrays of numbers */
 		public static function matchLog(pattern:String):Boolean{
@@ -176,7 +181,7 @@ namespace com.robotacid.ui {
 		 * a 3 letter string is returned for special characters
 		 *
 		 */
-		public static string keyString(uint keyCode){
+		public static String keyString(uint keyCode){
 #if false
 			switch(keyCode){
 				case Keyboard.BACKSPACE:

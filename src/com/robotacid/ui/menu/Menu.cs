@@ -16,7 +16,7 @@ using redroguecs;
 ///import flash.display.Shape;
 using flash.display;
 ///import flash.events.Event;
-///import flash.geom.ColorTransform;
+using flash.geom;
 ///import flash.geom.Matrix;
 ///import flash.geom.Point;
 ///import flash.geom.Rectangle;
@@ -57,18 +57,18 @@ namespace com.robotacid.ui.menu {
 		
 		// gfx
 		public MenuCarousel carousel;
-///		public var textHolder:Sprite;
-///		public var help:TextBox;
-///		public var selectionWindow:Bitmap;
-///		public var selectionWindowTaperPrevious:Bitmap;
-///		public var selectionWindowTaperNext:Bitmap;
-///		public var previousTextBox:TextBox;
-///		public var currentTextBox:TextBox;
-///		public var nextTextBox:TextBox;
-///		public var infoTextBox:TextBox;
-///		public var capture:CaptureBitmap;
-///		public var selectionCopyBitmap:Bitmap;
-///		public var selectText:TextBox;
+		public Sprite textHolder;
+		public TextBox help;
+		public Bitmap selectionWindow;
+		public Bitmap selectionWindowTaperPrevious;
+		public Bitmap selectionWindowTaperNext;
+		public TextBox previousTextBox;
+		public TextBox currentTextBox;
+		public TextBox nextTextBox;
+		public TextBox infoTextBox;
+///		public CaptureBitmap capture;
+		public Bitmap selectionCopyBitmap;
+		public TextBox selectText;
 		
 		public int selection;
 		public bool hideChangeSelection;
@@ -80,9 +80,9 @@ namespace com.robotacid.ui.menu {
 		
 		public Vector<HotKeyMap> hotKeyMaps;
 		public HotKeyMap hotKeyMapRecord;
-///		public var changeKeysOption:MenuOption;
-///		public var hotKeyOption:MenuOption;
-///		public var inputOption:MenuOption;
+		public MenuOption changeKeysOption;
+		public MenuOption hotKeyOption;
+		public MenuOption inputOption;
 		
 		public MenuList previousMenuList;
 		public MenuList currentMenuList;
@@ -131,11 +131,11 @@ namespace com.robotacid.ui.menu {
 		public static readonly uint SELECTION_WINDOW_COL = 0xFFEEEEEE;
 		public static readonly int KEYS_HELD_DELAY = 5;
 		public static readonly int MOVEMENT_GUIDE_DELAY = 30;
-///		public static const DISABLED_COL:ColorTransform = new ColorTransform(1, 1, 1, 1, -100, -100, -100);
+		public static readonly ColorTransform DISABLED_COL = new ColorTransform(1, 1, 1, 1, -100, -100, -100);
 		public static readonly uint BACKGROUND_COL = 0x66111111;
 		public static readonly uint BORDER_COL = 0xFF999999;
 		
-///		public static var NOT_VISITED_COLS:Vector.<ColorTransform>;
+		public static Vector<ColorTransform> NOT_VISITED_COLS;
 		
 		// game key properties
 		public static readonly int UP_KEY = 0;
@@ -458,16 +458,15 @@ namespace com.robotacid.ui.menu {
 			}
 		}
 		
-#if false
 		/* This renders the current menu state, though it is better to use select()
 		 * as it will also update the branchString property and update
 		 * what MenuList leads from the currently selected MenuOption.
 		 */
-		public function renderMenu():void{
+		public void renderMenu(){
 			currentTextBox.visible = true;
 			selectionWindow.visible = true;
-			if(previousMenuList){
-				previousTextBox.setSize(LIST_WIDTH, LINE_SPACING * previousMenuList.options.length + TextBox.BORDER_ALLOWANCE);
+			if(previousMenuList != null){
+				previousTextBox.setSize((int)LIST_WIDTH, (int)(LINE_SPACING * previousMenuList.options.length + TextBox.BORDER_ALLOWANCE));
 				previousTextBox.text = previousMenuList.optionsToString("\n", HotKeyMap.getOptionsHotKeyed(previousMenuList, hotKeyMaps));
 				previousTextBox.y = -previousMenuList.selection * LINE_SPACING - TextBox.BORDER_ALLOWANCE;
 				setLineCols(previousMenuList, previousTextBox);
@@ -477,11 +476,11 @@ namespace com.robotacid.ui.menu {
 				previousTextBox.visible = false;
 				selectionWindowTaperPrevious.visible = false;
 			}
-			if(currentMenuList){
+			if(currentMenuList != null){
 				if(currentMenuList == keyChanger){
 					keyChanger.options[0].name = "press a key";
 				}
-				currentTextBox.setSize(LIST_WIDTH, LINE_SPACING * currentMenuList.options.length + TextBox.BORDER_ALLOWANCE);
+				currentTextBox.setSize((int)LIST_WIDTH, (int)(LINE_SPACING * currentMenuList.options.length + TextBox.BORDER_ALLOWANCE));
 				currentTextBox.text = currentMenuList.optionsToString("\n", HotKeyMap.getOptionsHotKeyed(currentMenuList, hotKeyMaps));
 				currentTextBox.y = -currentMenuList.selection * LINE_SPACING - TextBox.BORDER_ALLOWANCE;
 				setLineCols(currentMenuList, currentTextBox);
@@ -497,7 +496,7 @@ namespace com.robotacid.ui.menu {
 					selectionWindow.visible = false;
 				}
 				
-			} else if(currentMenuList.options[selection].active && nextMenuList){
+			} else if(currentMenuList.options[selection].active && (nextMenuList != null)){
 				if(nextMenuList is MenuInfo){
 					(nextMenuList as MenuInfo).renderCallback();
 					infoTextBox.visible = true;
@@ -505,9 +504,9 @@ namespace com.robotacid.ui.menu {
 					nextTextBox.visible = false;
 				} else {
 					if(nextMenuList == keyChanger){
-						keyChanger.options[0].name = Key.keyString(Key.custom[selection]);
+						keyChanger.options[0].name = Key.keyString((uint)Key.custom[selection]);
 					}
-					nextTextBox.setSize(LIST_WIDTH, LINE_SPACING * nextMenuList.options.length + TextBox.BORDER_ALLOWANCE);
+					nextTextBox.setSize((int)LIST_WIDTH, (int)(LINE_SPACING * nextMenuList.options.length + TextBox.BORDER_ALLOWANCE));
 					nextTextBox.text = nextMenuList.optionsToString("\n", HotKeyMap.getOptionsHotKeyed(nextMenuList, hotKeyMaps));
 					nextTextBox.y = -nextMenuList.selection * LINE_SPACING - TextBox.BORDER_ALLOWANCE;
 					setLineCols(nextMenuList, nextTextBox);
@@ -523,15 +522,15 @@ namespace com.robotacid.ui.menu {
 		}
 		
 		/* Updates the rendering of coloured MenuOptions (disabled and not-visited) */
-		public function setLineCols(menuList:MenuList, textBox:TextBox):void{
-			var menuOption:MenuOption;
-			for(var i:int = 0; i < menuList.options.length; i++){
+		public void setLineCols(MenuList menuList, TextBox textBox){
+			MenuOption menuOption;
+			for(int i = 0; i < menuList.options.length; i++){
 				menuOption = menuList.options[i];
 				// disabled
 				if(
 					!(
-						(hotKeyMapRecord && menuOption.recordable) ||
-						(!hotKeyMapRecord && menuOption.active)
+						((hotKeyMapRecord != null) && menuOption.recordable) ||
+						((hotKeyMapRecord == null) && menuOption.active)
 					)
 				) textBox.setLineCol(i, DISABLED_COL);
 				// not visited
@@ -541,6 +540,7 @@ namespace com.robotacid.ui.menu {
 			}
 		}
 		
+#if false
 		private function animateUp():void{
 			//if((dir & UP) && moveReset > 2) moveReset--;
 			
@@ -1019,9 +1019,8 @@ namespace com.robotacid.ui.menu {
 			select(currentMenuList.selection);
 		}
 		
-#if false
 		/* Called when opening the menu */
-		public function activate():void{
+		public void activate(){
 			update();
 			help.y = -help.height;
 			helpVy = help.height / (moveDelay * 2);
@@ -1032,10 +1031,11 @@ namespace com.robotacid.ui.menu {
 		}
 		
 		/* Called when closing the menu */
-		public function deactivate():void{
-			if(parent) parent.removeChild(this);
+		public void deactivate(){
+			if(parent != null) parent.removeChild(this);
 		}
 		
+#if false
 		/* Inits a MenuOption that leads to a MenuList offering the ability to redefine keys. */
 		public function initChangeKeysMenuOption():void{
 			var keyChangerOption:MenuOption = new MenuOption("no key data");

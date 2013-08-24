@@ -8,7 +8,7 @@ namespace flash
     public class Array<T> : List<T> {
         public Array() { }
 //        public Array(IEnumerable<T> collection) : base(collection) { }
-//        public Array(int capacity) : base(capacity) { }
+        public Array(int capacity) : base(capacity) { }
 #if false
         public override string ToString() {
             _sb.Clear();
@@ -27,12 +27,13 @@ namespace flash
 
         public int length {
             get { return Count; }
-//            set {
-//                if (value == 0)
-//                    Clear(); //?
-//                else
-//                    throw new NotImplementedException();
-//            }
+            set {
+                if( value == 0 ){
+					Clear();
+				} else {
+					App.Util.Assert(false);		//unsupported
+				}
+            }
         }
 
         public T pop() {
@@ -59,6 +60,19 @@ namespace flash
             RemoveAt(0);
 
             return first;
+        }
+
+        public Array<T> slice(int startIndex = 0, int endIndex = 16777215) {
+            int start = startIndex >= 0 ? startIndex : Count + startIndex;
+            int end = endIndex == 16777215 ? Count : endIndex >= 0 ? endIndex : Count + endIndex;
+
+            var array = new Array<T>(end - start);
+
+            for(int i = start; i < end; i++) {
+                array.Add(this[i]);
+            }
+
+            return array;
         }
 
         public virtual Array<T> splice(int startIndex, uint deleteCount, params T[] p) {
