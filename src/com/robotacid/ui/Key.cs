@@ -26,7 +26,7 @@
 using System;
 
 using flash.display;
-///import flash.events.Event;
+using flash.events;
 ///import flash.events.KeyboardEvent;
 ///import flash.ui.Keyboard;
 using flash;
@@ -78,7 +78,7 @@ namespace com.robotacid.ui {
 		public const int Y = 89;
 		public const int Z = 90;
 		
-///		public static var keyLog:Array = [];
+		public static Array<int> keyLog = new Array<int>();
 		public static string keyLogString = "";
 		public const int KEY_LOG_LENGTH = 10;
 		
@@ -95,26 +95,24 @@ namespace com.robotacid.ui {
 		* optional customKeys is an array of key codes referring to
 		* user definable keys
         */
-#if false
-        public static function init(_stage:Stage):void {
+        public static void init(Stage _stage) {
             if (!initialized) {
                 stage = _stage;
 				
 				// assign listeners for key presses and deactivation of the player
                 stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
                 stage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
-                stage.addEventListener(Event.DEACTIVATE, clearKeys);
+                stage.addEventListener(Event.DEACTIVATE, (Action1<Event>)clearKeys);
 				
 				// init key logger
-				for(var i:int = 0; i < KEY_LOG_LENGTH; i++) keyLog.push(0);
-				keyLogString = keyLog.toString();
+				for(int i = 0; i < KEY_LOG_LENGTH; i++) keyLog.push(0);
+				keyLogString = keyLog.ToString();
 				
                 // mark initialization as true so redundant
                 // calls do not reassign the event handlers
                 initialized = true;
             }
         }
-#endif
 		
         /**
         * Returns true or false if the key represented by the
@@ -132,32 +130,32 @@ namespace com.robotacid.ui {
             return !lockOut && (keysDown[keyCode]);
         }
 		
-#if false
 		/* Tests whether a pattern of key codes matches the recent key log
 		 * patterns are given as strings to skip laborious trawling through arrays of numbers */
-		public static function matchLog(pattern:String):Boolean{
-			if(pattern.length > keyLogString.length) return false;
-			return keyLogString.substr(keyLogString.length - pattern.length) == pattern;
+		public static Boolean matchLog(String pattern){
+			if(pattern.Length > keyLogString.Length) return false;
+			return keyLogString.Substring(keyLogString.Length - pattern.Length) == pattern;
 		}
 		
         /**
         * Event handler for capturing keys being pressed
         */
-        private static function keyPressed(event:KeyboardEvent):void {
+        private static void keyPressed(KeyboardEvent _event) {
             // create a property in keysDown with the name of the keyCode
-			if(!Boolean(keysDown[event.keyCode])) keysPressed++;
-            keysDown[event.keyCode] = true;
+			//if(!Boolean(keysDown[_event.keyCode])) keysPressed++;
+			if(!(keysDown[_event.keyCode])) keysPressed++;
+            keysDown[_event.keyCode] = true;
 			
 			keyLog.shift();
-			keyLog[KEY_LOG_LENGTH - 1] = event.keyCode;
-			keyLogString = keyLog.toString();
+			keyLog[KEY_LOG_LENGTH - 1] = _event.keyCode;
+			keyLogString = keyLog.ToString();
         }
 		
         /**
         * Event handler for capturing keys being released
         */
-        private static function keyReleased(event:KeyboardEvent):void {
-            keysDown[event.keyCode] = false;
+        private static void keyReleased(KeyboardEvent _event) {
+            keysDown[_event.keyCode] = false;
 			if(keysPressed > 0) keysPressed--;
 			else {
 				// the keyboard layout may have changed, clear the buffer to repair damage
@@ -168,13 +166,13 @@ namespace com.robotacid.ui {
         /**
         * Event handler for Flash Player deactivation
         */
-        public static function clearKeys(event:Event = null):void {
+        public static void clearKeys(Event _event = null) {
             // clear all keys in keysDown since the player cannot
             // detect keys being pressed or released when not focused
-            keysDown = [];
+            //keysDown = [];
+			keysDown.Clear();
 			keysPressed = 0;
         }
-#endif
 		
 		/*
 		 * Return a string representing a key pressed
@@ -182,7 +180,6 @@ namespace com.robotacid.ui {
 		 *
 		 */
 		public static String keyString(uint keyCode){
-#if false
 			switch(keyCode){
 				case Keyboard.BACKSPACE:
 					return "bsp";
@@ -240,13 +237,14 @@ namespace com.robotacid.ui {
 					return "'";
 				default:
 					if(keyCode >= 96 && keyCode <= 105){
-						return "n "+String.fromCharCode(keyCode-48);
+						//return "n "+String.fromCharCode(keyCode-48);
+						return "n "+new String((Char)(keyCode-48), 1);
 					} else {
-						return String.fromCharCode(keyCode);
+						//return String.fromCharCode(keyCode);
+						return new String((Char)(keyCode), 1);
 					}
 			}
-#endif
-			return "";
+			//return "";
 		}
 	}
 }

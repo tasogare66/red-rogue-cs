@@ -6,10 +6,13 @@ namespace flash
 {
 	// VectorとArrayほぼ共通だが、aliasなど使用できないので、別々に定義
     public class Array<T> : List<T> {
+
+		private readonly StringBuilder _sb = new StringBuilder();
+
         public Array() { }
 //        public Array(IEnumerable<T> collection) : base(collection) { }
         public Array(int capacity) : base(capacity) { }
-#if false
+
         public override string ToString() {
             _sb.Clear();
             bool isFirst = true;
@@ -23,7 +26,6 @@ namespace flash
 
             return _sb.ToString();
         }
-#endif
 
         public int length {
             get { return Count; }

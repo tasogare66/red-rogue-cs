@@ -4,5 +4,7 @@
     {
         public const string KEY_DOWN = "keyDown";
         public const string KEY_UP = "keyUp";
+
+		public int keyCode;
     }
 }

@@ -323,19 +323,16 @@ namespace redroguecs {
 			
 ///			trackEvent("load complete");
 			
-			//if (stage) addedToStage();
-			//else addEventListener(Event.ADDED_TO_STAGE, addedToStage);
-			addedToStage();
+			if (stage != null) addedToStage();
+			else addEventListener(Event.ADDED_TO_STAGE, (Action1<Event>)addedToStage);
 		}
 		
-		//private void addedToStage(e:Event = null) {
-		private void addedToStage() {
-			//removeEventListener(Event.ADDED_TO_STAGE, init);
-			// MEMO:多分 addedToStage を取り除くべき
+		private void addedToStage(Event e = null) {
+			removeEventListener(Event.ADDED_TO_STAGE, (Action1<Event>)addedToStage);
 			
 			// KEYS INIT
 			if(!Key.initialized){
-///				Key.init(stage);
+				Key.init(stage);
 				Key.custom = UserData.settings.customKeys.slice();
 				Key.hotKeyTotal = 10;
 			}
@@ -960,7 +957,7 @@ namespace redroguecs {
 ///			stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 ///			addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 ///			addEventListener(MouseEvent.MOUSE_UP, mouseUp);
-///			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 			addEventListener(Event.ENTER_FRAME, (Action1<Event>)main);
 		}
 		

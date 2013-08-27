@@ -8,6 +8,8 @@ namespace flash.display
         /// <summary>Indicates the alpha transparency value of the object specified.</summary>
         public double alpha { get; set; }
 
+		public Stage stage { get { return redroguecs.GameFrameworkRedRogueCs.Stage; } }
+
         public Transform transform { get; set; }
 
         public DisplayObjectContainer parent { get; internal set; }
