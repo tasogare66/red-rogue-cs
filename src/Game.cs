@@ -20,7 +20,7 @@ using com.robotacid.engine;
 ///import com.robotacid.phys.CollisionWorld;
 ///import com.robotacid.sound.SoundManager;
 ///import com.robotacid.sound.SoundQueue;
-///import com.robotacid.ui.Console;
+using Console = com.robotacid.ui.Console;
 ///import com.robotacid.ui.Dialog;
 ///import com.robotacid.ui.Editor;
 ///import com.robotacid.ui.menu.DeathMenu;
@@ -115,7 +115,7 @@ namespace redroguecs {
 		public GameMenu gameMenu;
 ///		public var deathMenu:DeathMenu;
 ///		public var playerConsumedMenu:PlayerConsumedMenu;
-///		public var titleMenu:TitleMenu;
+		public TitleMenu titleMenu;
 		
 		public Sprite focusPrompt;
 ///		public var titleGfx:Sprite;
@@ -201,7 +201,7 @@ namespace redroguecs {
 		
 		public static readonly int MAX_LEVEL = 20;
 		
-///		public static readonly double CONSOLE_Y = HEIGHT - Console.HEIGHT;
+		public static readonly double CONSOLE_Y = HEIGHT - Console.HEIGHT;
 		public static readonly double HEALTH_GLOW_RATIO = 0.3d;
 		public static readonly uint DEFAULT_BAR_COL = 0xFFCCCCCC;
 		public static readonly uint DISABLED_BAR_COL = 0xFFAA0000;
@@ -446,31 +446,31 @@ namespace redroguecs {
 				addChild(titlePressMenuText);
 			}
 			
-#if false
-			addChild(transition);
+///			addChild(transition);
 			
 			// menu init
 			
-			if(!menuCarousel){
+			if(menuCarousel == null){
 				menuCarousel = new MenuCarousel();
 				gameMenu = new GameMenu(WIDTH, CONSOLE_Y, this);
-				deathMenu = new DeathMenu(WIDTH, CONSOLE_Y, this);
-				playerConsumedMenu = new PlayerConsumedMenu(WIDTH, CONSOLE_Y, this);
+///				deathMenu = new DeathMenu(WIDTH, CONSOLE_Y, this);
+///				playerConsumedMenu = new PlayerConsumedMenu(WIDTH, CONSOLE_Y, this);
 				titleMenu = new TitleMenu(gameMenu);
 				menuCarousel.addMenu(gameMenu);
-				menuCarousel.addMenu(deathMenu);
-				menuCarousel.addMenu(playerConsumedMenu);
+///				menuCarousel.addMenu(deathMenu);
+///				menuCarousel.addMenu(playerConsumedMenu);
 				menuCarousel.addMenu(titleMenu);
 			} else {
 				// update the rng seed
 				if(Map.seed == 0) gameMenu.seedInputList.option.name = "" + Map.random.seed;
-				titleMenu.continueOption.active = Boolean(UserData.gameState.player.xml);
+///				titleMenu.continueOption.active = Boolean(UserData.gameState.player.xml);
 				titleMenu.update();
 				// load quests
-				gameMenu.loreList.questsList.loadFromArray(UserData.gameState.quests);
+///				gameMenu.loreList.questsList.loadFromArray(UserData.gameState.quests);
 			}
 			addChild(menuCarousel);
 			
+#if false
 			if(!focusPrompt){
 				createFocusPrompt();
 				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
@@ -547,8 +547,8 @@ namespace redroguecs {
 				}
 #endif
 			} else if(state == TITLE){
-///				menuCarousel.setCurrentMenu(titleMenu);
-///				titlePressMenuText.visible = !menuCarousel.active;
+				menuCarousel.setCurrentMenu(titleMenu);
+				titlePressMenuText.visible = !menuCarousel.active;
 			}
 			
 			// fire up listeners
@@ -576,9 +576,9 @@ namespace redroguecs {
 #endif
 		}
 		
-#if false
 		/* Pedantically clear all memory and re-init the project */
-		public function reset(newGame:Boolean = true):void{
+		public void reset(Boolean newGame = true){
+#if false
 			removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			removeEventListener(Event.ENTER_FRAME, main);
@@ -610,8 +610,8 @@ namespace redroguecs {
 			}
 			if(editor) editor.deactivate();
 			init();
-		}
 #endif
+		}
 		
 		/* Enters the testing area */
 		public void launchTestBed() {

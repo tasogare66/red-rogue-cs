@@ -1,3 +1,6 @@
+using System;
+using redroguecs;
+
 ///import com.robotacid.level.Map;
 ///import com.robotacid.sound.SoundManager;
 ///import com.robotacid.ui.Dialog;
@@ -12,25 +15,26 @@ namespace com.robotacid.ui.menu {
 	 */
 	public class TitleMenu : Menu {
 		
-#if false
-		private var gameMenu:GameMenu;
+#if true
+		private GameMenu gameMenu;
 		
-		public var newGameList:MenuList;
-		public var optionsList:MenuList;
+		public MenuList newGameList;
+		public MenuList optionsList;
 		
-		public var newGameOption:MenuOption;
-		public var continueOption:MenuOption;
-		public var optionsOption:MenuOption;
+		public MenuOption newGameOption;
+		public MenuOption continueOption;
+		public MenuOption optionsOption;
 		
-		public var actionRPGOption:MenuOption;
-		public var dogmaticOption:MenuOption;
+		public MenuOption actionRPGOption;
+		public MenuOption dogmaticOption;
 		
-		public function TitleMenu(gameMenu:GameMenu) {
-			super(Game.WIDTH, Game.HEIGHT);
+		public TitleMenu(GameMenu gameMenu) : base(Game.WIDTH, Game.HEIGHT) {
+			//super(Game.WIDTH, Game.HEIGHT);
 			this.gameMenu = gameMenu;
-			var continuing:Boolean = Boolean(UserData.gameState.player.xml);
+///			Boolean continuing = Boolean(UserData.gameState.player.xml);
+			Boolean continuing = false;	//FIXME:	
 			
-			var trunk:MenuList = new MenuList();
+			MenuList trunk = new MenuList();
 			optionsList = new MenuList();
 			newGameList = new MenuList();
 			
@@ -40,7 +44,7 @@ namespace com.robotacid.ui.menu {
 			continueOption.help = "resume a game you have left. the game will auto-save entering a new area. play resumes only from the entrance to a level.";
 			optionsOption = new MenuOption("options", optionsList);
 			optionsOption.help = "configure settings.";
-			var versionOption:MenuOption = new MenuOption("v " + Game.versionToString(), null, false);
+			MenuOption versionOption = new MenuOption("v " + Game.versionToString(), null, false);
 			versionOption.help = "current version.";
 			
 			actionRPGOption = new MenuOption("action rpg");
@@ -70,15 +74,16 @@ namespace com.robotacid.ui.menu {
 			if(continuing){
 				select(1);
 			}
-			help.text = currentMenuList.options[selection].help;
+///			help.text = currentMenuList.options[selection].help;
 		}
 		
-		override public function changeSelection():void{
+		override public void changeSelection(){
 			
 			if(currentMenuList.options.length == 0) return;
 			
-			var option:MenuOption = currentMenuList.options[selection];
+			MenuOption option = currentMenuList.options[selection];
 			
+#if false
 			if(parent && option.help){
 				help.text = option.help;
 			}
@@ -102,10 +107,12 @@ namespace com.robotacid.ui.menu {
 				renderMenu();
 				
 			}
+#endif
 		}
 		
-		override public function executeSelection():void {
-			var option:MenuOption = currentMenuList.options[selection];
+		override public void executeSelection() {
+#if false
+			MenuOption option = currentMenuList.options[selection];
 			if(currentMenuList == gameMenu.sureList && currentMenuList.selection == GameMenu.YES){
 				// erasing the shared object
 				if(previousMenuList.options[previousMenuList.selection] == gameMenu.resetOption){
@@ -199,9 +206,10 @@ namespace com.robotacid.ui.menu {
 				gameMenu.copyRngSeed();
 				
 			}
+#endif
 		}
 		
-		private function launchGame(newGame:Boolean, dogmaticMode:Boolean):void{
+		private void launchGame(Boolean newGame, Boolean dogmaticMode){
 			game.state = Game.GAME;
 			UserData.settings.dogmaticMode = game.dogmaticMode = dogmaticMode;
 			game.reset(newGame);

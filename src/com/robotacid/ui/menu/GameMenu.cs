@@ -133,9 +133,9 @@ namespace com.robotacid.ui.menu {
 		public const int NO = 0;
 		public const int YES = 1;
 		
-		public GameMenu(double width, double height, Game game) {
+		public GameMenu(double width, double height, Game game) : base(width, height){
 			this.game = game;
-///			super(width, height);
+			//super(width, height);
 			
 			// used by inventoryList
 			onOffList = new MenuList();
@@ -160,7 +160,7 @@ namespace com.robotacid.ui.menu {
 			upDownList = new MenuList();
 			rngSeedList = new MenuList();
 ///			seedInputList = new MenuInputList("" + Map.random.seed,/[0-9]/, String(uint.MAX_VALUE).length, seedInputCallback);
-			seedInputList.promptName = "enter number";
+///			seedInputList.promptName = "enter number";
 			multiplayerList = new MenuList();
 			recordGifList = new MenuList();
 			creditsList = new MenuList();
@@ -182,7 +182,7 @@ namespace com.robotacid.ui.menu {
 			// MENU OPTIONS
 			
 ///			inventoryOption = new MenuOption("inventory", inventoryList);
-			inventoryOption.help = "a list of items the rogue currently possesses in her handbag of holding";
+///			inventoryOption.help = "a list of items the rogue currently possesses in her handbag of holding";
 			MenuOption optionsOption = new MenuOption("options", optionsList);
 			optionsOption.help = "change game settings";
 			actionsOption = new MenuOption("actions", actionsList, false);
@@ -193,12 +193,12 @@ namespace com.robotacid.ui.menu {
 			debugOption.help = "debug tools for allowing access to game elements that are hard to find in a procedurally generated world";
 			
 ///			giveItemOption = new MenuOption("give item", giveItemList);
-			giveItemOption.help = "put a custom item in the player's inventory";
-			giveItemOption.recordable = false;
+///			giveItemOption.help = "put a custom item in the player's inventory";
+///			giveItemOption.recordable = false;
 			
 ///			editorOption = new MenuOption("editor", editorList);
-			editorOption.help = "activate the mouse based level editor by walking into this menu. the selection the editor is at will be palette item for the mouse.";
-			editorOption.recordable = false;
+///			editorOption.help = "activate the mouse based level editor by walking into this menu. the selection the editor is at will be palette item for the mouse.";
+///			editorOption.recordable = false;
 			changeRogueRaceOption = new MenuOption("change rogue race", changeRaceList);
 			changeRogueRaceOption.help = "change the current race of the rogue";
 			changeRogueRaceOption.recordable = false;
@@ -250,9 +250,9 @@ namespace com.robotacid.ui.menu {
 			redRogueOption.help = "opens a window to redrogue.net, where the game can be downloaded.";
 			
 ///			initChangeKeysMenuOption();
-			changeKeysOption.help = "change the movement keys, menu key and hot keys";
+///			changeKeysOption.help = "change the movement keys, menu key and hot keys";
 ///			initHotKeyMenuOption(trunk);
-			hotKeyOption.help = "set up a key to perform a menu action. the hot key will work even if the menu is hidden, the hot key will also adapt to menu changes";
+///			hotKeyOption.help = "set up a key to perform a menu action. the hot key will work even if the menu is hidden, the hot key will also adapt to menu changes";
 			
 			instructionsOption = new MenuOption("instructions");
 			instructionsOption.help = "view the basic instructions screen";
@@ -374,7 +374,7 @@ namespace com.robotacid.ui.menu {
 			setTrunk(trunk);
 			
 			MenuOption option = currentMenuList.options[selection];
-			help.text = option.help;
+///			help.text = option.help;
 			
 			// load the hot-key maps
 #if false

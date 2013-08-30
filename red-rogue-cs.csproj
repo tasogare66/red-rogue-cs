@@ -104,6 +104,7 @@
     <Compile Include="src\flash\Keyboard.cs" />
     <Compile Include="src\com\robotacid\ui\menu\GameMenu.cs" />
     <Compile Include="src\com\robotacid\ui\menu\MenuInfo.cs" />
+    <Compile Include="src\com\robotacid\ui\Console.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

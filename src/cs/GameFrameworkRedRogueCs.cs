@@ -121,6 +121,15 @@ namespace redroguecs
 		/// </summary>
 		private void DispatchEvents()
 		{
+			if( this.PadData.ButtonsDown != 0 ){
+				if( _game.keyDownActions != null ){
+					_game.keyDownActions(null);
+				}
+				if( Stage.keyDownActions != null ){
+					Stage.keyDownActions(null);
+				}
+			}
+
 			//FIXME:	
 			if( _game.enterFrameActions != null ){
 				_game.enterFrameActions(null);
@@ -175,6 +184,27 @@ namespace redroguecs
 			base.Terminate ();
 
 			m_instance = null;
+		}
+
+
+		// flashキー入力の置換
+		public bool convertKeyDown(int keyCode)
+		{
+			GamePadButtons mask = 0;
+			switch( keyCode ){
+			case flash.Keyboard.SPACE:
+				mask = GamePadButtons.Circle;
+				break;
+			case flash.Keyboard.CONTROL:
+			case flash.Keyboard.SHIFT:
+			case flash.Keyboard.ENTER:
+				//FIXME:	
+				break;
+			default:
+				Util.Assert(false);
+				break;
+			}
+			return ((this.PadData.Buttons & mask) != 0);
 		}
 	}
 }

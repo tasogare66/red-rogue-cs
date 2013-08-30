@@ -113,7 +113,7 @@ namespace com.robotacid.ui.menu {
 		private double helpVy;
 		private double alphaStep;
 		private int keysDown;
-///		private var hotKeyDown:Vector.<Boolean>;
+		private Vector<Boolean> hotKeyDown;
 		private int keysLocked;
 		private int keysHeldCount;
 		private int stackCount;
@@ -161,13 +161,13 @@ namespace com.robotacid.ui.menu {
 		public static readonly int DOWN_MOVE = 2;
 		public static readonly int LEFT_MOVE = 3;
 		
+		public Menu(double width, double height, MenuList trunk = null){
 #if false
-		public function Menu(width:Number, height:Number, trunk:MenuList = null):void{
 			_width = width;
 			_height = height;
 			
-			var i:int;
-			dirStack = new Vector.<int>();
+			int i;
+			dirStack = new Vector<int>();
 			dir = 0;
 			vx = vy = 0;
 			moveCount = 0;
@@ -182,9 +182,9 @@ namespace com.robotacid.ui.menu {
 			
 			// initialise the branch recorders - these will help examine the history of
 			// menu usage
-			branch = new Vector.<MenuList>();
-			hotKeyMaps = new Vector.<HotKeyMap>();
-			hotKeyDown = new Vector.<Boolean>();
+			branch = new Vector<MenuList>();
+			hotKeyMaps = new Vector<HotKeyMap>();
+			hotKeyDown = new Vector<Boolean>();
 			for(i = 0; i < Key.hotKeyTotal; i++){
 				hotKeyMaps.push(null);
 				hotKeyDown[i] = false;
@@ -239,14 +239,14 @@ namespace com.robotacid.ui.menu {
 			nextTextBox.visible = false;
 			
 			// the selection window shows what option we are currently on
-			selectionWindow = new Bitmap(new BitmapData(LIST_WIDTH, LINE_SPACING));
+			selectionWindow = new Bitmap(new BitmapData((int)LIST_WIDTH, (int)LINE_SPACING));
 			selectionCopyBitmap = new Bitmap(selectionWindow.bitmapData.clone());
 			selectionCopyBitmap.visible = false;
 			selectionWindow.x = -selectionWindow.width * 0.5 + _width * 0.5;
 			selectionWindow.y = 1 + ((LINE_SPACING * 3) + (_height - (LINE_SPACING * 3)) * 0.5 - LINE_SPACING * 0.5 - TextBox.BORDER_ALLOWANCE) >> 0;
 			selectionCopyBitmap.x = selectionWindow.x;
 			selectionCopyBitmap.y = selectionWindow.y;
-			selectionWindowTaperNext = new Bitmap(new BitmapData(SELECTION_WINDOW_TAPER_WIDTH, LINE_SPACING, true, 0x0));
+			selectionWindowTaperNext = new Bitmap(new BitmapData((int)SELECTION_WINDOW_TAPER_WIDTH, (int)LINE_SPACING, true, 0x0));
 			selectionWindowTaperNext.x = selectionWindow.x + selectionWindow.width;
 			selectionWindowTaperNext.y = selectionWindow.y;
 			selectionWindowTaperPrevious = new Bitmap(new BitmapData(SELECTION_WINDOW_TAPER_WIDTH, LINE_SPACING, true, 0x0));
@@ -266,7 +266,8 @@ namespace com.robotacid.ui.menu {
 			selectText.alpha = 0;
 			addChild(selectText);
 			// movement arrows illustate where we can progress on the menu
-			movementMovieClips = new Vector.<MovieClip>(4, true);
+#if false
+			movementMovieClips = new Vector<MovieClip>(4, true);
 			for(i = 0; i < movementMovieClips.length; i++){
 				movementMovieClips[i] = new MenuArrowMC();
 				addChild(movementMovieClips[i]);
@@ -283,20 +284,21 @@ namespace com.robotacid.ui.menu {
 			movementMovieClips[LEFT_MOVE].x = selectionWindow.x;
 			movementMovieClips[LEFT_MOVE].y = 1 + (selectionWindow.y + selectionWindow.height * 0.5) >> 0;
 			movementMovieClips[LEFT_MOVE].rotation = -90;
+#endif
 			
 			addChild(help);
 			
 			if(trunk) setTrunk(trunk);
-		}
 #endif
+		}
 		
 		/* Overridden to perform actions the menu selects */
-		public void executeSelection(){
+		public virtual void executeSelection(){
 			
 		}
 		
 		/* Overridden to change states of options as selections change */
-		public void changeSelection(){
+		public virtual void changeSelection(){
 			if(currentMenuList.options.length == 0) return;
 			MenuOption option = currentMenuList.options[selection];
 #if false
@@ -987,9 +989,11 @@ namespace com.robotacid.ui.menu {
 				}
 			}
 		}
+#endif
 		
 		/* Update the bitmapdata for the selection window */
-		public function drawSelectionWindow():void{
+		public void drawSelectionWindow(){
+#if false
 			selectionWindow.bitmapData.fillRect(
 				new Rectangle(
 					selectionWindow.bitmapData.rect.x,
@@ -1011,8 +1015,8 @@ namespace com.robotacid.ui.menu {
 				selectionWindowTaperPrevious.bitmapData.setPixel32(SELECTION_WINDOW_TAPER_WIDTH - n, 0, c);
 				selectionWindowTaperPrevious.bitmapData.setPixel32(SELECTION_WINDOW_TAPER_WIDTH - n, selectionWindow.height - 1, c);
 			}
-		}
 #endif
+		}
 		
 		/* Short hand for calling select(currentMenuList.selection) - and more obvious */
 		public void update(){
@@ -1086,26 +1090,26 @@ namespace com.robotacid.ui.menu {
 			}
 			hotKeyOption.target = hotKeyMenuList
 		}
+#endif
 		
 		/* Initialise the glow on non visited options */
-		private function initNotVisitedCols():void{
-			NOT_VISITED_COLS = new Vector.<ColorTransform>();
-			var colSteps:Number = 30;
-			var step:Number = Math.PI / colSteps;
-			var colMax:Number = 100;
-			var colTransform:ColorTransform;
-			for(var i:int = 0; i < colSteps; i++){
-				colTransform = new ColorTransform(1, 1, 1, 1, colMax * Math.sin(step * i), colMax * Math.sin(step * i), colMax * Math.sin(step * i), colMax * Math.sin(step * i));
+		private void initNotVisitedCols(){
+			NOT_VISITED_COLS = new Vector<ColorTransform>();
+			double colSteps = 30;
+			double step = Math.PI / colSteps;
+			double colMax = 100;
+			ColorTransform colTransform;
+			for(int i = 0; i < colSteps; i++){
+				colTransform = new ColorTransform(1, 1, 1, 1, colMax * Math.Sin(step * i), colMax * Math.Sin(step * i), colMax * Math.Sin(step * i), colMax * Math.Sin(step * i));
 				NOT_VISITED_COLS.push(colTransform);
 			}
 		}
 		
 		/* Changes the name of a menu option associated with a key to a given keyCode */
-		private function changeKeyName(option:MenuOption, newKey:int):void{
-			var str:String = option.name.substr(0, option.name.indexOf(":") + 1) + Key.keyString(newKey);
+		private void changeKeyName(MenuOption option, int newKey){
+			String str = option.name.Substring(0, option.name.IndexOf(":") + 1) + Key.keyString((uint)newKey);
 			option.name = str;
 		}
-#endif
 		
 		/* Checks the branch array for the presence of a MenuList */
 		public bool listInBranch(MenuList list) {

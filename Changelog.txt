@@ -1,3 +1,8 @@
+2013-08-30  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	Console.cs追加、key入力のeventを実行するように
+
 2013-08-27  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

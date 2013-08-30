@@ -30,6 +30,7 @@ using flash.events;
 ///import flash.events.KeyboardEvent;
 ///import flash.ui.Keyboard;
 using flash;
+using redroguecs;
 
 namespace com.robotacid.ui {
 	
@@ -100,8 +101,8 @@ namespace com.robotacid.ui {
                 stage = _stage;
 				
 				// assign listeners for key presses and deactivation of the player
-                stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
-                stage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
+//FIXME:				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+//				stage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
                 stage.addEventListener(Event.DEACTIVATE, (Action1<Event>)clearKeys);
 				
 				// init key logger
@@ -119,7 +120,8 @@ namespace com.robotacid.ui {
         * custom key index is being pressed
         */
         public static Boolean customDown(int index) {
-            return !lockOut && custom != null && (keysDown[custom[index]]);
+            //return !lockOut && custom != null && (keysDown[custom[index]]);
+			return !lockOut && custom != null && (isDown(custom[index]));
         }
 		
         /**
@@ -127,7 +129,8 @@ namespace com.robotacid.ui {
         * keyCode passed is being pressed
         */
         public static Boolean isDown(int keyCode) {
-            return !lockOut && (keysDown[keyCode]);
+            //return !lockOut && (keysDown[keyCode]);
+			return !lockOut && ( GameFrameworkRedRogueCs.Instance.convertKeyDown(keyCode) );
         }
 		
 		/* Tests whether a pattern of key codes matches the recent key log
@@ -143,8 +146,8 @@ namespace com.robotacid.ui {
         private static void keyPressed(KeyboardEvent _event) {
             // create a property in keysDown with the name of the keyCode
 			//if(!Boolean(keysDown[_event.keyCode])) keysPressed++;
-			if(!(keysDown[_event.keyCode])) keysPressed++;
-            keysDown[_event.keyCode] = true;
+//			if(!(keysDown[_event.keyCode])) keysPressed++;
+//			keysDown[_event.keyCode] = true;
 			
 			keyLog.shift();
 			keyLog[KEY_LOG_LENGTH - 1] = _event.keyCode;
@@ -154,6 +157,7 @@ namespace com.robotacid.ui {
         /**
         * Event handler for capturing keys being released
         */
+#if false	// not in use
         private static void keyReleased(KeyboardEvent _event) {
             keysDown[_event.keyCode] = false;
 			if(keysPressed > 0) keysPressed--;
@@ -162,6 +166,7 @@ namespace com.robotacid.ui {
 				clearKeys();
 			}
         }
+#endif
 		
         /**
         * Event handler for Flash Player deactivation
