@@ -52,6 +52,10 @@ namespace flash.display
 			//FIXME:	
         }
 
+		public void draw(IBitmapDrawable source, Matrix matrix = null, ColorTransform colorTransform = null, String blendMode = null, Rectangle clipRect = null, Boolean smoothing = false)	{
+			//FIXME:	
+		}
+
         public void fillRect(Rectangle rect, uint color) {
 			//FIXME:	
         }

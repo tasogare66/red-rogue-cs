@@ -105,6 +105,11 @@
     <Compile Include="src\com\robotacid\ui\menu\GameMenu.cs" />
     <Compile Include="src\com\robotacid\ui\menu\MenuInfo.cs" />
     <Compile Include="src\com\robotacid\ui\Console.cs" />
+    <Compile Include="src\flash\Shape.cs" />
+    <Compile Include="src\com\robotacid\gfx\CaptureBitmap.cs" />
+    <Compile Include="src\flash\Matrix.cs" />
+    <Compile Include="src\flash\IBitmapDrawable.cs" />
+    <Compile Include="src\flash\Graphics.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -129,6 +134,7 @@
     <Folder Include="src\com\robotacid\engine\" />
     <Folder Include="src\com\robotacid\phys\" />
     <Folder Include="src\flash\" />
+    <Folder Include="src\com\robotacid\gfx\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

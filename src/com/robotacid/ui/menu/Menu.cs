@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using redroguecs;
 
-///import com.robotacid.gfx.BlitRect;
+using com.robotacid.gfx;
 ///import com.robotacid.gfx.CaptureBitmap;
 ///import com.robotacid.gfx.DebrisFX;
 ///import com.robotacid.sound.SoundManager;
@@ -66,7 +66,7 @@ namespace com.robotacid.ui.menu {
 		public TextBox currentTextBox;
 		public TextBox nextTextBox;
 		public TextBox infoTextBox;
-///		public CaptureBitmap capture;
+		public CaptureBitmap capture;
 		public Bitmap selectionCopyBitmap;
 		public TextBox selectText;
 		
@@ -94,7 +94,7 @@ namespace com.robotacid.ui.menu {
 		public double _width;
 		public double _height;
 		
-///		public var maskShape:Shape;
+		public Shape maskShape;
 		
 		// animation and key states - move delay is consistent through all menus
 		public bool keyLock;
@@ -162,7 +162,6 @@ namespace com.robotacid.ui.menu {
 		public static readonly int LEFT_MOVE = 3;
 		
 		public Menu(double width, double height, MenuList trunk = null){
-#if false
 			_width = width;
 			_height = height;
 			
@@ -187,7 +186,8 @@ namespace com.robotacid.ui.menu {
 			hotKeyDown = new Vector<Boolean>();
 			for(i = 0; i < Key.hotKeyTotal; i++){
 				hotKeyMaps.push(null);
-				hotKeyDown[i] = false;
+				//hotKeyDown[i] = false;
+				hotKeyDown.push(false);
 			}
 			
 			// create a mask to contain the menu
@@ -203,8 +203,8 @@ namespace com.robotacid.ui.menu {
 			// create TextBoxes to render the current state of the menu
 			textHolder = new Sprite();
 			addChild(textHolder);
-			textHolder.x = (-LIST_WIDTH * 0.5 + _width * 0.5) >> 0;
-			textHolder.y = ((LINE_SPACING * 3) + (_height - (LINE_SPACING * 3)) * 0.5 - LINE_SPACING * 0.5) >> 0;
+			textHolder.x = (int)(-LIST_WIDTH * 0.5 + _width * 0.5);
+			textHolder.y = (int)((LINE_SPACING * 3) + (_height - (LINE_SPACING * 3)) * 0.5 - LINE_SPACING * 0.5);
 			
 			previousTextBox = new TextBox(LIST_WIDTH, 1 + LINE_SPACING + TextBox.BORDER_ALLOWANCE * 2, BACKGROUND_COL, BORDER_COL);
 			previousTextBox.alpha = 0.7;
@@ -243,13 +243,13 @@ namespace com.robotacid.ui.menu {
 			selectionCopyBitmap = new Bitmap(selectionWindow.bitmapData.clone());
 			selectionCopyBitmap.visible = false;
 			selectionWindow.x = -selectionWindow.width * 0.5 + _width * 0.5;
-			selectionWindow.y = 1 + ((LINE_SPACING * 3) + (_height - (LINE_SPACING * 3)) * 0.5 - LINE_SPACING * 0.5 - TextBox.BORDER_ALLOWANCE) >> 0;
+			selectionWindow.y = 1 + (int)((LINE_SPACING * 3) + (_height - (LINE_SPACING * 3)) * 0.5 - LINE_SPACING * 0.5 - TextBox.BORDER_ALLOWANCE) >> 0;
 			selectionCopyBitmap.x = selectionWindow.x;
 			selectionCopyBitmap.y = selectionWindow.y;
 			selectionWindowTaperNext = new Bitmap(new BitmapData((int)SELECTION_WINDOW_TAPER_WIDTH, (int)LINE_SPACING, true, 0x0));
 			selectionWindowTaperNext.x = selectionWindow.x + selectionWindow.width;
 			selectionWindowTaperNext.y = selectionWindow.y;
-			selectionWindowTaperPrevious = new Bitmap(new BitmapData(SELECTION_WINDOW_TAPER_WIDTH, LINE_SPACING, true, 0x0));
+			selectionWindowTaperPrevious = new Bitmap(new BitmapData((int)SELECTION_WINDOW_TAPER_WIDTH, (int)LINE_SPACING, true, 0x0));
 			selectionWindowTaperPrevious.x = selectionWindow.x - selectionWindowTaperPrevious.width;
 			selectionWindowTaperPrevious.y = selectionWindow.y;
 			drawSelectionWindow();
@@ -288,8 +288,7 @@ namespace com.robotacid.ui.menu {
 			
 			addChild(help);
 			
-			if(trunk) setTrunk(trunk);
-#endif
+			if(trunk != null) setTrunk(trunk);
 		}
 		
 		/* Overridden to perform actions the menu selects */

@@ -15,7 +15,6 @@ namespace com.robotacid.ui.menu {
 	 */
 	public class TitleMenu : Menu {
 		
-#if true
 		private GameMenu gameMenu;
 		
 		public MenuList newGameList;
@@ -215,7 +214,6 @@ namespace com.robotacid.ui.menu {
 			game.reset(newGame);
 			game.menuCarousel.deactivate();
 		}
-#endif
 	}
 
 }

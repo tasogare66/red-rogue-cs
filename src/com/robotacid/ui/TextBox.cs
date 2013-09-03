@@ -420,7 +420,8 @@ namespace com.robotacid.ui {
 				int offset;
 				for(int i = 0; i < lineWidths.length; i++){
 					offset = (_width - BORDER_ALLOWANCE * 2) - lineWidths[i];
-					marqueeLines[i] = offset < 0 ? new TextBoxMarquee(offset) : null;
+					//marqueeLines[i] = offset < 0 ? new TextBoxMarquee(offset) : null;
+					marqueeLines.push( offset < 0 ? new TextBoxMarquee(offset) : null );
 				}
 			}
 		}
