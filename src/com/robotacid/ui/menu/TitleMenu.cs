@@ -73,7 +73,7 @@ namespace com.robotacid.ui.menu {
 			if(continuing){
 				select(1);
 			}
-///			help.text = currentMenuList.options[selection].help;
+			help.text = currentMenuList.options[selection].help;
 		}
 		
 		override public void changeSelection(){

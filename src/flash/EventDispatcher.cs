@@ -9,7 +9,8 @@ namespace flash.events
         public Action1<Event> addedToStageActions;
         public Action1<Event> enterFrameActions;
 
-        public void addEventListener(string type, Action1<Event>  action) {
+		//FIXME:第3引数以降の設定対応	
+        public void addEventListener(string type, Action1<Event>  action, Boolean useCapture = false, int priority = 0, Boolean useWeakReference = false) {
             switch(type) {
                 case Event.DEACTIVATE:
                     deactivateActions += action;
@@ -32,7 +33,7 @@ namespace flash.events
         public Action1<MouseEvent> mouseMoveActions;
         public Action1<MouseEvent> mouseUpActions;
 
-        public void addEventListener(string type, Action1<MouseEvent>  action) {
+        public void addEventListener(string type, Action1<MouseEvent>  action, Boolean useCapture = false, int priority = 0, Boolean useWeakReference = false) {
             switch(type) {
                 case MouseEvent.MOUSE_DOWN:
                     mouseDownActions += action;
@@ -51,7 +52,7 @@ namespace flash.events
         public Action1<KeyboardEvent> keyDownActions;
         public Action1<KeyboardEvent> keyUpActions;
 
-        public void addEventListener(string type, Action1<KeyboardEvent>  action) {
+        public void addEventListener(string type, Action1<KeyboardEvent>  action, Boolean useCapture = false, int priority = 0, Boolean useWeakReference = false) {
             switch(type) {
                 case KeyboardEvent.KEY_DOWN:
                     keyDownActions += action;

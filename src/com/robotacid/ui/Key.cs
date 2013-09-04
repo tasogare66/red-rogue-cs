@@ -28,7 +28,7 @@ using System;
 using flash.display;
 using flash.events;
 ///import flash.events.KeyboardEvent;
-///import flash.ui.Keyboard;
+using flash.ui;
 using flash;
 using redroguecs;
 

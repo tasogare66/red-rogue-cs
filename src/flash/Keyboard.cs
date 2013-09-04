@@ -1,4 +1,4 @@
-﻿namespace flash
+﻿namespace flash.ui
 {
     /// Basic implementation of the flash Keyboard class.
     public static class Keyboard {

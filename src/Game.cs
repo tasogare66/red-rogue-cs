@@ -57,7 +57,7 @@ using flash.geom;
 ///import flash.media.Sound;
 ///import flash.net.SharedObject;
 ///import flash.text.TextField;
-///import flash.ui.Keyboard;
+using flash.ui;
 ///import flash.ui.Mouse;
 ///import flash.utils.ByteArray;
 ///import flash.utils.getTimer;

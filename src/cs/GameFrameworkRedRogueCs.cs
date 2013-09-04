@@ -192,12 +192,12 @@ namespace redroguecs
 		{
 			GamePadButtons mask = 0;
 			switch( keyCode ){
-			case flash.Keyboard.SPACE:
+			case flash.ui.Keyboard.SPACE:
 				mask = GamePadButtons.Circle;
 				break;
-			case flash.Keyboard.CONTROL:
-			case flash.Keyboard.SHIFT:
-			case flash.Keyboard.ENTER:
+			case flash.ui.Keyboard.CONTROL:
+			case flash.ui.Keyboard.SHIFT:
+			case flash.ui.Keyboard.ENTER:
 				//FIXME:	
 				break;
 			default:

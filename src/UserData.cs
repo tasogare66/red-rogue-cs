@@ -15,7 +15,7 @@ using com.robotacid.util;
 ///import com.robotacid.ui.FileManager;
 ///import flash.net.navigateToURL;
 ///import flash.net.URLRequest;
-///import flash.ui.Keyboard;
+using flash.ui;
 ///import flash.net.SharedObject;
 ///import flash.utils.ByteArray;
 using flash;
