@@ -22,7 +22,20 @@ using flash;
 
 namespace redroguecs {
 
+	public class Player	{
+///		previousLevel:Map.OVERWORLD;
+///		previousPortalType:Portal.STAIRS;
+///		previousMapType:Map.AREA;
+///		currentLevel:1;
+///		currentMapType:Map.MAIN_DUNGEON;
+		public XML xml = null;
+///		health:0;
+///		xp:0;
+		public bool keyItem = false;
+	}
+
 	public class GameState {
+		public Player player = new Player();
 		public uint randomSeed = XorRandom.seedFromDate();
 		public bool husband = false;
 

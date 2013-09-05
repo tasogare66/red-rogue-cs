@@ -110,6 +110,7 @@
     <Compile Include="src\flash\Matrix.cs" />
     <Compile Include="src\flash\IBitmapDrawable.cs" />
     <Compile Include="src\flash\Graphics.cs" />
+    <Compile Include="src\com\robotacid\sound\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -135,6 +136,7 @@
     <Folder Include="src\com\robotacid\phys\" />
     <Folder Include="src\flash\" />
     <Folder Include="src\com\robotacid\gfx\" />
+    <Folder Include="src\com\robotacid\sound\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

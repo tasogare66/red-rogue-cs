@@ -1,4 +1,9 @@
-2013-09-03  tasogare66 <tasogare66@gmail.com>
+2013-09-06  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	TitleMenu.cs コンパイル通るように
+
+2013-09-05  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
 	Dialog.cs コンパイル通るように

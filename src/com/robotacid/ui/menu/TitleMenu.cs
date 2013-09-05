@@ -1,10 +1,9 @@
 using System;
 using redroguecs;
 
-///import com.robotacid.level.Map;
-///import com.robotacid.sound.SoundManager;
+using com.robotacid.level;
+using com.robotacid.sound;
 ///import com.robotacid.ui.Dialog;
-///import flash.display.StageScaleMode;
 ///import flash.system.Capabilities;
 
 namespace com.robotacid.ui.menu {
@@ -82,8 +81,7 @@ namespace com.robotacid.ui.menu {
 			
 			MenuOption option = currentMenuList.options[selection];
 			
-#if false
-			if(parent && option.help){
+			if(parent != null && !String.IsNullOrEmpty(option.help)){
 				help.text = option.help;
 			}
 			
@@ -100,26 +98,25 @@ namespace com.robotacid.ui.menu {
 				gameMenu.onOffOption.state = Game.fullscreenOn ? 0 : 1;
 				renderMenu();
 				
-			} else if(nextMenuList && nextMenuList == gameMenu.sureList){
+			} else if(nextMenuList != null && nextMenuList == gameMenu.sureList){
 				// make sure that visiting the sure list always defaults to NO
 				gameMenu.sureList.selection = GameMenu.NO;
 				renderMenu();
 				
 			}
-#endif
 		}
 		
 		override public void executeSelection() {
-#if false
 			MenuOption option = currentMenuList.options[selection];
 			if(currentMenuList == gameMenu.sureList && currentMenuList.selection == GameMenu.YES){
 				// erasing the shared object
 				if(previousMenuList.options[previousMenuList.selection] == gameMenu.resetOption){
-					if(!Game.dialog){
+					if(Game.dialog == null){
 						Game.dialog = new Dialog(
 							"reset",
 							"are you sure you want to reset all of your settings? this cannot be undone.",
-							function():void{gameMenu.reset(true)},
+							//function():void{gameMenu.reset(true)},
+							delegate(){ gameMenu.reset(true); },
 							Dialog.emptyCallback
 						);
 					}
@@ -133,10 +130,10 @@ namespace com.robotacid.ui.menu {
 				} else if(previousMenuList.options[previousMenuList.selection].name == "music"){
 					if(SoundManager.music){
 						SoundManager.turnOffMusic();
-						if(SoundManager.soundLoops["underworldMusic2"]) SoundManager.stopSound("underworldMusic2");
+///						if(SoundManager.soundLoops["underworldMusic2"]) SoundManager.stopSound("underworldMusic2");
 					} else {
 						SoundManager.turnOnMusic();
-						if(game.map && game.map.type == Map.AREA && game.map.level == Map.UNDERWORLD){
+						if(game.map != null && game.map.type == Map.AREA && game.map.level == Map.UNDERWORLD){
 							SoundManager.fadeLoopSound("underworldMusic2");
 						}
 					}
@@ -145,10 +142,11 @@ namespace com.robotacid.ui.menu {
 				} else if(previousMenuList.options[previousMenuList.selection].name == "fullscreen"){
 					if(gameMenu.onOffOption.state == 1){
 						Game.fullscreenOn = true;
+#if false
 						if(Capabilities.playerType == "StandAlone"){
 							gameMenu.fullscreen();
 						} else {
-							if(!Game.dialog){
+							if(Game.dialog == null){
 								Game.dialog = new Dialog(
 									"activate fullscreen",
 									"flash's security restrictions require you to press the menu key to continue\n\nThese restrictions also limit keyboard input to cursor keys and space. Press Esc to exit fullscreen.",
@@ -156,6 +154,7 @@ namespace com.robotacid.ui.menu {
 								);
 							}
 						}
+#endif
 					} else {
 						Game.fullscreenOn = false;
 						stage.displayState = "normal";
@@ -178,24 +177,26 @@ namespace com.robotacid.ui.menu {
 				launchGame(false, game.dogmaticMode);
 				
 			} else if(option == actionRPGOption){
-				if(UserData.gameState.player.xml){
-					if(!Game.dialog){
+				if(UserData.gameState.player.xml != null){
+					if(Game.dialog == null){
 						Game.dialog = new Dialog(
 							"new game",
 							"you have a game in progress\nare you sure you want to start from level 1?",
-							function():void{launchGame(true, false);},
+							//function():void{launchGame(true, false);},
+							delegate(){ launchGame(true, false); },
 							Dialog.emptyCallback
 						);
 					}
 				} else launchGame(true, false);
 				
 			} else if(option == dogmaticOption){
-				if(UserData.gameState.player.xml){
-					if(!Game.dialog){
+				if(UserData.gameState.player.xml != null){
+					if(Game.dialog == null){
 						Game.dialog = new Dialog(
 							"new game",
 							"you have a game in progress\nare you sure you want to start from level 1?",
-							function():void{launchGame(true, true);},
+							//function():void{launchGame(true, true);},
+							delegate(){ launchGame(true, true); },
 							Dialog.emptyCallback
 						);
 					}
@@ -205,7 +206,6 @@ namespace com.robotacid.ui.menu {
 				gameMenu.copyRngSeed();
 				
 			}
-#endif
 		}
 		
 		private void launchGame(Boolean newGame, Boolean dogmaticMode){
