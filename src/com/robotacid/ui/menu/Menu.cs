@@ -6,7 +6,7 @@ using redroguecs;
 using com.robotacid.gfx;
 ///import com.robotacid.gfx.CaptureBitmap;
 ///import com.robotacid.gfx.DebrisFX;
-///import com.robotacid.sound.SoundManager;
+using com.robotacid.sound;
 ///import com.robotacid.ui.Key;
 ///import com.robotacid.ui.TextBox;
 ///import flash.display.Bitmap;
@@ -15,13 +15,13 @@ using com.robotacid.gfx;
 ///import flash.display.MovieClip;
 ///import flash.display.Shape;
 using flash.display;
-///import flash.events.Event;
+using flash.events;
 using flash.geom;
-///import flash.geom.Matrix;
+using Matrix = flash.geom.Matrix;
 ///import flash.geom.Point;
 ///import flash.geom.Rectangle;
 ///import flash.text.TextLineMetrics;
-///import flash.ui.Keyboard;
+using flash.ui;
 using flash;
 
 namespace com.robotacid.ui.menu {
@@ -300,11 +300,9 @@ namespace com.robotacid.ui.menu {
 		public virtual void changeSelection(){
 			if(currentMenuList.options.length == 0) return;
 			MenuOption option = currentMenuList.options[selection];
-#if false
-			if(parent && option.help){
+			if(parent != null && !String.IsNullOrEmpty(option.help)){
 				help.text = option.help;
 			}
-#endif
 		}
 		
 		/* The trunk is MenuList 0. All options and lists branch outwards like a tree
@@ -541,8 +539,7 @@ namespace com.robotacid.ui.menu {
 			}
 		}
 		
-#if false
-		private function animateUp():void{
+		private void animateUp(){
 			//if((dir & UP) && moveReset > 2) moveReset--;
 			
 			// capture the next menu
@@ -554,7 +551,7 @@ namespace com.robotacid.ui.menu {
 			nextAlphaStep = SIDE_ALPHAS / moveReset;
 			captureAlphaStep = -SIDE_ALPHAS / moveReset;
 			
-			var currentY:Number = currentTextBox.y;
+			double currentY = currentTextBox.y;
 			select(selection - 1);
 			vy = (currentTextBox.y - currentY) / moveReset;
 			currentTextBox.y = currentY;
@@ -565,7 +562,7 @@ namespace com.robotacid.ui.menu {
 			dir &= ~DOWN;
 		}
 		
-		private function animateDown():void{
+		private void animateDown(){
 			//if((dir & DOWN) && moveReset > 2) moveReset--;
 			
 			// capture the next menu
@@ -577,7 +574,7 @@ namespace com.robotacid.ui.menu {
 			nextAlphaStep = SIDE_ALPHAS / moveReset;
 			captureAlphaStep = -SIDE_ALPHAS / moveReset;
 			
-			var currentY:Number = currentTextBox.y;
+			double currentY = currentTextBox.y;
 			select(selection + 1);
 			vy = (currentTextBox.y - currentY) / moveReset;
 			currentTextBox.y = currentY;
@@ -588,8 +585,8 @@ namespace com.robotacid.ui.menu {
 			dir &= ~UP;
 		}
 		
-		private function animateRight():void{
-			if(nextMenuList){
+		private void animateRight(){
+			if(nextMenuList != null){
 				if(nextMenuList.accessible){
 					// capture the previous menu
 					capture.capture(previousTextBox);
@@ -600,7 +597,7 @@ namespace com.robotacid.ui.menu {
 					previousTextBox.x += LIST_WIDTH;
 					currentTextBox.x += LIST_WIDTH;
 					nextTextBox.x += LIST_WIDTH;
-					if(nextMenuList){
+					if(nextMenuList != null){
 						infoTextBox.x += LIST_WIDTH;
 						infoTextBox.alpha = 0;
 					}
@@ -620,14 +617,14 @@ namespace com.robotacid.ui.menu {
 			// initialise and launch menu selection animation
 			} else {
 				// capture an image of the current menu state
-				capture.capture(textHolder, new Matrix(1, 0, 0, 1, textHolder.x, textHolder.y), _width, _height);
+				capture.capture(textHolder, new Matrix(1, 0, 0, 1, textHolder.x, textHolder.y), (int)_width, (int)_height);
 				capture.x = -textHolder.x;
 				capture.y = -textHolder.y;
 				capture.alpha = 1;
 				capture.visible = true;
 				
 				// copy, brighten, then erase the text of the selected item
-				var selectionWindowRect:Rectangle = new Rectangle(selectionWindow.x, selectionWindow.y, selectionWindow.width, selectionWindow.height);
+				Rectangle selectionWindowRect = new Rectangle(selectionWindow.x, selectionWindow.y, selectionWindow.width, selectionWindow.height);
 				selectionCopyBitmap.bitmapData.copyPixels(capture.bitmapData, selectionWindowRect, new Point());
 				capture.bitmapData.fillRect(selectionWindowRect, 0x0);
 				selectionCopyBitmap.visible = true;
@@ -657,7 +654,7 @@ namespace com.robotacid.ui.menu {
 			dir &= ~LEFT;
 		}
 		
-		private function animateLeft():void{
+		private void animateLeft(){
 			// capture the next menu
 			if(infoTextBox.visible){
 				capture.capture(infoTextBox);
@@ -692,8 +689,10 @@ namespace com.robotacid.ui.menu {
 		
 		/* We listen for key input here, the keyLock property is used to stop the menu
 		 * endlessly firing the same selection */
-		public function main(e:Event = null):void{
-			var i:int, j:int, newKey:int, inputList:MenuInputList, menuInfo:MenuInfo
+		public void main(Event e = null){
+			int i, j, newKey;
+			MenuInputList inputList;
+			MenuInfo menuInfo = null;
 			
 			// handle menu opening animation
 			if(help.y < 0){
@@ -708,12 +707,12 @@ namespace com.robotacid.ui.menu {
 			// if we are listening for input:
 			if(currentMenuList is MenuInputList){
 				inputList = currentMenuList as MenuInputList;
-				if(Key.keysPressed){
+				if(Key.keysPressed != 0){
 					if(!inputKeyPressed){
 						newKey = Key.keyLog[Key.KEY_LOG_LENGTH - 1];
 						if(inputList.newLineFinish && newKey == Keyboard.ENTER) inputList.finish();
 						else if(newKey == Keyboard.DELETE || newKey == Keyboard.BACKSPACE) inputList.removeChar();
-						else inputList.addChar(Key.keyString(newKey));
+						else inputList.addChar(Key.keyString((uint)newKey));
 						inputKeyPressed = true;
 						renderMenu();
 					}
@@ -725,7 +724,7 @@ namespace com.robotacid.ui.menu {
 			}
 			// if the keyChanger is active, listen for keys to change the current key set
 			if(!keyLock && currentMenuList == keyChanger){
-				if(Key.keysPressed){
+				if(Key.keysPressed != 0){
 					// ignore cursor keys - some idiot will try to brick the menu for themselves
 					if(!(Key.isDown(Keyboard.UP) || Key.isDown(Keyboard.RIGHT) || Key.isDown(Keyboard.DOWN) || Key.isDown(Keyboard.LEFT))){
 						newKey = Key.keyLog[Key.KEY_LOG_LENGTH - 1];
@@ -744,9 +743,9 @@ namespace com.robotacid.ui.menu {
 			}
 			// track hot keys so they can instantly perform menu actions
 			// hot keys are accessible only when the keyLock is off or the menu is hidden
-			if((parent && !keyLock) || !parent){
+			if((parent != null && !keyLock) || parent == null){
 				for(i = 0; i < Key.hotKeyTotal; i++){
-					if(hotKeyMaps[i]){
+					if(hotKeyMaps[i] != null){
 						if(Key.customDown(HOT_KEY_OFFSET + i)){
 							if(!hotKeyDown[i]){
 								hotKeyMaps[i].execute();
@@ -761,11 +760,11 @@ namespace com.robotacid.ui.menu {
 				}
 			}
 			// load key inputs into a single variable
-			var lastKeysDown:int = keysDown;
+			int lastKeysDown = keysDown;
 			keysDown = 0;
-			if(Key.keysPressed){
+			if(Key.keysPressed != 0){
 				// bypass reading keys if the menu is not on the display list
-				if(parent){
+				if(parent != null){
 					if(!keyLock){
 						
 						if(
@@ -808,8 +807,8 @@ namespace com.robotacid.ui.menu {
 				} else {
 					keyLock = true;
 				}
-				if(lastKeysDown & keysDown){
-					if(keysHeldCount) keysHeldCount--;
+				if(lastKeysDown != 0 & keysDown != 0){
+					if(keysHeldCount != 0) keysHeldCount--;
 				}
 			} else {
 				keyLock = false;
@@ -820,8 +819,8 @@ namespace com.robotacid.ui.menu {
 			}
 			// load directions in - keys are locked out of new input unless held down till
 			// keysHeldCount reaches zero - then fast browsing is activated
-			if(keysDown){
-				if(!(keysDown & keysLocked)){
+			if(keysDown != 0){
+				if(!(keysDown != 0 & keysLocked != 0)){
 					dirStack.push(keysDown);
 					keysLocked |= keysDown;
 				} else if(keysHeldCount == 0 && moveCount == 0){
@@ -830,7 +829,7 @@ namespace com.robotacid.ui.menu {
 			}
 				
 			// animate marquees and movement guides
-			if(parent){
+			if(parent != null){
 				if(dir == 0 && dirStack.length == 0){
 					if(previousTextBox.visible){
 						previousTextBox.updateMarquee();
@@ -845,7 +844,9 @@ namespace com.robotacid.ui.menu {
 						setLineCols(nextMenuList, nextTextBox);
 					}
 					if(infoTextBox.visible){
-						menuInfo = (nextMenuList as MenuInfo) || (currentMenuList as MenuInfo);
+						//menuInfo = (nextMenuList as MenuInfo) || (currentMenuList as MenuInfo);
+						menuInfo = (nextMenuList as MenuInfo);
+						if( menuInfo == null ) menuInfo = (currentMenuList as MenuInfo);
 						if(menuInfo.update){
 							menuInfo.renderCallback();
 						} else {
@@ -856,21 +857,21 @@ namespace com.robotacid.ui.menu {
 					notVistitedColFrame++;
 					if(notVistitedColFrame >= NOT_VISITED_COLS.length) notVistitedColFrame = 0;
 					
-					if(movementGuideCount){
+					if(movementGuideCount != 0){
 						if(currentMenuList != keyChanger && !(currentMenuList is MenuInputList)) movementGuideCount--;
 						if(movementGuideCount == 0){
-							for(i = 0; i < movementMovieClips.length; i++) movementMovieClips[i].gotoAndPlay(1);
+///							for(i = 0; i < movementMovieClips.length; i++) movementMovieClips[i].gotoAndPlay(1);
 						}
 					} else {
-						movementMovieClips[UP_MOVE].visible = currentMenuList.selection > 0;
-						movementMovieClips[DOWN_MOVE].visible = currentMenuList.selection < currentMenuList.options.length - 1;
-						movementMovieClips[RIGHT_MOVE].visible = currentMenuList.options.length && currentMenuList.options[selection].active && !(nextMenuList && !nextMenuList.accessible);
-						movementMovieClips[LEFT_MOVE].visible = Boolean(previousMenuList);
+///						movementMovieClips[UP_MOVE].visible = currentMenuList.selection > 0;
+///						movementMovieClips[DOWN_MOVE].visible = currentMenuList.selection < currentMenuList.options.length - 1;
+///						movementMovieClips[RIGHT_MOVE].visible = currentMenuList.options.length && currentMenuList.options[selection].active && !(nextMenuList && !nextMenuList.accessible);
+///						movementMovieClips[LEFT_MOVE].visible = Boolean(previousMenuList);
 					}
 					if(
-						currentMenuList.options.length &&
+						currentMenuList.options.length != 0 &&
 						currentMenuList.options[selection].active &&
-						!nextMenuList &&
+						nextMenuList == null &&
 						!(currentMenuList is MenuInputList) &&
 						selectText.alpha < 1
 					){
@@ -878,40 +879,40 @@ namespace com.robotacid.ui.menu {
 					}
 				} else {
 					movementGuideCount = MOVEMENT_GUIDE_DELAY;
-					for(i = 0; i < movementMovieClips.length; i++) movementMovieClips[i].visible = false;
+///					for(i = 0; i < movementMovieClips.length; i++) movementMovieClips[i].visible = false;
 					selectText.alpha = 0;
 				}
 			}
 			// check if there are directions loaded into the dirStack
 			if(dir == 0){
 				do{
-					if(dirStack.length){
+					if(dirStack.length != 0){
 						dir = dirStack.shift();
-						if((dir & UP) && selection > 0) animateUp();
-						else if((dir & DOWN) && selection < currentMenuList.options.length - 1) animateDown();
+						if((dir & UP) != 0 && selection > 0) animateUp();
+						else if((dir & DOWN) != 0 && selection < currentMenuList.options.length - 1) animateDown();
 						else if(
-							(dir & RIGHT) &&
+							(dir & RIGHT) != 0 &&
 							(
-								currentMenuList.options.length &&
-								!(nextMenuList && !nextMenuList.accessible) && (
-									(hotKeyMapRecord && currentMenuList.options[selection].recordable) ||
-									(!hotKeyMapRecord && currentMenuList.options[selection].active)
+								currentMenuList.options.length != 0 &&
+								!(nextMenuList != null && !nextMenuList.accessible) && (
+									(hotKeyMapRecord != null && currentMenuList.options[selection].recordable) ||
+									(hotKeyMapRecord == null && currentMenuList.options[selection].active)
 								)
 							)
 						){
 							animateRight();
 						}
-						else if((dir & LEFT) && previousMenuList) animateLeft();
+						else if((dir & LEFT) != 0 && previousMenuList != null) animateLeft();
 						else {
 							// illegal move
 							dir = 0;
 						}
 						// mark option visited
-						if(currentMenuList.options.length) currentMenuList.options[currentMenuList.selection].visited = true;
+						if(currentMenuList.options.length != 0) currentMenuList.options[currentMenuList.selection].visited = true;
 						
 					} else break;
 				} while(dir == 0);
-				if(dir) moveCount = moveReset;
+				if(dir != 0) moveCount = moveReset;
 				
 			// animate the menu
 			} else {
@@ -929,14 +930,14 @@ namespace com.robotacid.ui.menu {
 					}
 				} else {
 					// browsing animation
-					if(moveCount){
-						if(dir & (UP | DOWN)){
+					if(moveCount != 0){
+						if((dir & (UP | DOWN)) != 0){
 							currentTextBox.y += vy;
 							nextTextBox.alpha += nextAlphaStep;
 							infoTextBox.alpha += nextAlphaStep;
 							capture.alpha += captureAlphaStep;
 						}
-						if(dir & (RIGHT | LEFT)){
+						if((dir & (RIGHT | LEFT)) != 0){
 							previousTextBox.x += vx;
 							currentTextBox.x += vx;
 							nextTextBox.x += vx;
@@ -949,9 +950,11 @@ namespace com.robotacid.ui.menu {
 							capture.alpha += captureAlphaStep;
 							
 							if(infoTextBox.visible){
-								menuInfo = (currentMenuList as MenuInfo) || (nextMenuList as MenuInfo);
-								if(menuInfo == currentMenuList || (menuInfo == nextMenuList && (dir & LEFT))){
-									infoTextBox.setSize(infoTextBox.width - vx, infoTextBox.height);
+								//menuInfo = (currentMenuList as MenuInfo) || (nextMenuList as MenuInfo);
+								menuInfo = (currentMenuList as MenuInfo);
+								if( menuInfo == null ) menuInfo = (nextMenuList as MenuInfo);
+								if(menuInfo == currentMenuList || (menuInfo == nextMenuList && (dir & LEFT) != 0)){
+									infoTextBox.setSize((int)(infoTextBox.width - vx), (int)infoTextBox.height);
 								}
 							}
 						}
@@ -970,16 +973,16 @@ namespace com.robotacid.ui.menu {
 							capture.alpha = 0;
 							dir = 0;
 							// reduce the animation time when holding down keys for fast browsing
-							if(keysDown && keysHeldCount == 0){
+							if(keysDown != 0 && keysHeldCount == 0){
 								if(moveReset > 1) moveReset--;
 							} else {
 								moveReset = moveDelay;
 							}
-							if(menuInfo){
+							if(menuInfo != null){
 								if(currentMenuList == menuInfo){
-									infoTextBox.setSize(INFO_TEXT_BOX_WIDTH + LIST_WIDTH, infoTextBox.height);
+									infoTextBox.setSize((int)(INFO_TEXT_BOX_WIDTH + LIST_WIDTH), (int)infoTextBox.height);
 								} else if(nextMenuList == menuInfo){
-									infoTextBox.setSize(INFO_TEXT_BOX_WIDTH, infoTextBox.height);
+									infoTextBox.setSize((int)INFO_TEXT_BOX_WIDTH, (int)infoTextBox.height);
 								}
 							}
 							update();
@@ -988,7 +991,6 @@ namespace com.robotacid.ui.menu {
 				}
 			}
 		}
-#endif
 		
 		/* Update the bitmapdata for the selection window */
 		public void drawSelectionWindow(){
@@ -1038,25 +1040,24 @@ namespace com.robotacid.ui.menu {
 			if(parent != null) parent.removeChild(this);
 		}
 		
-#if false
 		/* Inits a MenuOption that leads to a MenuList offering the ability to redefine keys. */
-		public function initChangeKeysMenuOption():void{
-			var keyChangerOption:MenuOption = new MenuOption("no key data");
-			var keyChangerOptions:Vector.<MenuOption> = new Vector.<MenuOption>();
+		public void initChangeKeysMenuOption(){
+			MenuOption keyChangerOption = new MenuOption("no key data");
+			Vector<MenuOption> keyChangerOptions = new Vector<MenuOption>();
 			keyChangerOptions.push(keyChangerOption);
 			keyChanger = new MenuList(keyChangerOptions);
 			
-			var changeKeysMenuOptions:Vector.<MenuOption> = new Vector.<MenuOption>();
-			changeKeysMenuOptions.push(new MenuOption("up:" + Key.keyString(Key.custom[0]), keyChanger));
-			changeKeysMenuOptions.push(new MenuOption("down:" + Key.keyString(Key.custom[1]), keyChanger));
-			changeKeysMenuOptions.push(new MenuOption("left:" + Key.keyString(Key.custom[2]), keyChanger));
-			changeKeysMenuOptions.push(new MenuOption("right:" + Key.keyString(Key.custom[3]), keyChanger));
-			changeKeysMenuOptions.push(new MenuOption("menu:" + Key.keyString(Key.custom[4]), keyChanger));
+			Vector<MenuOption> changeKeysMenuOptions = new Vector<MenuOption>();
+			changeKeysMenuOptions.push(new MenuOption("up:" + Key.keyString((uint)Key.custom[0]), keyChanger));
+			changeKeysMenuOptions.push(new MenuOption("down:" + Key.keyString((uint)Key.custom[1]), keyChanger));
+			changeKeysMenuOptions.push(new MenuOption("left:" + Key.keyString((uint)Key.custom[2]), keyChanger));
+			changeKeysMenuOptions.push(new MenuOption("right:" + Key.keyString((uint)Key.custom[3]), keyChanger));
+			changeKeysMenuOptions.push(new MenuOption("menu:" + Key.keyString((uint)Key.custom[4]), keyChanger));
 			
-			var changeKeysMenuList:MenuList = new MenuList(changeKeysMenuOptions);
+			MenuList changeKeysMenuList = new MenuList(changeKeysMenuOptions);
 			
-			for(var i:int = 0; i < Key.hotKeyTotal; i++){
-				changeKeysMenuList.options.push(new MenuOption("hot key:" + Key.keyString(Key.custom[HOT_KEY_OFFSET + i]), keyChanger));
+			for(int i = 0; i < Key.hotKeyTotal; i++){
+				changeKeysMenuList.options.push(new MenuOption("hot key:" + Key.keyString((uint)Key.custom[HOT_KEY_OFFSET + i]), keyChanger));
 			}
 			changeKeysOption = new MenuOption("change keys", changeKeysMenuList);
 			changeKeysOption.recordable = false;
@@ -1074,22 +1075,21 @@ namespace com.robotacid.ui.menu {
 		 * doing another menu activity like redefining keys. I will expand the deactivation
 		 * reference to an array at a later date.
 		 */
-		public function initHotKeyMenuOption(trunk:MenuList):void{
-			var hotKeyMenuList:MenuList = new MenuList();
-			var option:MenuOption;
+		public void initHotKeyMenuOption(MenuList trunk){
+			MenuList hotKeyMenuList = new MenuList();
+			MenuOption option;
 			hotKeyOption = new MenuOption("set hot key");
 			hotKeyOption.recordable = false;
-			for(var i:int = 0; i < Key.hotKeyTotal; i++){
+			for(int i = 0; i < Key.hotKeyTotal; i++){
 				option = new MenuOption("");
-				option.name = "hot key:" + Key.keyString(Key.custom[HOT_KEY_OFFSET + i]);
-				option.help = "pressing right on the menu will begin recording. execute a menu option to bind it to this key. this will not actually execute the option"
+				option.name = "hot key:" + Key.keyString((uint)Key.custom[HOT_KEY_OFFSET + i]);
+				option.help = "pressing right on the menu will begin recording. execute a menu option to bind it to this key. this will not actually execute the option";
 				option.target = trunk;
 				option.hotKeyOption = true;
 				hotKeyMenuList.options.push(option);
 			}
-			hotKeyOption.target = hotKeyMenuList
+			hotKeyOption.target = hotKeyMenuList;
 		}
-#endif
 		
 		/* Initialise the glow on non visited options */
 		private void initNotVisitedCols(){

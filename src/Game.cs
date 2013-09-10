@@ -120,7 +120,7 @@ namespace redroguecs {
 		public Sprite focusPrompt;
 ///		public var titleGfx:Sprite;
 ///		public var miniMapHolder:Sprite;
-///		public var console:Console;
+		public Console console;
 ///		public var confusionOverlayHolder:Sprite;
 		public MenuCarousel menuCarousel;
 ///		public var miniMap:MiniMap;
@@ -481,9 +481,9 @@ namespace redroguecs {
 			// CREATE FIRST LEVEL =================================================================
 			if(state == GAME || state == MENU){
 				
-#if false
 				menuCarousel.setCurrentMenu(gameMenu);
 				
+#if false
 				/**/	
 				// debugging textfield
 				info = new TextField();
@@ -1121,6 +1121,7 @@ namespace redroguecs {
 				if(epilogue) epilogue.main();
 				
 			}
+#endif
 			
 			menuCarousel.currentMenu.main();
 			
@@ -1131,17 +1132,16 @@ namespace redroguecs {
 					Mouse.hide();
 				}
 			}
-#endif
 		}
 		
 		/* Pause the game and make the inventory screen visible */
 		public void pauseGame(){
 			if(state == GAME){
 				state = MENU;
-///				menuCarousel.activate();
+				menuCarousel.activate();
 			} else if(state == MENU){
 				state = GAME;
-///				menuCarousel.deactivate();
+				menuCarousel.deactivate();
 			}
 		}
 		
