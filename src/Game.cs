@@ -230,16 +230,16 @@ namespace redroguecs {
 			Content.game = this;
 ///			Brain.game = this;
 			MapBitmap.game = this;
-#if false
-			Lightning.game = this;
-			ItemMovieClip.game = this;
-			SceneManager.game = this;
-			QuestMenuList.game = this;
-			QuestMenuOption.game = this;
+///			Lightning.game = this;
+///			ItemMovieClip.game = this;
+///			SceneManager.game = this;
+///			QuestMenuList.game = this;
+///			QuestMenuOption.game = this;
 			Dialog.game = this;
-			EditorMenuList.game = this;
+///			EditorMenuList.game = this;
 			Menu.game = this;
 			
+#if false
 			// detect allowScriptAccess for tracking
 			allowScriptAccess = ExternalInterface.available;
 			if(allowScriptAccess){

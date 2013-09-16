@@ -36,7 +36,8 @@ namespace com.robotacid.ui {
 	
 	public class Key {
 		public static Boolean initialized = false;	// marks whether or not the class has been initialized
-		private static Array<Boolean> keysDown = new Array<Boolean>();	// stores key codes of all keys pressed
+		//private static Array<Boolean> keysDown = new Array<Boolean>();	// stores key codes of all keys pressed
+		private static Boolean[] keysDown = new Boolean[flash.ui.Keyboard.KEYMAX];
 		public static Array<int> custom;				// list of customised keys
 ///		public static var reserved:Array = [];	// list of reserved keys
 		public static Boolean lockOut = false;		// used to brick the Key class
@@ -101,8 +102,8 @@ namespace com.robotacid.ui {
                 stage = _stage;
 				
 				// assign listeners for key presses and deactivation of the player
-//FIXME:				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
-//				stage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+				stage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
                 stage.addEventListener(Event.DEACTIVATE, (Action1<Event>)clearKeys);
 				
 				// init key logger
@@ -146,10 +147,11 @@ namespace com.robotacid.ui {
         private static void keyPressed(KeyboardEvent _event) {
             // create a property in keysDown with the name of the keyCode
 			//if(!Boolean(keysDown[_event.keyCode])) keysPressed++;
-//			if(!(keysDown[_event.keyCode])) keysPressed++;
-//			keysDown[_event.keyCode] = true;
+			if(!(keysDown[_event.keyCode])) keysPressed++;
+			keysDown[_event.keyCode] = true;
 			
 			keyLog.shift();
+			keyLog.push(0);	// 追加tasogare66
 			keyLog[KEY_LOG_LENGTH - 1] = _event.keyCode;
 			keyLogString = keyLog.ToString();
         }
@@ -157,7 +159,6 @@ namespace com.robotacid.ui {
         /**
         * Event handler for capturing keys being released
         */
-#if false	// not in use
         private static void keyReleased(KeyboardEvent _event) {
             keysDown[_event.keyCode] = false;
 			if(keysPressed > 0) keysPressed--;
@@ -166,7 +167,6 @@ namespace com.robotacid.ui {
 				clearKeys();
 			}
         }
-#endif
 		
         /**
         * Event handler for Flash Player deactivation
@@ -175,7 +175,7 @@ namespace com.robotacid.ui {
             // clear all keys in keysDown since the player cannot
             // detect keys being pressed or released when not focused
             //keysDown = [];
-			keysDown.Clear();
+			Array.Clear(keysDown, 0, keysDown.Length);
 			keysPressed = 0;
         }
 		

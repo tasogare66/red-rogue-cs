@@ -20,5 +20,7 @@
 		public const int SPACE = 32;
 		public const int TAB = 9;
 		public const int UP = 38;
+
+		public const int KEYMAX = 47;
     }
 }

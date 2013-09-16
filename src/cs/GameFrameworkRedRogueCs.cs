@@ -20,6 +20,8 @@ using System.IO;
 
 using App;
 using flash.display;
+using flash.events;
+using com.robotacid.ui;
 
 namespace redroguecs
 {
@@ -121,12 +123,35 @@ namespace redroguecs
 		/// </summary>
 		private void DispatchEvents()
 		{
-			if( this.PadData.ButtonsDown != 0 ){
-				if( _game.keyDownActions != null ){
-					_game.keyDownActions(null);
+			KeyboardEvent key_ev = new KeyboardEvent();	// 使い回し
+
+			if( this.PadData.ButtonsUp != 0 ){
+				foreach( KeyValuePair<int, GamePadButtons> pair in flashKeyDict ){
+					if( (this.PadData.ButtonsUp & pair.Value) != 0 ){
+						key_ev.keyCode = pair.Key;
+
+						if( _game.keyUpActions != null ){
+							_game.keyUpActions( key_ev );
+						}
+						if( Stage.keyUpActions != null ){
+							Stage.keyUpActions( key_ev );
+						}
+					}
 				}
-				if( Stage.keyDownActions != null ){
-					Stage.keyDownActions(null);
+			}
+
+			if( this.PadData.ButtonsDown != 0 ){
+				foreach( KeyValuePair<int, GamePadButtons> pair in flashKeyDict ){
+					if( (this.PadData.ButtonsDown & pair.Value) != 0 ){
+						key_ev.keyCode = pair.Key;
+
+						if( _game.keyDownActions != null ){
+							_game.keyDownActions( key_ev );
+						}
+						if( Stage.keyDownActions != null ){
+							Stage.keyDownActions( key_ev );
+						}
+					}
 				}
 			}
 
@@ -186,23 +211,43 @@ namespace redroguecs
 			m_instance = null;
 		}
 
-
 		// flashキー入力の置換
+		Dictionary<int, GamePadButtons> flashKeyDict = new Dictionary<int, GamePadButtons>() {
+			{ flash.ui.Keyboard.LEFT,	GamePadButtons.Left },
+			{ flash.ui.Keyboard.UP,		GamePadButtons.Up },
+			{ flash.ui.Keyboard.RIGHT,	GamePadButtons.Right },
+			{ flash.ui.Keyboard.DOWN,	GamePadButtons.Down },
+//			{ , GamePadButtons.Square },
+//			{ , GamePadButtons.Triangle },
+//			{ , GamePadButtons.Circle },
+			{ flash.ui.Keyboard.SPACE,	GamePadButtons.Cross },
+//			{ , GamePadButtons.Start },
+//			{ , GamePadButtons.Select },
+//			{ , GamePadButtons.L },
+//			{ , GamePadButtons.R },
+//			{ , GamePadButtons.Enter },
+//			{ , GamePadButtons.Back },
+		};
+
 		public bool convertKeyDown(int keyCode)
 		{
 			GamePadButtons mask = 0;
-			switch( keyCode ){
-			case flash.ui.Keyboard.SPACE:
-				mask = GamePadButtons.Circle;
-				break;
-			case flash.ui.Keyboard.CONTROL:
-			case flash.ui.Keyboard.SHIFT:
-			case flash.ui.Keyboard.ENTER:
-				//FIXME:	
-				break;
-			default:
-				Util.Assert(false);
-				break;
+			if( !flashKeyDict.TryGetValue( keyCode, out mask) ){
+				// Dictionary未登録分
+				switch( keyCode ){
+				case flash.ui.Keyboard.CONTROL:
+				case flash.ui.Keyboard.SHIFT:
+				case flash.ui.Keyboard.ENTER:
+				case Key.W:
+				case Key.A:
+				case Key.S:
+				case Key.D:
+					//FIXME:	
+					break;
+				default:
+					Util.Assert(false);
+					break;
+				}
 			}
 			return ((this.PadData.Buttons & mask) != 0);
 		}
