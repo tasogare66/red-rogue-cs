@@ -1,6 +1,9 @@
 2013-09-17  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
+	Menu.cs select関数がコンパイルしていなかったのを修正
+
+	* red-rogue-cs:
 	KeyboardEventの処理を修正
 
 2013-09-10  tasogare66 <tasogare66@gmail.com>

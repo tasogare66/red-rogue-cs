@@ -332,7 +332,6 @@ namespace com.robotacid.ui.menu {
 		 * changeSelection()
 		 */
 		public void select(int n){
-#if false
 			selection = n;
 			currentMenuList.selection = n;
 			if(currentMenuList.options.length > 0){
@@ -345,9 +344,8 @@ namespace com.robotacid.ui.menu {
 			} else {
 				nextMenuList = null;
 			}
-			if(parent) renderMenu();
+			if(parent != null) renderMenu();
 			if(!hideChangeSelection) changeSelection();
-#endif
 		}
 		
 		/* Either walks forward to the MenuList pointed to by the current option
