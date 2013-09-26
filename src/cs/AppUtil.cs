@@ -13,5 +13,11 @@ namespace App
 				Debugger.Break();
 			}
 		}
+
+		[Conditional ("DEBUG")]
+		public static void trace(String value)
+		{
+			Console.WriteLine( value );
+		}
 	}
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Text.RegularExpressions;
+using flash;
 
 namespace com.robotacid.ui.menu {
 	/**
@@ -9,20 +11,23 @@ namespace com.robotacid.ui.menu {
 	public class MenuInputList : MenuList{
 		
 		public MenuOption option;
-///		public var charsAllowed:RegExp;
+		public Regex charsAllowed;
 		public int charLimit;
 		public Boolean newLineFinish;
-///		public var inputCallback:Function;
+		//public Action1<MenuList> inputCallback;
+		public Action1<MenuInputList> inputCallback;
 		public String promptName;
 		public String input;
 		public Boolean done;
 		
-		private Boolean firstInput;
+//		private Boolean firstInput;
 
-#if false
-		public MenuInputList(name:String, charsAllowed:RegExp, charLimit:int, inputCallback:Function, newLineFinish:Boolean = true) {
+		// MEMO:引数Action1<MenuList>のcallbackは必要か?
+		//public MenuInputList(String name, Regex charsAllowed, int charLimit, Action1<MenuList> inputCallback, Boolean newLineFinish = true) {
+		public MenuInputList(String name, Regex charsAllowed, int charLimit, Action1<MenuInputList> inputCallback, Boolean newLineFinish = true) {
 			option = new MenuOption(name);
-			super(Vector.<MenuOption>([option]));
+			//super(Vector.<MenuOption>([option]));
+			this.options.push( option );
 			this.charsAllowed = charsAllowed;
 			this.charLimit = charLimit;
 			this.inputCallback = inputCallback;
@@ -30,9 +35,8 @@ namespace com.robotacid.ui.menu {
 			promptName = "enter value";
 			input = "";
 			option.recordable = false;
-			firstInput = false;
+//			firstInput = false;
 		}
-#endif
 		
 		public void begin(){
 			option.name = promptName;
@@ -41,15 +45,14 @@ namespace com.robotacid.ui.menu {
 		}
 		
 		public void addChar(String _char){
-#if false
-			if(_char.search(charsAllowed) > -1){
+			//if(_char.search(charsAllowed) > -1){
+			if( charsAllowed.IsMatch(_char) ){
 				input += _char;
 				option.name = input;
 				if(input.Length >= charLimit){
 					finish();
 				}
 			}
-#endif
 		}
 		
 		public void removeChar(){
@@ -60,7 +63,7 @@ namespace com.robotacid.ui.menu {
 		}
 		
 		public void finish(){
-///			inputCallback(this);
+			inputCallback(this);
 			done = true;
 		}
 		

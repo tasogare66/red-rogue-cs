@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using redroguecs;
 
 ///import com.adobe.serialization.json.JSON;
@@ -159,8 +160,9 @@ namespace com.robotacid.ui.menu {
 			sureList.options[YES].selectionStep = MenuOption.EXIT_MENU;
 			upDownList = new MenuList();
 			rngSeedList = new MenuList();
-///			seedInputList = new MenuInputList("" + Map.random.seed,/[0-9]/, String(uint.MAX_VALUE).length, seedInputCallback);
-///			seedInputList.promptName = "enter number";
+			//seedInputList = new MenuInputList("" + Map.random.seed,/[0-9]/, String(uint.MAX_VALUE).length, seedInputCallback);
+			seedInputList = new MenuInputList("" + Map.random.seed,new Regex(@"[0-9]"), uint.MaxValue.ToString().Length, seedInputCallback);
+			seedInputList.promptName = "enter number";
 			multiplayerList = new MenuList();
 			recordGifList = new MenuList();
 			creditsList = new MenuList();
@@ -1106,13 +1108,11 @@ namespace com.robotacid.ui.menu {
 		
 		/* Callback for seed input */
 		private void seedInputCallback(MenuInputList inputList){
-#if false
 			//Map.seed = uint(inputList.input);
 			Map.seed = Convert.ToUInt32(inputList.input);
-			trace("new seed: " + Map.seed);
-			if(game.console) game.console.print("create a new game to use seed");
+			App.Util.trace("new seed: " + Map.seed);
+			if(game.console != null) game.console.print("create a new game to use seed");
 			inputList.option.name = "" + Map.seed;
-#endif
 		}
 		
 		/* Copying seed to clipboard */

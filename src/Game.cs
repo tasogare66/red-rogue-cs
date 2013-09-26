@@ -134,8 +134,8 @@ namespace redroguecs {
 ///		public var keyItemStatus:Sprite;
 		public TextBox fpsText;
 		public TextBox titlePressMenuText;
-///		public var instructions:MovieClip;
-///		public var instructionsHolder:Sprite;
+		public MovieClip instructions;
+		public Sprite instructionsHolder;
 		
 		// debug
 ///		public var info:TextField;
@@ -430,10 +430,10 @@ namespace redroguecs {
 				
 				confusionOverlayHolder = new Sprite();
 				addChild(confusionOverlayHolder);
+#endif
 				
 				instructionsHolder = new Sprite();
 				addChild(instructionsHolder);
-#endif
 				
 			} else if(state == TITLE){
 				addChild(getTitleGfx());
@@ -578,39 +578,37 @@ namespace redroguecs {
 		
 		/* Pedantically clear all memory and re-init the project */
 		public void reset(Boolean newGame = true){
-#if false
 			removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			removeEventListener(Event.ENTER_FRAME, main);
+			removeEventListener(Event.ENTER_FRAME, (Action1<Event>)main);
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
-			stage.removeEventListener(Event.DEACTIVATE, onFocusLost);
-			stage.removeEventListener(Event.ACTIVATE, onFocus);
+///			stage.removeEventListener(Event.DEACTIVATE, onFocusLost);
+///			stage.removeEventListener(Event.ACTIVATE, onFocus);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 			while(numChildren > 0){
 				removeChildAt(0);
 			}
-			player = null;
-			minion = null;
-			balrog = null;
-			mapTileManager = null;
+///			player = null;
+///			minion = null;
+///			balrog = null;
+///			mapTileManager = null;
 			map = null;
-			world = null;
-			lightMap = null;
-			mapTileManager = null;
+///			world = null;
+///			lightMap = null;
+///			mapTileManager = null;
 			livesAvailable.value += lives.value;
 			lives.value = 0;
 			if(newGame){
 				UserData.initGameState();
 				UserData.push();
 			}
-			SoundManager.musicTimes = {};
-			if(console){
+///			SoundManager.musicTimes = {};
+			if(console != null){
 				console.log = "";
 				console.logLines = 0;
 			}
-			if(editor) editor.deactivate();
+///			if(editor) editor.deactivate();
 			init();
-#endif
 		}
 		
 		/* Enters the testing area */
@@ -1175,9 +1173,11 @@ namespace redroguecs {
 				else if(name) soundQueue.add(name, (SOUND_DIST_MAX - dist) * INV_SOUND_DIST_MAX * volume);
 			}
 		}
+#endif
 		
 		/* Switches to the appropriate music */
-		public function changeMusic():void{
+		public void changeMusic(){
+#if false
 			var start:int;
 			var name:String;
 			if(SoundManager.soundLoops["underworldMusic2"]) SoundManager.fadeLoopSound("underworldMusic2", -SoundManager.DEFAULT_FADE_STEP);
@@ -1217,8 +1217,10 @@ namespace redroguecs {
 					}
 				}
 			}
+#endif
 		}
 		
+#if false
 		/* A cheat for adding lives */
 		private function addLife():void{
 			if(livesAvailable.value <= 0){
@@ -1264,9 +1266,10 @@ namespace redroguecs {
 			}
 			return null;
 		}
+#endif
 		
 		/* Creates the instructions splash screen and switches to INSTRUCTIONS state*/
-		public function initInstructions():void{
+		public void initInstructions(){
 			instructionsPreviousState = state;
 			if(state == MENU){
 				menuCarousel.deactivate();
@@ -1276,34 +1279,35 @@ namespace redroguecs {
 			state = INSTRUCTIONS;
 			
 			// generate splash
-			var mc:MovieClip = new InstructionsMC();
-			var combatText:TextBox = new TextBox(215, 62, 0x0, 0x0);
+			//MovieClip mc = new InstructionsMC();
+			InstructionsMC mc = new InstructionsMC();
+			TextBox combatText = new TextBox(215, 62, 0x0, 0x0);
 			combatText.alignVert = "center";
 			combatText.text = "walk into monsters to auto-attack";
 			mc.addChild(combatText);
 			combatText.x = mc.combat.x + mc.combat.width + 3;
 			combatText.y = mc.combat.y;
-			var collectText:TextBox = new TextBox(215, 62, 0x0, 0x0);
+			TextBox collectText = new TextBox(215, 62, 0x0, 0x0);
 			collectText.alignVert = "center";
 			collectText.text = "press up to collect and to read";
 			mc.addChild(collectText);
 			collectText.x = mc.collect.x + mc.collect.width + 3;
 			collectText.y = mc.collect.y;
-			var exitText:TextBox = new TextBox(215, 62, 0x0, 0x0);
+			TextBox exitText = new TextBox(215, 62, 0x0, 0x0);
 			exitText.alignVert = "center";
 			exitText.text = "press down to exit a level";
 			mc.addChild(exitText);
 			exitText.x = mc.exit.x + mc.exit.width + 3;
 			exitText.y = mc.exit.y;
-			var menuText:TextBox = new TextBox(WIDTH, 12, 0x0, 0x0);
+			TextBox menuText = new TextBox(WIDTH, 12, 0x0, 0x0);
 			menuText.align = "center";
-			menuText.text = "use the menu key (" + Key.keyString(Key.custom[MENU_KEY]) + ") for items and skills";
+			menuText.text = "use the menu key (" + Key.keyString((uint)Key.custom[MENU_KEY]) + ") for items and skills";
 			mc.addChild(menuText);
-			var pressMenuText:TextBox = new TextBox(Menu.LIST_WIDTH * 2, 12, Dialog.ROLL_OUT_COL);
+			TextBox pressMenuText = new TextBox(Menu.LIST_WIDTH * 2, 12, Dialog.ROLL_OUT_COL);
 			pressMenuText.align = "center";
 			pressMenuText.text = "press menu key " + (firstInstructions ? "to play" : "to resume");
 			mc.addChild(pressMenuText);
-			pressMenuText.x = (WIDTH * 0.5 - pressMenuText.width * 0.5) >> 0;
+			pressMenuText.x = (int)(WIDTH * 0.5 - pressMenuText.width * 0.5);
 			pressMenuText.y = HEIGHT - (pressMenuText.height + 2);
 			menuText.y = pressMenuText.y - (menuText.height + 5);
 			instructions = mc;
@@ -1312,25 +1316,24 @@ namespace redroguecs {
 			changeMusic();
 		}
 		
-		public function createFocusPrompt():void{
+		public void createFocusPrompt(){
 			focusPrompt = new Sprite();
 			focusPrompt.addChild(getTitleGfx());
 			
-			var clickToPlayText:TextBox = new TextBox(320, 12, 0x0, 0x0);
+			TextBox clickToPlayText = new TextBox(320, 12, 0x0, 0x0);
 			clickToPlayText.align = "center";
 			clickToPlayText.text = "click to play";
-			clickToPlayText.bitmapData.colorTransform(clickToPlayText.bitmapData.rect, RED_COL);
+///			clickToPlayText.bitmapData.colorTransform(clickToPlayText.bitmapData.rect, RED_COL);
 			focusPrompt.addChild(clickToPlayText);
 			clickToPlayText.y = (HEIGHT * 0.5) + 10;
 			
 			if(UserData.settings.playerConsumed){
 				clickToPlayText.text = "click to not play";
-				clickToPlayText.bitmapData.colorTransform(clickToPlayText.bitmapData.rect, RED_COL);
+///				clickToPlayText.bitmapData.colorTransform(clickToPlayText.bitmapData.rect, RED_COL);
 			} else if(UserData.settings.ascended){
 				clickToPlayText.text = "click to play again";
 			}
 		}
-#endif
 		
 		public Sprite getTitleGfx() {
 			Sprite sprite = new Sprite();

@@ -111,6 +111,8 @@
     <Compile Include="src\flash\IBitmapDrawable.cs" />
     <Compile Include="src\flash\Graphics.cs" />
     <Compile Include="src\com\robotacid\sound\SoundManager.cs" />
+    <Compile Include="src\flash\MovieClip.cs" />
+    <Compile Include="src\InstructionsMC.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

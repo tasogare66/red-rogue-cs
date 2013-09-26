@@ -70,6 +70,9 @@ namespace flash.events
                 case Event.ADDED_TO_STAGE:
                     addedToStageActions -= action;
                     break;
+                case Event.ENTER_FRAME:
+                    enterFrameActions -= action;
+					break;
                 default:
                     throw new NotImplementedException();
 

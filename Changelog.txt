@@ -1,3 +1,8 @@
+2013-09-27  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	MenuInputList.cs コンストラクタなど動作するように
+
 2013-09-17  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
