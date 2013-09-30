@@ -113,6 +113,8 @@
     <Compile Include="src\com\robotacid\sound\SoundManager.cs" />
     <Compile Include="src\flash\MovieClip.cs" />
     <Compile Include="src\InstructionsMC.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\LoreMenuList.cs" />
+    <Compile Include="src\com\robotacid\ui\menu\InventoryMenuList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

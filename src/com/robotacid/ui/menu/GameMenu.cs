@@ -52,9 +52,9 @@ namespace com.robotacid.ui.menu {
 		
 		public Game game;
 		
-///		public InventoryMenuList inventoryList;
+		public InventoryMenuList inventoryList;
 		public MenuList actionsList;
-///		public LoreMenuList loreList;
+		public LoreMenuList loreList;
 		public MenuList optionsList;
 		public MenuList debugList;
 		
@@ -147,9 +147,9 @@ namespace com.robotacid.ui.menu {
 			
 			MenuList trunk = new MenuList();
 			
-///			inventoryList = new InventoryMenuList(this, game);
+			inventoryList = new InventoryMenuList(this, game);
 			actionsList = new MenuList();
-///			loreList = new LoreMenuList(infoTextBox, this, game);
+			loreList = new LoreMenuList(infoTextBox, this, game);
 			optionsList = new MenuList();
 			debugList = new MenuList();
 			
@@ -183,14 +183,14 @@ namespace com.robotacid.ui.menu {
 			
 			// MENU OPTIONS
 			
-///			inventoryOption = new MenuOption("inventory", inventoryList);
-///			inventoryOption.help = "a list of items the rogue currently possesses in her handbag of holding";
+			inventoryOption = new MenuOption("inventory", inventoryList);
+			inventoryOption.help = "a list of items the rogue currently possesses in her handbag of holding";
 			MenuOption optionsOption = new MenuOption("options", optionsList);
 			optionsOption.help = "change game settings";
 			actionsOption = new MenuOption("actions", actionsList, false);
 			actionsOption.help = "perform actions like searching for traps and summoning the minion";
-///			MenuOption loreOption = new MenuOption("lore", loreList);
-///			loreOption.help = "information that has been gathered about the world.";
+			MenuOption loreOption = new MenuOption("lore", loreList);
+			loreOption.help = "information that has been gathered about the world.";
 			debugOption = new MenuOption("debug", debugList, false);
 			debugOption.help = "debug tools for allowing access to game elements that are hard to find in a procedurally generated world";
 			
@@ -304,7 +304,7 @@ namespace com.robotacid.ui.menu {
 			
 			trunk.options.push(actionsOption);
 			trunk.options.push(inventoryOption);
-///			trunk.options.push(loreOption);
+			trunk.options.push(loreOption);
 			trunk.options.push(optionsOption);
 			//trunk.options.push(debugOption);
 			
