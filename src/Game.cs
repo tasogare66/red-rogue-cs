@@ -980,14 +980,14 @@ namespace redroguecs {
 			
 			if(state == GAME) {
 				
-#if false
 				Boolean advance = true;
 				if(dogmaticMode){
-					if(!player.asleep && player.searchRadius == -1 && player.state == Character.WALKING && Key.keysPressed == 0) advance = false;
+///					if(!player.asleep && player.searchRadius == -1 && player.state == Character.WALKING && Key.keysPressed == 0) advance = false;
 				}
 				
 				if(transition.active) transition.main();
 				else if(advance){
+#if false
 					Collider collider;
 					Entity entity;
 					Character character;
@@ -1107,10 +1107,10 @@ namespace redroguecs {
 						Key.keyLogString = "";
 					}
 					
+#endif
 				}
 			
-				if(player.brain.confusedCount) (player.brain as PlayerBrain).renderConfusion();
-#endif
+///				if(player.brain.confusedCount) (player.brain as PlayerBrain).renderConfusion();
 				
 			} else if(state == INSTRUCTIONS){
 				if(transition.active) transition.main();
@@ -1399,9 +1399,8 @@ namespace redroguecs {
 				levelName = Map.getName(map.level, map.type);
 				firstInstructions = false;
 			}
-#if false
-			transition.init(function():void{
-				if(instructions.parent) instructions.parent.removeChild(instructions);
+			transition.init(delegate(){
+				if(instructions.parent != null) instructions.parent.removeChild(instructions);
 				instructions = null;
 				state = instructionsPreviousState;
 				if(state == MENU){
@@ -1409,7 +1408,6 @@ namespace redroguecs {
 				}
 				changeMusic();
 			}, null, levelName, false, instructionsPreviousState == MENU);
-#endif
 		}
 		
 		private void mouseDown(MouseEvent e){

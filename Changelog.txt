@@ -1,7 +1,10 @@
 2013-10-02  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:
-	Transition.csを追加、Instruction画面まで遷移
+	Instructionsは抜けれるように対応
+
+	* red-rogue-cs:
+	Transition.csを追加、Instructions画面まで遷移
 
 2013-09-30  tasogare66 <tasogare66@gmail.com>
 
