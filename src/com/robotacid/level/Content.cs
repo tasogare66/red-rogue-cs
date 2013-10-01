@@ -441,8 +441,8 @@ namespace com.robotacid.level {
 		/* Return the pre-generated seed value for creating a given level */
 		public uint getSeed(int level, int type) {
 			if(type == Map.MAIN_DUNGEON){
-				while(level >= gameState.seedsByLevel.Count) gameState.seedsByLevel.Add(XorRandom.seedFromDate());
-				return gameState.seedsByLevel[level];
+///				while(level >= gameState.seedsByLevel.Count) gameState.seedsByLevel.Add(XorRandom.seedFromDate());
+///				return gameState.seedsByLevel[level];
 			} else if(type == Map.ITEM_DUNGEON){
 ///				return gameState.itemDungeonContent.seed;
 			}

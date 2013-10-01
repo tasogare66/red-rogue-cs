@@ -115,6 +115,7 @@
     <Compile Include="src\InstructionsMC.cs" />
     <Compile Include="src\com\robotacid\ui\menu\LoreMenuList.cs" />
     <Compile Include="src\com\robotacid\ui\menu\InventoryMenuList.cs" />
+    <Compile Include="src\com\robotacid\ui\Transition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

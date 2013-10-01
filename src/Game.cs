@@ -16,7 +16,7 @@ using com.robotacid.engine;
 ///import com.robotacid.geom.Pixel;
 ///import com.robotacid.geom.Trig;
 ///import com.robotacid.gfx.*;
-///import com.robotacid.phys.Collider;
+using com.robotacid.phys;
 ///import com.robotacid.phys.CollisionWorld;
 ///import com.robotacid.sound.SoundManager;
 ///import com.robotacid.sound.SoundQueue;
@@ -102,7 +102,7 @@ namespace redroguecs {
 		public XorRandom random;
 ///		public var soundQueue:SoundQueue;
 ///		public var sleep:Sleep;
-///		public var transition:Transition;
+		public Transition transition;
 ///		public var editor:Editor;
 ///		public var epilogue:Epilogue;
 		
@@ -302,11 +302,11 @@ namespace redroguecs {
 			MapTileConverter.init();
 ///			ProgressBar.initGlowTable();
 			
-#if false
-			sleep = new Sleep(this, renderer);
+///			sleep = new Sleep(this, renderer);
 			
 			transition = new Transition();
 			
+#if false
 			lightning = new Lightning();
 			
 			editor = new Editor(this, renderer);
@@ -446,7 +446,7 @@ namespace redroguecs {
 				addChild(titlePressMenuText);
 			}
 			
-///			addChild(transition);
+			addChild(transition);
 			
 			// menu init
 			
@@ -479,6 +479,7 @@ namespace redroguecs {
 #endif
 			
 			// CREATE FIRST LEVEL =================================================================
+			String levelName = "";
 			if(state == GAME || state == MENU){
 				
 				menuCarousel.setCurrentMenu(gameMenu);
@@ -528,7 +529,9 @@ namespace redroguecs {
 				Brain.voiceCount = Brain.VOICE_DELAY + random.range(Brain.VOICE_DELAY);
 				
 				// ALL CONTENT FOR THE RANDOM SEED GENERATED FROM THIS POINT FORWARD
+#endif
 				content = new Content();
+#if false
 				Writing.createStoryCharCodes(Map.random);
 				Sleep.initDreams();
 				
@@ -538,14 +541,14 @@ namespace redroguecs {
 				Player.previousLevel = UserData.gameState.player.previousLevel;
 				Player.previousPortalType = UserData.gameState.player.previousPortalType;
 				Player.previousMapType = UserData.gameState.player.previousMapType;
+#endif
 				setLevel(UserData.gameState.player.currentLevel, UserData.gameState.player.currentMapType);
 				// init area visit notices
-				var levelName:String = Map.getName(map.level, map.type);
-				if(!UserData.gameState.visitedHash){
-					UserData.gameState.visitedHash = {};
-					UserData.gameState.visitedHash[levelName] = true;
-				}
-#endif
+				levelName = Map.getName(map.level, map.type);
+///				if(!UserData.gameState.visitedHash){
+///					UserData.gameState.visitedHash = {};
+///					UserData.gameState.visitedHash[levelName] = true;
+///				}
 			} else if(state == TITLE){
 				menuCarousel.setCurrentMenu(titleMenu);
 				titlePressMenuText.visible = !menuCarousel.active;
@@ -558,9 +561,9 @@ namespace redroguecs {
 			else if(ONLINE && !UserData.settings.playerConsumed){
 				if(state == GAME || state == MENU){
 					if(firstInstructions){
-///						transition.init(initInstructions, null, "", true);
+						transition.init(initInstructions, null, "", true);
 					} else {
-///						transition.init(Dialog.emptyCallback, null, levelName, true);
+						transition.init(Dialog.emptyCallback, null, levelName, true);
 					}
 				}
 			}
@@ -632,7 +635,8 @@ namespace redroguecs {
 		 */
 		public void setLevel(int level, int type) {
 #if false
-			var enchantment:XML, effect:Effect;
+			XML enchantment;
+			Effect effect;
 			
 			editor.deactivate();
 			// saving settings in an area would delete the content there
@@ -694,9 +698,11 @@ namespace redroguecs {
 			if(minion) Brain.playerCharacters.push(minion);
 			
 			Brain.voiceCount = Brain.VOICE_DELAY + random.range(Brain.VOICE_DELAY);
+#endif
 			
 			map = new Map(level, type);
 			
+#if false
 			Brain.initMapGraph(map.bitmap, map.stairsDown);
 			
 			if(!mapTileManager){
@@ -964,9 +970,8 @@ namespace redroguecs {
 		// =================================================================================================
 		
 		private void main(Event e) {
-#if false
 			
-			if(fpsText && fpsText.visible) fpsText.text = "fps:" + FPS.value;
+///			if(fpsText && fpsText.visible) fpsText.text = "fps:" + FPS.value;
 			
 			// copy out these debug tools when needed
 			//var t:int = getTimer();
@@ -975,17 +980,18 @@ namespace redroguecs {
 			
 			if(state == GAME) {
 				
-				var advance:Boolean = true;
+#if false
+				Boolean advance = true;
 				if(dogmaticMode){
 					if(!player.asleep && player.searchRadius == -1 && player.state == Character.WALKING && Key.keysPressed == 0) advance = false;
 				}
 				
 				if(transition.active) transition.main();
 				else if(advance){
-					var collider:Collider;
-					var entity:Entity;
-					var character:Character;
-					var effect:Effect;
+					Collider collider;
+					Entity entity;
+					Character character;
+					Effect effect;
 					
 					debug.clear();
 					debug.lineStyle(1, 0x00FF00);
@@ -1104,6 +1110,7 @@ namespace redroguecs {
 				}
 			
 				if(player.brain.confusedCount) (player.brain as PlayerBrain).renderConfusion();
+#endif
 				
 			} else if(state == INSTRUCTIONS){
 				if(transition.active) transition.main();
@@ -1116,10 +1123,9 @@ namespace redroguecs {
 				
 			} else if(state == EPILOGUE){
 				if(transition.active) transition.main();
-				if(epilogue) epilogue.main();
+///				if(epilogue) epilogue.main();
 				
 			}
-#endif
 			
 			menuCarousel.currentMenu.main();
 			
