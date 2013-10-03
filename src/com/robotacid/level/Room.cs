@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using com.robotacid.geom;
+using flash;
 
 namespace com.robotacid.level {
 	
@@ -22,9 +24,9 @@ namespace com.robotacid.level {
 		public int height;
 		public int id;
 		public int num;
-		public List<Room> siblings;
-		public List<Pixel> doors;
-///		public List<Surface> surfaces;
+		public Vector<Room> siblings;
+		public Vector<Pixel> doors;
+		public Vector<Surface> surfaces;
 		
 		public static int roomCount = 0;
 		
@@ -35,28 +37,28 @@ namespace com.robotacid.level {
 			this.height = height;
 			this.id = id;
 			start = false;
-			siblings = new List<Room>();
-			doors = new List<Pixel>();
-///			surfaces = new List<Surface>();
+			siblings = new Vector<Room>();
+			doors = new Vector<Pixel>();
+			surfaces = new Vector<Surface>();
 			num = roomCount++;
 		}
-		public bool touchesDoors(Pixel p) {
-			for(int i = 0; i < doors.Count; i++){
+		public Boolean touchesDoors(Pixel p) {
+			for(int i = 0; i < doors.length; i++){
 				if(p.y == doors[i].y && (p.x == doors[i].x - 1 || p.x == doors[i].x + 1)) return true;
 				if(p.x == doors[i].x && (p.y == doors[i].y - 1 || p.y == doors[i].y + 1)) return true;
 			}
 			return false;
 		}
 		/* Do two Rooms touch? */
-		public bool touches(Room b) {
+		public Boolean touches(Room b) {
 			return !(this.x > b.x + b.width || this.x + this.width < b.x || this.y > b.y + b.height || this.y + this.height < b.y);
 		}
 		/* Do two Rooms intersect? */
-		public bool intersects(Room b) {
+		public Boolean intersects(Room b) {
 			return !(this.x > b.x + (b.width - 1) || this.x + (this.width - 1) < b.x || this.y > b.y + (b.height - 1) || this.y + (this.height - 1) < b.y);
 		}
 		/* Is this point inside the Room */
-		public bool contains(int x, int y) {
+		public Boolean contains(int x, int y) {
 			return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
 		}
 	}

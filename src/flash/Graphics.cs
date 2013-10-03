@@ -28,5 +28,13 @@ namespace flash.display
         public void endFill() {
 
         }
+
+		public void moveTo(double x, double y) {
+			//FIXME:	
+		}
+
+		public void lineTo(double x, double y) {
+			//FIXME:	
+		}
     }
 }

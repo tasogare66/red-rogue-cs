@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using flash;
 
 namespace com.robotacid.level {
 	/**
@@ -13,17 +15,17 @@ namespace com.robotacid.level {
 		
 		public int x;
 		public int y;
-		public bool visited;
-		public List<Node> connections;
-		public List<bool> connectionsActive;
-		public bool drop;
+		public Boolean visited;
+		public Vector<Node> connections;
+		public Vector<bool> connectionsActive;
+		public Boolean drop;
 		
 		public Node(int x, int y) {
 			this.x = x;
 			this.y = y;
 			visited = false;
-			connections = new List<Node>();
-			connectionsActive = new List<bool>();
+			connections = new Vector<Node>();
+			connectionsActive = new Vector<Boolean>();
 			drop = false;
 		}
 		
