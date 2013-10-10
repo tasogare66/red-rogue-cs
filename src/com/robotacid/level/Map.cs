@@ -541,19 +541,21 @@ namespace com.robotacid.level {
 			Surface.removeSurface(choice.x, choice.y);
 			
 		}
+#endif
 		
 		// room sorting callbacks
-		public static function sortRoomsTopWards(a:Room, b:Room):Number{
+		public static int sortRoomsTopWards(Room a, Room b){
 			if(a.y < b.y) return -1;
 			else if(a.y > b.y) return 1;
 			return 0;
 		}
-		public static function sortRoomsBottomWards(a:Room, b:Room):Number{
+		public static int sortRoomsBottomWards(Room a, Room b){
 			if(a.y > b.y) return -1;
 			else if(a.y < b.y) return 1;
 			return 0;
 		}
 		
+#if false
 		/* Creates a stairway up */
 		public function setStairsUp(x:int, y:int):void{
 			layers[ENTITIES][y][x] = MapTileConverter.STAIRS_UP;

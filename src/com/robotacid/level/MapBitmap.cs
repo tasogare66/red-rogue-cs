@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using redroguecs;
+using App;
 
 using com.robotacid.geom;
-///import com.robotacid.phys.Collider;
-///import com.robotacid.util.array.randomiseArray;
-///import flash.display.Bitmap;
+using com.robotacid.phys;
+using com.robotacid.util;
+using flash.display;
 ///import flash.display.BitmapData;
 ///import flash.display.Graphics;
-///import flash.geom.Rectangle;
-///import flash.geom.Point;
+using Rectangle = flash.geom.Rectangle;
+using Point = flash.geom.Point;
+using flash;
 
 namespace com.robotacid.level {
 	
@@ -21,8 +23,7 @@ namespace com.robotacid.level {
 	 *
 	 * @author Aaron Steed, robotacid.com
 	 */
-///	public class MapBitmap extends Bitmap{
-	public class MapBitmap {
+	public class MapBitmap : Bitmap{
 		
 		public static Game game;
 		
@@ -33,87 +34,89 @@ namespace com.robotacid.level {
 		
 		public int pitTraps;
 		
-		public List<Room> rooms;
-		public List<Pixel> gates;
+		public Vector<Room> rooms;
+		public Vector<Pixel> gates;
 		
 		public Room leftSecretRoom;
 		public Room rightSecretRoom;
 		public double leftSecretWidth;
 		public double rightSecretWidth;
 		
-///		public var adjustedMapRect:Rectangle;
+		public Rectangle adjustedMapRect;
 		
 		// temp variables
-///		private var i:int, j:int, k:int, n:int, r:int, c:int, dir:int, node:Node, room:Room;
+		private int i, j, k, n, r, c, dir;
+		private Node node;
+		private Room room;
 		
 		// pacing variables - these keep a consistent scale for the level
 		public int vertPace;
 		public int horizPace;
 		
-///		public static var directions:Array;
+		public static Array<Pixel> directions;
 		
-		public static readonly int MIN_ROOM_WIDTH = 4;
-		public static readonly int MIN_ROOM_HEIGHT = 3;
+		public const int MIN_ROOM_WIDTH = 4;
+		public const int MIN_ROOM_HEIGHT = 3;
 		
-		public static readonly int LEDGE_LENGTH = 4;
-		public static readonly int LADDER_TREE_HEIGHT = 6;
-		public static readonly double LEDGINESS = 0.4d;
-		public static readonly double LADDERINESS = 0.1d;
+		public const int LEDGE_LENGTH = 4;
+		public const int LADDER_TREE_HEIGHT = 6;
+		public const double LEDGINESS = 0.4d;
+		public const double LADDERINESS = 0.1d;
 		
 		// All features in the level are represented by colours
-		public static readonly uint PATH = 0xFFFFFF88;
-		public static readonly uint NODE = 0xFFFF00FF;
-		public static readonly uint WALL = 0xFFFF0000;
-		public static readonly uint EMPTY = 0xFFFFFF00;
-		public static readonly uint DIGGING = 0xFF00FF00;
-		public static readonly uint TUNNELLING = 0xFF00CC00;
-		public static readonly uint LADDER = 0xFF0000FF;
-		public static readonly uint LEDGE = 0xFF00FF00;
-		public static readonly uint LADDER_LEDGE = 0xFF00FFFF;
-		public static readonly uint GATE = 0xFFF0F0F0;
-		public static readonly uint PIT = 0xFFFFFFFF;
-		public static readonly uint SECRET = 0xFFCCCCCC;
+		public const uint PATH = 0xFFFFFF88;
+		public const uint NODE = 0xFFFF00FF;
+		public const uint WALL = 0xFFFF0000;
+		public const uint EMPTY = 0xFFFFFF00;
+		public const uint DIGGING = 0xFF00FF00;
+		public const uint TUNNELLING = 0xFF00CC00;
+		public const uint LADDER = 0xFF0000FF;
+		public const uint LEDGE = 0xFF00FF00;
+		public const uint LADDER_LEDGE = 0xFF00FFFF;
+		public const uint GATE = 0xFFF0F0F0;
+		public const uint PIT = 0xFFFFFFFF;
+		public const uint SECRET = 0xFFCCCCCC;
 		
-		public static readonly uint CONNECTIVITY_TEST = 0x99660000;
+		public const uint CONNECTIVITY_TEST = 0x99660000;
 		
 		// types
-		public static readonly int MAIN_DUNGEON = Map.MAIN_DUNGEON;
-		public static readonly int ITEM_DUNGEON = Map.ITEM_DUNGEON;
-		public static readonly int AREA = Map.AREA;
+		public const int MAIN_DUNGEON = Map.MAIN_DUNGEON;
+		public const int ITEM_DUNGEON = Map.ITEM_DUNGEON;
+		public const int AREA = Map.AREA;
 		
 		// zones
-		public static readonly int DUNGEONS = Map.DUNGEONS;
-		public static readonly int SEWERS = Map.SEWERS;
-		public static readonly int CAVES = Map.CAVES;
-		public static readonly int CHAOS = Map.CHAOS;
+		public const int DUNGEONS = Map.DUNGEONS;
+		public const int SEWERS = Map.SEWERS;
+		public const int CAVES = Map.CAVES;
+		public const int CHAOS = Map.CHAOS;
 		
-		public static readonly int UP = 1;
-		public static readonly int RIGHT = 1 << 1;
-		public static readonly int DOWN = 1 << 2;
-		public static readonly int LEFT = 1 << 3;
+		public const int UP = 1;
+		public const int RIGHT = 1 << 1;
+		public const int DOWN = 1 << 2;
+		public const int LEFT = 1 << 3;
 		
-		public static readonly int MAX_SIZE = 5;
-		public static readonly int MIN_SIZE = 3;
+		public const int MAX_SIZE = 5;
+		public const int MIN_SIZE = 3;
 		
-		public static readonly double SECRET_FREQ = 0.5d;
+		public const double SECRET_FREQ = 0.5d;
 		
-		public static readonly int OVERWORLD_WIDTH = 25;
-		public static readonly int OVERWORLD_HEIGHT = 13;
+		public const int OVERWORLD_WIDTH = 25;
+		public const int OVERWORLD_HEIGHT = 13;
 		
-		public static readonly int UNDERWORLD_WIDTH = 20;
-		public static readonly int UNDERWORLD_HEIGHT = 13;
+		public const int UNDERWORLD_WIDTH = 20;
+		public const int UNDERWORLD_HEIGHT = 13;
 		
-///		public static const ZONE_HORIZ_PACE:Array = [
-///			3, 4, 2, 3
-///		];
-///		public static const ZONE_VERT_PACE:Array = [
-///			2, 1, 2, 1
-///		];
+		public static readonly Array<int> ZONE_HORIZ_PACE = new Array<int>{
+			3, 4, 2, 3
+		};
+		public static readonly Array<int> ZONE_VERT_PACE = new Array<int>{
+			2, 1, 2, 1
+		};
 		
 		/* Adobe don't provide this as a constant for some reason */
-		public static readonly int MAXIMUM_PIXELS = 16769025;
+		public const int MAXIMUM_PIXELS = 16769025;
 		
-		public MapBitmap(int level, int type, int zone = 0) {
+		public MapBitmap(int level, int type, int zone = 0) : base(null, "auto", false) {
 			
 			this.level = level;
 			this.type = type;
@@ -121,9 +124,9 @@ namespace com.robotacid.level {
 			
 #if false
 			// directions has to be reinitialised to ensure seed consistency
-			directions = [new Pixel(0, -1), new Pixel(1, 0), new Pixel(0, 1), new Pixel( -1, 0)];
+			directions = new Array<Pixel>{new Pixel(0, -1), new Pixel(1, 0), new Pixel(0, 1), new Pixel( -1, 0)};
 			
-			var bitmapData:BitmapData;
+//			BitmapData bitmapData;
 			
 			if(type == AREA){
 				if(level == Map.OVERWORLD) bitmapData = createOverworld();
@@ -139,13 +142,13 @@ namespace com.robotacid.level {
 					// so I'm capping it at 5
 					size = size > MAX_SIZE ? MAX_SIZE : size;
 					// but we also get some cool levels earlier, so let's randomise
-					size = 1 + Map.random.range(size);
+					size = (int)(1 + Map.random.range(size));
 					size = size < MIN_SIZE ? MIN_SIZE : size;
 				}
 				
 				// create pacing standard for this level
-				horizPace = Math.ceil(size * 0.5) * ZONE_HORIZ_PACE[zone];
-				vertPace = Math.ceil(size * 0.5) * ZONE_VERT_PACE[zone];
+				horizPace = (int)Math.Ceiling(size * 0.5) * ZONE_HORIZ_PACE[zone];
+				vertPace = (int)Math.Ceiling(size * 0.5) * ZONE_VERT_PACE[zone];
 				
 				bitmapData = createRoomsAndTunnels();
 				
@@ -155,7 +158,7 @@ namespace com.robotacid.level {
 				//Game.game.addChild(temp);
 			}
 			
-			super(bitmapData, "auto", false);
+//			super(bitmapData, "auto", false);
 			
 			if(type == MAIN_DUNGEON || type == ITEM_DUNGEON){
 				while(!createRoutes()){}
@@ -168,42 +171,43 @@ namespace com.robotacid.level {
 #endif
 		}
 		
-#if false
 		/* Creates the base map for the overworld area */
-		public function createOverworld():BitmapData{
-			var overworldMap:BitmapData = new BitmapData(OVERWORLD_WIDTH, OVERWORLD_HEIGHT, true, WALL);
+		public BitmapData createOverworld(){
+			BitmapData overworldMap = new BitmapData(OVERWORLD_WIDTH, OVERWORLD_HEIGHT, true, WALL);
 			overworldMap.fillRect(new Rectangle(1, 1, overworldMap.width - 2, overworldMap.height - 2), EMPTY);
 			adjustedMapRect = new Rectangle(0, 0, overworldMap.width * Game.SCALE, overworldMap.height * Game.SCALE);
 			return overworldMap;
 		}
 		
 		/* Creates the base map for the underworld area */
-		public function createUnderworld():BitmapData{
-			var underworldMap:BitmapData = new BitmapData(UNDERWORLD_WIDTH, UNDERWORLD_HEIGHT, true, WALL);
+		public BitmapData createUnderworld(){
+			BitmapData underworldMap = new BitmapData(UNDERWORLD_WIDTH, UNDERWORLD_HEIGHT, true, WALL);
 			underworldMap.fillRect(new Rectangle(1, 1, underworldMap.width - 2, underworldMap.height - 2), EMPTY);
 			adjustedMapRect = new Rectangle(0, 0, underworldMap.width * Game.SCALE, underworldMap.height * Game.SCALE);
 			return underworldMap;
 		}
 		
 		/* This plots the size, number of rooms and how those rooms are connected */
-		public function createRoomsAndTunnels():BitmapData{
+		public BitmapData createRoomsAndTunnels(){
 			
 			// sometimes the generator will fail - then we recreate the level
 			
+			Boolean goodLevel = true;
+			BitmapData data;
 			do{
-				var goodLevel:Boolean = true;
+				goodLevel = true;
 			
 				// create a list of rooms, then randomly assign a sibling
-				rooms = new Vector.<Room>();
-				var totalRooms:int = -MIN_SIZE + 4 * size + Map.random.rangeInt(4 * size);
+				rooms = new Vector<Room>();
+				int totalRooms = -MIN_SIZE + 4 * size + Map.random.rangeInt(4 * size);
 				if(totalRooms < 5) totalRooms = 5;
 				for(i = 0; i < totalRooms; i++){
 					rooms.push(new Room());
 				}
-				var pick:int;
+				int pick;
 				for(i = 0; i < rooms.length; i++){
 					do{
-						pick = Map.random.range(rooms.length);
+						pick = (int)Map.random.range(rooms.length);
 					} while(pick == i);
 					rooms[i].siblings.push(rooms[pick]);
 				}
@@ -212,7 +216,7 @@ namespace com.robotacid.level {
 					for(i = 0; i < rooms.length; i++){
 						for(j = 0; j < Map.random.rangeInt(3); j++){
 							do{
-								pick = Map.random.range(rooms.length);
+								pick = (int)Map.random.range(rooms.length);
 							} while(pick == i);
 							rooms[i].siblings.push(rooms[pick]);
 						}
@@ -223,8 +227,8 @@ namespace com.robotacid.level {
 				
 				// size each room and get a ball park size for each cell in the grid
 				
-				var cellHeight:int = 0;
-				var cellWidth:int = 0;
+				int cellHeight = 0;
+				int cellWidth = 0;
 				
 				for(i = 0; i < rooms.length; i++){
 					rooms[i].width = MIN_ROOM_WIDTH + Map.random.rangeInt(horizPace);
@@ -238,20 +242,20 @@ namespace com.robotacid.level {
 				
 				// get a grid size for the cells
 				// we basically create a minimum of 2 or a maximum of half the number of cells either way
-				var gridHeight:int = 2 + Map.random.range((rooms.length / 2) - 2);
-				var gridWidth:int = Math.ceil((1.0 * rooms.length) / gridHeight);
+				int gridHeight = (int)(2 + Map.random.range((rooms.length / 2) - 2));
+				int gridWidth = (int)Math.Ceiling((1.0 * rooms.length) / gridHeight);
 				
 				// let's assign grid numbers
-				var nums:Array = [];
+				Array<int> nums = new Array<int>();
 				for(i = 0; i < gridHeight * gridWidth; i++) nums.push(i);
 				for(i = 0; i < rooms.length; i++){
-					var n:int = Map.random.range(nums.length);
+					int n = (int)Map.random.range(nums.length);
 					rooms[i].gridNum = nums[n];
 					nums.splice(n, 1);
 				}
 				
 				// we use a bitmap for digging, we can use floodFill to verify connectivity later:
-				var data:BitmapData = new BitmapData(gridWidth * cellWidth, gridHeight * cellHeight, true, WALL);
+				data = new BitmapData(gridWidth * cellWidth, gridHeight * cellHeight, true, WALL);
 				
 				// place the rooms in their cells
 				for(i = 0; i < rooms.length; i++){
@@ -260,8 +264,8 @@ namespace com.robotacid.level {
 					room.y = (room.gridNum / gridWidth);
 					room.y *= cellHeight;
 					// random offset the rooms
-					room.x += 1 + Map.random.range((cellWidth - 1) - room.width);
-					room.y += 1 + Map.random.range((cellHeight - 1) - room.height);
+					room.x += (int)(1 + Map.random.range((cellWidth - 1) - room.width));
+					room.y += (int)(1 + Map.random.range((cellHeight - 1) - room.height));
 					// draw the room:
 					data.fillRect(new Rectangle(
 						room.x, room.y, room.width, room.height
@@ -289,44 +293,44 @@ namespace com.robotacid.level {
 				
 				// now we have to connect the rooms to their siblings
 				
-				var side:int;
+				int side;
 				for(i = 0; i < rooms.length; i++){
 					for(j = 0; j < rooms[i].siblings.length; j++){
 						// pick an exit
-						var exit:Pixel = new Pixel();
+						Pixel exit = new Pixel();
 						room = rooms[i];
 						do{
 							side = 1 << Map.random.rangeInt(4);
-							if(side & UP){
+							if((side & UP) != 0){
 								exit.x = room.x + Map.random.rangeInt(room.width);
 								exit.y = room.y;
-							} else if(side & RIGHT){
+							} else if((side & RIGHT) != 0){
 								exit.x = room.x + room.width - 1;
 								exit.y = room.y + Map.random.rangeInt(room.height);
-							} else if(side & DOWN){
+							} else if((side & DOWN) != 0){
 								exit.x = room.x + Map.random.rangeInt(room.width);
 								exit.y = room.y + room.height - 1;
-							} else if(side & LEFT){
+							} else if((side & LEFT) != 0){
 								exit.x = room.x;
 								exit.y = room.y + Map.random.rangeInt(room.height);
 							}
 						} while(room.touchesDoors(exit) || onEdge(exit, data.width, data.height));
 						room.doors.push(exit);
 						// now pick an entrance
-						var entrance:Pixel = new Pixel();
+						Pixel entrance = new Pixel();
 						room = rooms[i].siblings[j];
 						do{
 							side = 1 << Map.random.rangeInt(4);
-							if(side & UP){
+							if((side & UP) != 0){
 								entrance.x = room.x + Map.random.rangeInt(room.width);
 								entrance.y = room.y - 1;
-							} else if(side & RIGHT){
+							} else if((side & RIGHT) != 0){
 								entrance.x = room.x + room.width;
 								entrance.y = room.y + Map.random.rangeInt(room.height);
-							} else if(side & DOWN){
+							} else if((side & DOWN) != 0){
 								entrance.x = room.x + Map.random.rangeInt(room.width);
 								entrance.y = room.y + room.height;
-							} else if(side & LEFT){
+							} else if((side & LEFT) != 0){
 								entrance.x = room.x - 1;
 								entrance.y = room.y + Map.random.rangeInt(room.height);
 							}
@@ -335,20 +339,20 @@ namespace com.robotacid.level {
 						
 						// try getting there, favour pre-existing routes
 						
-						var neighbours:Vector.<Pixel> = new Vector.<Pixel>(4, true);
+						Vector<Pixel> neighbours = new Vector<Pixel>(4, true);
 						// this randomisation keeps the search from being weighted
-						randomiseArray(directions, Map.random);
-						var m:int = 0;
+						array.randomiseArray(directions, Map.random);
+						int m = 0;
 						do{
 							data.setPixel32(exit.x, exit.y, TUNNELLING);
 							neighbours[0] = new Pixel(exit.x + directions[0].x, exit.y + directions[0].y);
 							neighbours[1] = new Pixel(exit.x + directions[1].x, exit.y + directions[1].y);
 							neighbours[2] = new Pixel(exit.x + directions[2].x, exit.y + directions[2].y);
 							neighbours[3] = new Pixel(exit.x + directions[3].x, exit.y + directions[3].y);
-							var best:int = int.MAX_VALUE;
-							var choice:Pixel = null;
+							int best = int.MaxValue;
+							Pixel choice = null;
 							for(k = 0; k < neighbours.length; k++){
-								var dist:int = entrance.mDist(neighbours[k]);
+								int dist = entrance.mDist(neighbours[k]);
 								if(data.getPixel32(neighbours[k].x, neighbours[k].y) != DIGGING){
 									dist+=3;
 								}
@@ -357,7 +361,7 @@ namespace com.robotacid.level {
 									choice = neighbours[k];
 								}
 							}
-							if(choice){
+							if(choice != null){
 								exit.x = choice.x;
 								exit.y = choice.y;
 							} else {
@@ -395,7 +399,7 @@ namespace com.robotacid.level {
 				
 				for(i = 0; i < rooms.length; i++){
 					if(data.getPixel32(rooms[i].x, rooms[i].y) != EMPTY){
-						trace("failed room connection");
+						App.Util.trace("failed room connection");
 						goodLevel = false;
 					}
 				}
@@ -404,7 +408,7 @@ namespace com.robotacid.level {
 			
 			// remove floor nubs (pointless 1 square pits in the floor)
 			// they confuse enemies and the route planner puts ladders in them leading to nothing but a one square pit
-			var pixels:Vector.<uint> = data.getVector(data.rect);
+			Vector<uint> pixels = data.getVector(data.rect);
 			for(i = data.width; i < pixels.length - data.width; i++){
 				if(pixels[i] == EMPTY && pixels[i - 1] == WALL && pixels[i + 1] == WALL && pixels[i + data.width] == WALL){
 					pixels[i] = WALL;
@@ -413,15 +417,15 @@ namespace com.robotacid.level {
 			data.setVector(data.rect, pixels);
 			
 			// trim the map, we may have a large portion of unused rock
-			var mapBounds:Rectangle = data.getColorBoundsRect(0xFFFFFFFF, EMPTY);
+			Rectangle mapBounds = data.getColorBoundsRect(0xFFFFFFFF, EMPTY);
 			// the rooms will have to be moved!
-			var moveX:int = 1 - mapBounds.x;
-			var moveY:int = 1 - mapBounds.y;
+			int moveX = (int)(1 - mapBounds.x);
+			int moveY = (int)(1 - mapBounds.y);
 			for(i = 0; i < rooms.length; i++){
 				rooms[i].x += moveX;
 				rooms[i].y += moveY;
 			}
-			var trimmedData:BitmapData = new BitmapData(mapBounds.width + 2, mapBounds.height + 2, true, 0xFFFF0000);
+			BitmapData trimmedData = new BitmapData((int)(mapBounds.width + 2), (int)(mapBounds.height + 2), true, 0xFFFF0000);
 			
 			trimmedData.copyPixels(data, mapBounds, new Point(1, 1));
 			
@@ -432,7 +436,7 @@ namespace com.robotacid.level {
 		 * ladders to navigate that network and be able to visit every corner of it
 		 * 
 		 * The route planner does a final check for connectivity, if this fails then route planner aborts, returning false */
-		public function createRoutes():Boolean{
+		public Boolean createRoutes(){
 			
 			// count all the cliffs that are in the level. A cliff is an L-shaped area where the
 			// character can fall off
@@ -442,9 +446,9 @@ namespace com.robotacid.level {
 			
 			// first we get the bitmap as a vector, this makes iterating over it faster
 			
-			var pixels:Vector.<uint> = bitmapData.getVector(bitmapData.rect);
-			var mapWidth:int = bitmapData.width;
-			var cliffs:Vector.<int> = new Vector.<int>;
+			Vector<uint> pixels = bitmapData.getVector(bitmapData.rect);
+			int mapWidth = bitmapData.width;
+			Vector<int> cliffs = new Vector<int>();
 			
 			// there is a border around the map - we don't need to count it
 			for(i = mapWidth; i < pixels.length - mapWidth; i++){
@@ -479,12 +483,12 @@ namespace com.robotacid.level {
 			// here's comes the graph to reduce the number of routes and give us a more
 			// tricky level to navigate
 			
-			var graph:Vector.<Node> = new Vector.<Node>();
+			Vector<Node> graph = new Vector<Node>();
 			
 			// create an empty grid so that locating graph nodes is fast
-			var graphGrid:Vector.<Vector.<Node>> = new Vector.<Vector.<Node>>(bitmapData.height, true);
+			Vector< Vector<Node> > graphGrid = new Vector< Vector<Node> >(bitmapData.height, true);
 			for(r = 0; r < bitmapData.height; r++){
-				graphGrid[r] = new Vector.<Node>(mapWidth, true);
+				graphGrid[r] = new Vector<Node>(mapWidth, true);
 			}
 			for(i = mapWidth; i < pixels.length - mapWidth; i++){
 				if(pixels[i] == NODE){
@@ -496,13 +500,13 @@ namespace com.robotacid.level {
 				}
 			}
 			// now search for connections
-			var dirs:Vector.<int> = new Vector.<int>(4, true);
+			Vector<int> dirs = new Vector<int>(4, true);
 			dirs[0] = 1;
 			dirs[1] = -1;
 			dirs[3] = -mapWidth;
 			dirs[2] = mapWidth;
 			
-			var pos:int;
+			int pos;
 			
 			for(i = 0; i < graph.length; i++){
 				
@@ -535,7 +539,7 @@ namespace com.robotacid.level {
 			// so lets visit all points on the graph now and mark our good connections
 			// whilst we're at it we'll delete our node pixels to clean up
 			
-			var visitedNodes:Vector.<Node> = new Vector.<Node>();
+			Vector<Node> visitedNodes = new Vector<Node>();
 			node = graph[Map.random.rangeInt(graph.length)];
 			node.visited = true;
 			visitedNodes.push(node);
@@ -550,9 +554,10 @@ namespace com.robotacid.level {
 							visitedNodes[i].connectionsActive[j] = true;
 							visitedNodes[i].connections[j].visited = true;
 							pixels[visitedNodes[i].connections[j].x + visitedNodes[i].connections[j].y * mapWidth] = PATH;
-							visitedNodes[i].connections[j].connectionsActive[visitedNodes[i].connections[j].connections.indexOf(visitedNodes[i])] = true;
+							visitedNodes[i].connections[j].connectionsActive[visitedNodes[i].connections[j].connections.IndexOf(visitedNodes[i])] = true;
 							visitedNodes.push(visitedNodes[i].connections[j]);
-							break search;
+							//break search;
+							goto search;
 						}
 					}
 				}
@@ -579,7 +584,7 @@ namespace com.robotacid.level {
 			
 			// Now lets put in ladders and ledges
 			
-			var dest:int;
+			int dest;
 			
 			// wherever there's a vertical node connection, we slap a ladder in there
 			// except that for now we mark out the tops of ladders, and cap a ledge in where a ladder
@@ -592,7 +597,7 @@ namespace com.robotacid.level {
 							dest = graph[i].connections[j].x + graph[i].connections[j].y * mapWidth;
 							// xor swap so we get end the job with a ladder at the top
 							if(dest > n){
-								n ^= dest
+								n ^= dest;
 								dest ^= n;
 								n ^= dest;
 							}
@@ -603,7 +608,7 @@ namespace com.robotacid.level {
 						}
 						// after we query a connection, we deactivate at both ends, we don't need it anymore
 						graph[i].connectionsActive[j] = false;
-						graph[i].connections[j].connectionsActive[graph[i].connections[j].connections.indexOf(graph[i])] = false;
+						graph[i].connections[j].connectionsActive[graph[i].connections[j].connections.IndexOf(graph[i])] = false;
 					}
 				}
 				// also we slap a ledge in under any drop node (a node with a downwards link) - they can cause broken maps
@@ -640,7 +645,7 @@ namespace com.robotacid.level {
 					if(pixels[i - 1] == EMPTY){
 						// pull out the ladder ledge
 						j = i;
-						for(n = Map.random.range(LEDGE_LENGTH); n; n--){
+						for(n = (int)Map.random.range(LEDGE_LENGTH); n != 0; n--){
 							if(pixels[j - 1] == EMPTY && pixels[j - 1 - mapWidth] != WALL){
 								pixels[j] = LEDGE;
 								pixels[j - 1] = LADDER_LEDGE;
@@ -648,7 +653,7 @@ namespace com.robotacid.level {
 							j--;
 						}
 						// add a bit of extension past it
-						for(n = Map.random.range(LEDGE_LENGTH); n; n--){
+						for(n = (int)Map.random.range(LEDGE_LENGTH); n != 0; n--){
 							if(pixels[j - 1] == EMPTY && pixels[j - 1 - mapWidth] != WALL){
 								pixels[j - 1] = LEDGE;
 							} else break;
@@ -656,7 +661,7 @@ namespace com.robotacid.level {
 						}
 					} else if(pixels[i + 1] == EMPTY){
 						// push out the ladder ledge
-						for(n = Map.random.range(LEDGE_LENGTH); n; n--){
+						for(n = (int)Map.random.range(LEDGE_LENGTH); n != 0; n--){
 							if(pixels[i + 1] == EMPTY && pixels[i + 1 - mapWidth] != WALL){
 								pixels[i] = LEDGE;
 								pixels[i + 1] = LADDER_LEDGE;
@@ -665,7 +670,7 @@ namespace com.robotacid.level {
 						}
 						// add a bit of extension past it
 						j = i;
-						for(n = Map.random.range(LEDGE_LENGTH); n; n--){
+						for(n = (int)Map.random.range(LEDGE_LENGTH); n != 0; n--){
 							if(pixels[j + 1] == EMPTY && pixels[j + 1 - mapWidth] != WALL){
 								pixels[j + 1] = LEDGE;
 							} else break;
@@ -687,12 +692,12 @@ namespace com.robotacid.level {
 			}
 			
 			// create some extra ladders in a tree like fashion (finding a wall base to root in a grow up out of)
-			var cast:int;
+			int cast;
 			for(i = mapWidth; i < pixels.length - mapWidth; i++){
 				if(pixels[i] == EMPTY && pixels[i - mapWidth] == EMPTY && pixels[i + mapWidth] == WALL && Map.random.value() < LADDERINESS){
-					n = 1 + Map.random.range(LADDER_TREE_HEIGHT);
+					n = (int)(1 + Map.random.range(LADDER_TREE_HEIGHT));
 					cast = i;
-					while(n--){
+					while(n-- > 0){
 						if(pixels[cast] == EMPTY && pixels[cast - mapWidth] == EMPTY){
 							pixels[cast] = LADDER_LEDGE;
 							if(pixels[cast + mapWidth] == LADDER_LEDGE){
@@ -703,7 +708,7 @@ namespace com.robotacid.level {
 					}
 					// this method tends to create solo ledges on top of ladders that look pretty bad
 					// so we randomly add a bit of ledge to the sides at the top
-					var available:Array = [];
+					Array<int> available = new Array<int>();
 					cast += mapWidth;
 					if(pixels[cast - 1] == EMPTY && pixels[cast - 1 - mapWidth] != WALL){
 						available.push(cast - 1);
@@ -711,7 +716,7 @@ namespace com.robotacid.level {
 					if(pixels[cast + 1] == EMPTY && pixels[cast + 1 - mapWidth] != WALL){
 						available.push(cast + 1);
 					}
-					if(available.length){
+					if(available.length > 0){
 						pixels[available[Map.random.rangeInt(available.length)]] = LEDGE;
 					}
 				}
@@ -722,7 +727,7 @@ namespace com.robotacid.level {
 				if(pixels[i] == LADDER && Map.random.value() < LEDGINESS){
 					if(pixels[i - 1] == EMPTY){
 						j = i;
-						for(n = Map.random.range(LEDGE_LENGTH); n; n--){
+						for(n = (int)Map.random.range(LEDGE_LENGTH); n != 0; n--){
 							if(pixels[j - 1] == EMPTY && pixels[j - 1 - mapWidth] != WALL){
 								pixels[j - 1] = LEDGE;
 							} else if(pixels[j - 1] == LADDER){
@@ -735,7 +740,7 @@ namespace com.robotacid.level {
 					}
 					if(pixels[i + 1] == EMPTY){
 						j = i;
-						for(n = Map.random.value() * LEDGE_LENGTH; n; n--){
+						for(n = (int)Map.random.value() * LEDGE_LENGTH; n != 0; n--){
 							if(pixels[j + 1] == EMPTY && pixels[j + 1 - mapWidth] != WALL){
 								pixels[j + 1] = LEDGE;
 							} else if(pixels[j + 1] == LADDER){
@@ -750,11 +755,11 @@ namespace com.robotacid.level {
 			
 			// It is possible for the route planning to go awry.
 			// Double check that the level has full connectivity
-			var connectionBitmapData:BitmapData = new BitmapData(bitmapData.width * 2, bitmapData.height * 2);
+			BitmapData connectionBitmapData = new BitmapData(bitmapData.width * 2, bitmapData.height * 2);
 			connectionBitmapData.fillRect(connectionBitmapData.rect, 0xFFFFFFFF);
-			var connectionPixels:Vector.<uint> = connectionBitmapData.getVector(connectionBitmapData.rect);
-			var connectionMapWidth:int = mapWidth * 2;
-			var floodSeed:Pixel;
+			Vector<uint> connectionPixels = connectionBitmapData.getVector(connectionBitmapData.rect);
+			int connectionMapWidth = mapWidth * 2;
+			Pixel floodSeed = null;
 			for(i = mapWidth; i < pixels.length - mapWidth; i++){
 				if(
 					pixels[i] != WALL &&
@@ -769,7 +774,7 @@ namespace com.robotacid.level {
 					j = c * 2 + r * 2 * connectionMapWidth;
 					connectionPixels[j + connectionMapWidth] = CONNECTIVITY_TEST;
 					connectionPixels[j + 1 + connectionMapWidth] = CONNECTIVITY_TEST;
-					if(!floodSeed) floodSeed = new Pixel(c * 2, 1 + r * 2);
+					if(floodSeed == null) floodSeed = new Pixel(c * 2, 1 + r * 2);
 				}
 				if(pixels[i] == LADDER || pixels[i] == LADDER_LEDGE){
 					c = i % mapWidth;
@@ -777,15 +782,15 @@ namespace com.robotacid.level {
 					j = c * 2 + r * 2 * connectionMapWidth;
 					connectionPixels[j] = CONNECTIVITY_TEST;
 					connectionPixels[j + connectionMapWidth] = CONNECTIVITY_TEST;
-					if(!floodSeed) floodSeed = new Pixel(c * 2, r * 2);
+					if(floodSeed == null) floodSeed = new Pixel(c * 2, r * 2);
 				}
 			}
 			connectionBitmapData.setVector(connectionBitmapData.rect, connectionPixels);
 			connectionBitmapData.floodFill(floodSeed.x, floodSeed.y, 0xFF000000);
 			//var connectionBitmap:Bitmap = new Bitmap(connectionBitmapData);
 			//Game.game.addChild(connectionBitmap);
-			if(connectionBitmapData.getColorBoundsRect(0xFFFFFFFF, CONNECTIVITY_TEST).width){
-				trace("failed route planning");
+			if(connectionBitmapData.getColorBoundsRect(0xFFFFFFFF, CONNECTIVITY_TEST).width <= 0){
+				App.Util.trace("failed route planning");
 				return false;
 			}
 			bitmapData.setVector(bitmapData.rect, pixels);
@@ -794,15 +799,15 @@ namespace com.robotacid.level {
 		
 		/* This finds suitable locations for pits and digs them, leaving a trap marker for the Map class
 		 * to turn into a Trap Entity */
-		public function createPits():void{
+		public void createPits(){
 			
 			pitTraps = 0;
-			var totalPits:int = game.content.getTraps(level, type) * 0.5;
+			int totalPits = (int)(game.content.getTraps(level, type) * 0.5);
 			if(totalPits == 0) return;
 			
-			var mapWidth:int = bitmapData.width;
-			var pits:Vector.<int> = new Vector.<int>();
-			var pixels:Vector.<uint> = bitmapData.getVector(bitmapData.rect);
+			int mapWidth = bitmapData.width;
+			Vector<int> pits = new Vector<int>();
+			Vector<uint> pixels = bitmapData.getVector(bitmapData.rect);
 			
 			// any bottom corner can serve as a location for a pit, as there always seems to be a
 			// route around
@@ -822,7 +827,7 @@ namespace com.robotacid.level {
 			
 			// we have a selection of locations, it remains to select from them and dig
 			while(totalPits > 0 && pits.length > 0){
-				var r:int = Map.random.range(pits.length);
+				int r = (int)Map.random.range(pits.length);
 				pixels[pits[r]] = PIT;
 				for(i = pits[r] + mapWidth; i < pixels.length - mapWidth * 2; i += mapWidth){
 					if(pixels[i] == EMPTY){
@@ -840,24 +845,27 @@ namespace com.robotacid.level {
 		}
 		
 		/* This creates extra rooms on the edges of the map, hidden by a destructible wall */
-		public function createSecrets():void{
+		public void createSecrets(){
 			
-			var totalSecrets:int = game.content.getSecrets(level, type);
+			int totalSecrets = game.content.getSecrets(level, type);
 			
 			adjustedMapRect = new Rectangle(0, 0, bitmapData.width * Game.SCALE, bitmapData.height * Game.SCALE);
 			
 			if(totalSecrets == 0) return;
 			
-			var mapWidth:int = bitmapData.width;
-			var secretsLeft:Vector.<int> = new Vector.<int>();
-			var secretsRight:Vector.<int> = new Vector.<int>();
-			var pixels:Vector.<uint> = bitmapData.getVector(bitmapData.rect);
+			int mapWidth = bitmapData.width;
+			Vector<int> secretsLeft = new Vector<int>();
+			Vector<int> secretsRight = new Vector<int>();
+			Vector<uint> pixels = bitmapData.getVector(bitmapData.rect);
 			
 			// we check the edges of the map for locations where a secret room would be acceptable
 			
 			// to avoid any overlap and need to recalculate routes, only one secret per side maximum
 			
-			var room:Room, pos:int, posY:int, corridorLength:int, temp:BitmapData, ladderPos:int, ledgePos:int;
+			Room room;
+			int pos, posY, corridorLength;
+			BitmapData temp;
+			int ladderPos, ledgePos;
 			
 			// left edge:
 			for(i = mapWidth; i < pixels.length - mapWidth; i += mapWidth){
@@ -866,7 +874,7 @@ namespace com.robotacid.level {
 				}
 			}
 			
-			if(secretsLeft.length && Map.random.value() < SECRET_FREQ){
+			if(secretsLeft.length > 0 && Map.random.value() < SECRET_FREQ){
 				pos = secretsLeft[Map.random.rangeInt(secretsLeft.length)];
 				posY = pos / mapWidth;
 				room = new Room();
@@ -881,7 +889,7 @@ namespace com.robotacid.level {
 				pixels = bitmapData.getVector(bitmapData.rect);
 				pixels[1 + room.width + corridorLength + posY * bitmapData.width] = SECRET;
 				for(i = 0; i < corridorLength; i++){
-					pixels[-i + room.width + corridorLength + posY * bitmapData.width] = EMPTY
+					pixels[-i + room.width + corridorLength + posY * bitmapData.width] = EMPTY;
 				}
 				room.x = 1;
 				room.y = posY - Map.random.rangeInt(room.height);
@@ -932,7 +940,7 @@ namespace com.robotacid.level {
 				}
 			}
 			
-			if(secretsRight.length && Map.random.value() < SECRET_FREQ){
+			if(secretsRight.length > 0 && Map.random.value() < SECRET_FREQ){
 				pos = secretsRight[Map.random.rangeInt(secretsRight.length)];
 				posY = pos / mapWidth;
 				room = new Room();
@@ -947,7 +955,7 @@ namespace com.robotacid.level {
 				pixels = bitmapData.getVector(bitmapData.rect);
 				pixels[mapWidth - 1 + posY * bitmapData.width] = SECRET;
 				for(i = 0; i < corridorLength; i++){
-					pixels[mapWidth + i + posY * bitmapData.width] = EMPTY
+					pixels[mapWidth + i + posY * bitmapData.width] = EMPTY;
 				}
 				room.x = mapWidth + corridorLength;
 				room.y = posY - Map.random.rangeInt(room.height);
@@ -986,23 +994,23 @@ namespace com.robotacid.level {
 		}
 		
 		/* Create obstructions the player has to pass by force other means */
-		public function createGates():void{
-			gates = new Vector.<Pixel>();
+		public void createGates(){
+			gates = new Vector<Pixel>();
 			
 			// skip creating gates on level 1 - too early for new mechanics
 			if(level == 1) return;
 			
 			// find sites suitable for gates
 			
-			var mapPixels:Vector.<uint> = bitmapData.getVector(bitmapData.rect);
-			var range:int = (height - 1) * width - 1;
-			var width:int = bitmapData.width;
-			var height:int = bitmapData.height;
-			var minX:int = 2 + adjustedMapRect.x * Game.INV_SCALE;
-			var maxX:int = -2 + (adjustedMapRect.x + adjustedMapRect.width) * Game.INV_SCALE;
-			var x:int;
-			var passageFound:Boolean = false;
-			var startPassage:int;
+			Vector<uint> mapPixels = bitmapData.getVector(bitmapData.rect);
+			int range = (int)((this.height - 1) * this.width - 1);
+			int width = bitmapData.width;
+			int height = bitmapData.height;
+			int minX = (int)(2 + adjustedMapRect.x * Game.INV_SCALE);
+			int maxX = (int)(-2 + (adjustedMapRect.x + adjustedMapRect.width) * Game.INV_SCALE);
+			int x;
+			Boolean passageFound = false;
+			int startPassage = 0;
 			
 			// iterate through all pixels and find locations suitable
 			for(i = width + 1; i < range; i++){
@@ -1026,7 +1034,7 @@ namespace com.robotacid.level {
 				} else {
 					if(passageFound){
 						// mark a site halfway along the passage
-						c = (((((i - 1) - startPassage) * 0.5) >> 0) + startPassage) % width;
+						c = ((int)( (((i - 1) - startPassage) * 0.5) ) + startPassage) % width;
 						r = i / width;
 						gates.push(new Pixel(c, r));
 						passageFound = false;
@@ -1038,15 +1046,15 @@ namespace com.robotacid.level {
 		}
 		
 		/* Mark where all usable sections of floor are on a level */
-		public function createSurfaces():void{
+		public void createSurfaces(){
 			
 			// initial sweep to get all usable surfaces in the level
-			var surface:Surface;
-			var properties:int;
-			var width:int = bitmapData.width;
-			var height:int = bitmapData.height;
+			Surface surface;
+			int properties;
+			int width = bitmapData.width;
+			int height = bitmapData.height;
 			Surface.initMap(width, height);
-			var mapPixels:Vector.<uint> = bitmapData.getVector(bitmapData.rect);
+			Vector<uint> mapPixels = bitmapData.getVector(bitmapData.rect);
 			for(i = width; i < mapPixels.length - width; i++){
 				if(
 					mapPixels[i] != WALL &&
@@ -1061,7 +1069,7 @@ namespace com.robotacid.level {
 					else if(mapPixels[i + width] == LADDER_LEDGE) properties = Collider.UP | Collider.LEDGE | Collider.LADDER;
 					else if(mapPixels[i + width] == WALL) properties = Collider.SOLID | Collider.WALL;
 					if(mapPixels[i] == LADDER || mapPixels[i] == LADDER_LEDGE) properties |= Collider.LADDER;
-					if(properties){
+					if(properties != 0){
 						surface = new Surface(c, r, properties);
 						Surface.map[r][c] = surface;
 						Surface.surfaces.push(surface);
@@ -1070,12 +1078,12 @@ namespace com.robotacid.level {
 			}
 			// now find which of those surfaces are in a room
 			// all surfaces in a room are found by casting down from the top of the room - catching areas dug out below the room
-			if(rooms){
+			if(rooms != null){
 				
-				var roomList:Vector.<Room> = rooms.slice();
-				if(leftSecretRoom) roomList.push(leftSecretRoom);
-				if(rightSecretRoom) roomList.push(rightSecretRoom);
-				roomList.sort(Map.sortRoomsTopWards);
+				Vector<Room> roomList = rooms.slice();
+				if(leftSecretRoom != null) roomList.push(leftSecretRoom);
+				if(rightSecretRoom != null) roomList.push(rightSecretRoom);
+				roomList.Sort(Map.sortRoomsTopWards);
 				
 				for(i = 0; i < roomList.length; i++){
 					room = roomList[i];
@@ -1083,12 +1091,12 @@ namespace com.robotacid.level {
 						r = room.y;
 						n = c + r * width;
 						while(n < mapPixels.length - width && mapPixels[n] != WALL && mapPixels[n] != PIT && mapPixels[n] != SECRET && mapPixels[n] != GATE){
-							if(Surface.map[r][c]){
+							if(Surface.map[r][c] != null){
 								surface = Surface.map[r][c];
 								// due to casting, a room may have already claimed a surface
 								// logically the bottom-most room must be the true owner
-								if(surface.room){
-									surface.room.surfaces.splice(surface.room.surfaces.indexOf(surface), 1);
+								if(surface.room != null){
+									surface.room.surfaces.splice(surface.room.surfaces.IndexOf(surface), 1);
 								}
 								room.surfaces.push(surface);
 								surface.room = room;
@@ -1100,7 +1108,6 @@ namespace com.robotacid.level {
 				}
 			}
 		}
-#endif
 		
 		/* is this pixel sitting on the edge of the map? it will likely cause me trouble if it is... */
 		public static bool onEdge(Pixel pixel, int width, int height) {

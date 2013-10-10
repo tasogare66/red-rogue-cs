@@ -1,3 +1,8 @@
+2013-10-10  tasogare66 <tasogare66@gmail.com>
+
+	* red-rogue-cs:
+	MapBitmap.cs コンパイル通るように、先にすすめないので封印中
+
 2013-10-03  tasogare66 <tasogare66@gmail.com>
 
 	* red-rogue-cs:

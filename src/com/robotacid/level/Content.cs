@@ -788,29 +788,35 @@ namespace com.robotacid.level {
 				}
 			}
 		}
+#endif
 		
 		/* Returns the amount of secrets in this level */
-		public function getSecrets(dungeonLevel:int, dungeonType:int):int{
+		public int getSecrets(int dungeonLevel, int dungeonType){
+#if false
 			if(dungeonType == Map.MAIN_DUNGEON){
 				while(dungeonLevel >= gameState.secretsByLevel.length) gameState.secretsByLevel.push(2);
 				return gameState.secretsByLevel[dungeonLevel];
 			} else if(dungeonType == Map.ITEM_DUNGEON){
 				return gameState.itemDungeonContent.secrets;
 			}
+#endif
 			return 0;
 		}
 		
 		/* Returns the amount of traps in this level */
-		public function getTraps(dungeonLevel:int, dungeonType:int):int{
+		public int getTraps(int dungeonLevel, int dungeonType){
+#if false
 			if(dungeonType == Map.MAIN_DUNGEON){
 				while(dungeonLevel >= gameState.trapsByLevel.length) gameState.trapsByLevel.push(trapQuantityPerLevel(dungeonLevel));
 				return gameState.trapsByLevel[dungeonLevel];
 			} else if(dungeonType == Map.ITEM_DUNGEON){
 				return gameState.itemDungeonContent.traps;
 			}
+#endif
 			return 0;
 		}
 		
+#if false
 		/* Returns the amount of altars in this level */
 		public function getAltars(dungeonLevel:int, dungeonType:int):int{
 			if(dungeonType == Map.MAIN_DUNGEON){

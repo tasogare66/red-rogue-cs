@@ -8,7 +8,15 @@ namespace flash
     public class Vector<T> : List<T> {
         public Vector() { }
 //        public Array(IEnumerable<T> collection) : base(collection) { }
-//        public Array(int capacity) : base(capacity) { }
+        public Vector(int capacity, Boolean _fixed=false) : base(capacity) {
+			// fixedプロパティ:値が true の場合、length プロパティは変更できないが
+			// 特に対応はいれない
+
+			// capacity分 要素を追加
+			for(int i = 0; i < capacity; ++i ){
+				Add( default(T) );
+			}
+		}
 #if false
         public override string ToString() {
             _sb.Clear();
@@ -60,6 +68,19 @@ namespace flash
             RemoveAt(0);
 
             return first;
+        }
+
+        public Vector<T> slice(int startIndex = 0, int endIndex = 16777215) {
+            int start = startIndex >= 0 ? startIndex : Count + startIndex;
+            int end = endIndex == 16777215 ? Count : endIndex >= 0 ? endIndex : Count + endIndex;
+
+            var array = new Vector<T>(end - start);
+
+            for(int i = start; i < end; i++) {
+                array.Add(this[i]);
+            }
+
+            return array;
         }
 
         public virtual Vector<T> splice(int startIndex, uint deleteCount, params T[] p) {

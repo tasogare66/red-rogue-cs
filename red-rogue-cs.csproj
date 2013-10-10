@@ -117,6 +117,7 @@
     <Compile Include="src\com\robotacid\ui\menu\InventoryMenuList.cs" />
     <Compile Include="src\com\robotacid\ui\Transition.cs" />
     <Compile Include="src\com\robotacid\level\Surface.cs" />
+    <Compile Include="src\com\robotacid\util\array\randomiseArray.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -143,6 +144,7 @@
     <Folder Include="src\flash\" />
     <Folder Include="src\com\robotacid\gfx\" />
     <Folder Include="src\com\robotacid\sound\" />
+    <Folder Include="src\com\robotacid\util\array\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="lib\SimpleSprite.fcg" />

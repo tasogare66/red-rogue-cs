@@ -60,6 +60,10 @@ namespace flash.display
 			//FIXME:	
         }
 
+		public void floodFill(int x, int y, uint color) {
+			//FIXME:対応厳しそう	
+		}
+
         public void copyPixels(BitmapData sourceBitmapData, Rectangle sourceRect, Point destPoint, BitmapData alphaBitmapData = null, Point alphaPoint = null, Boolean mergeAlpha = false) {
 			//FIXME:	
         }
@@ -69,6 +73,30 @@ namespace flash.display
 			tmp.Position.Y = (float)destPoint.y;
 			spriteBuffer.Add( tmp );
         }
+
+		public Rectangle getColorBoundsRect(uint mask, uint color, Boolean findColor = true) {
+			//FIXME:	
+			return new Rectangle();
+		}
+
+		public Vector<uint> getVector(Rectangle rect) {
+			//FIXME:対応厳しそう	
+			Vector<uint> tmp = new Vector<uint>((int)(rect.height * rect.width));
+			return tmp;
+		}
+
+		public void setVector(Rectangle rect, Vector<uint> inputVector) {
+			//FIXME:	
+		}
+
+		public uint getPixel32(double x, double y) {
+			//FIXME:	
+			return 0xFFFFFF00;	// MapBitmapで無限ループしにようにとりあえず
+		}
+
+		public void setPixel32(double x, double y, uint color) {
+			//FIXME:	
+		}
 
 		public void dispose() {
 			if( this.renderTexture != null ){
